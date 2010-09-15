@@ -10,7 +10,11 @@ import java.util.List;
  */
 public class HibernateGenericDao<T> extends HibernateDaoSupport implements GenericDao<T> {
 
-    public Class<T> clazz;
+    public Class<T> type;
+
+    public HibernateGenericDao(Class<T> type) {
+        this.type = type;
+    }
 
     public T save(T obj) {
 
@@ -29,12 +33,12 @@ public class HibernateGenericDao<T> extends HibernateDaoSupport implements Gener
 
     public List<T> getAll() {
 
-        return getHibernateTemplate().loadAll(clazz);
+        return getHibernateTemplate().loadAll(type);
     }
 
     public T getById(int id) {
 
-        return getHibernateTemplate().get(clazz, id);
+        return getHibernateTemplate().get(type, id);
     }
 
     @SuppressWarnings("unchecked")

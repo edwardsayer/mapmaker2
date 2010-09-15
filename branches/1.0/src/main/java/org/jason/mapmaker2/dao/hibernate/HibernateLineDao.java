@@ -8,4 +8,7 @@ import org.jason.mapmaker2.model.Line;
  */
 public class HibernateLineDao extends HibernateGenericDao<Line> implements LineDao {
 
+        public HibernateLineDao() {
+            super(Line.class);
+        }
 }
