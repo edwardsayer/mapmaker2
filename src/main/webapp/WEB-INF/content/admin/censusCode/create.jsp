@@ -7,6 +7,8 @@
   <body>
   <p>Use this page to create a new type of Census (formerly FIPS 55) Code</p>
 
+  <s:actionerror />
+  
   <s:form action="/censusCode/create" validate="true">
       <s:textfield label="Census Code" name="censusCode" />
       <s:textfield label="Description" name="description" />
