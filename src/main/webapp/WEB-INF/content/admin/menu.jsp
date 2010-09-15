@@ -6,6 +6,7 @@
   <body>
 
   <h1>Admin Menu</h1>
+  <p>Add Census Code</p>
   <p>Import Shapefile</p>
   </body>
 </html>
