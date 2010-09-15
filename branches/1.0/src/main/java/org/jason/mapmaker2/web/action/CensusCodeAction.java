@@ -72,6 +72,15 @@ public class CensusCodeAction extends ActionSupport {
     @Action("/create")
     public String create() throws Exception {
 
+        CensusCode code = new CensusCode();
+        code.setCensusCode(censusCode);
+        code.setDescription(description);
+
+        CensusCode persistedCode = censusCodeService.save(code);
+        if (persistedCode == null) {
+            addActionError("Unable to save new census code");
+            return INPUT;
+        }
         return SUCCESS;
     }
 }
