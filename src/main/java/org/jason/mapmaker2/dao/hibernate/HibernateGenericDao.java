@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author Jason Ferguson
  */
-public class GenericHibernateDao<T> extends HibernateDaoSupport implements GenericDao<T> {
+public class HibernateGenericDao<T> extends HibernateDaoSupport implements GenericDao<T> {
 
     public Class<T> clazz;
 
