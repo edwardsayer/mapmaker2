@@ -269,6 +269,11 @@
             <artifactId>gt-main</artifactId>
             <version>${geotools.version}</version>
         </dependency>
+                <dependency>
+            <groupId>org.geotools</groupId>
+            <artifactId>gt-shapefile</artifactId>
+            <version>${geotools.version}</version>
+        </dependency>
     </dependencies>
     <properties>
         <xerces-version>2.9.1</xerces-version>
