@@ -5,6 +5,7 @@ import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.Result;
+import org.apache.struts2.convention.annotation.Results;
 import org.apache.struts2.interceptor.validation.SkipValidation;
 import org.jason.mapmaker2.model.CensusCode;
 import org.jason.mapmaker2.service.CensusCodeService;
@@ -15,8 +16,10 @@ import java.util.List;
 /**
  * @author TSgt Jason Ferguson
  */
-@Namespace("censusCode")
-@Result(name="success", location = "/WEB-INF/admin/censusCode/list.jsp")
+@Namespace("/censusCode")
+@Results({
+        @Result(name = "success", location = "/WEB-INF/content/admin/censusCode/list.jsp")
+})
 public class CensusCodeAction extends ActionSupport {
 
     // Services
@@ -61,7 +64,7 @@ public class CensusCodeAction extends ActionSupport {
     }
 
     @SkipValidation
-    @Action("/")
+    @Action("")
     public String execute() throws Exception {
 
         censusCodeList = censusCodeService.getAll();
