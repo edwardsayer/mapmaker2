@@ -57,11 +57,7 @@
         </property>
         <property name="annotatedClasses">
             <list>
-                <value>mil.usaf.jwaf.model.User</value>
-                <value>mil.usaf.jwaf.model.Role</value>
-                <value>mil.usaf.jwaf.model.OrganizationLevel</value>
-                <value>mil.usaf.jwaf.model.Organization</value>
-                <value>mil.usaf.jwaf.model.PayGrade</value>
+                <value>org.jason.mapmaker2.model.CensusCode</value>
             </list>
         </property>
         <property name="configurationClass" value="org.hibernate.cfg.AnnotationConfiguration"/>
