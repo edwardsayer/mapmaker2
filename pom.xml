@@ -280,7 +280,7 @@
         <geotools.version>2.6.5</geotools.version>
     </properties>
     <build>
-        <finalName>jwaf</finalName>
+        <finalName>mapmaker2</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
