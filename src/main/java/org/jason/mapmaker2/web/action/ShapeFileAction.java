@@ -12,13 +12,16 @@ import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.opengis.feature.Feature;
+import org.opengis.feature.GeometryAttribute;
 
 import javax.servlet.ServletContext;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -89,6 +92,7 @@ public class ShapeFileAction extends ActionSupport implements ServletContextAwar
 
     @Action("processShapefile")
     public String processShapefile() throws Exception {
+        List<File> filenames = new ArrayList<File>();
 
         // get servlet temp directory
         File tempFileDir = (File) servletContext.getAttribute("javax.servlet.context.tempdir");
@@ -111,6 +115,7 @@ public class ShapeFileAction extends ActionSupport implements ServletContextAwar
                 shpFilename = entryFileName;
             }
             File destFile = new File(tempFileDir, entryFileName);
+            filenames.add(destFile);
 
             if (!entry.isDirectory()) {
                 BufferedInputStream is = new BufferedInputStream(zipFile.getInputStream(entry));
@@ -146,9 +151,14 @@ public class ShapeFileAction extends ActionSupport implements ServletContextAwar
             int counter = 0;
             while (iterator.hasNext()) {
                 Feature feature = iterator.next();
+                GeometryAttribute geometryAttribute = feature.getDefaultGeometryProperty();
                 counter++;
-                //Geometry sourceGeometry = feature.getDefaultGeometry();
+
             }
+        }
+
+        for (File f: filenames) {
+            f.delete();
         }
         return SUCCESS;
     }
