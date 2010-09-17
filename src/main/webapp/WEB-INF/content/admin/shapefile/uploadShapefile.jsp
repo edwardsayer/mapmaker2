@@ -6,11 +6,12 @@
   </head>
   <body>
 
+  <s:actionmessage />
   <p>Use this form to upload a Shapefile</p>
-    <s:form name="shapefile" action="processShapefile" enctype="multipart/form-data" method="POST">
+    <s:form namespace="/shapefile" action="processShapefile" enctype="multipart/form-data" method="POST">
 
         <s:file name="fileUpload" label="Shapefile" />
-        <s:submit name="Upload" value="upload" />
+        <s:submit name="Upload" value="Upload" />
     </s:form>
   </body>
 </html>
