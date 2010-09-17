@@ -3,12 +3,14 @@ package org.jason.mapmaker2.service;
 import org.jason.mapmaker2.dao.FeatureClassDao;
 import org.jason.mapmaker2.model.FeatureClass;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
  * @author Jason Ferguson
  */
+@Service("featureClassService")
 public class FeatureClassService implements BasicServiceOperations<FeatureClass> {
 
     private FeatureClassDao featureClassDao;
