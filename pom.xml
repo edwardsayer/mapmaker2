@@ -312,22 +312,22 @@
                 <configuration>
                     <!--<contextPath>/</contextPath>-->
                     <connectors>
-                        <!--                        <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
-                           <port>8888</port>
-                           <maxIdleTime>60000</maxIdleTime>
-                        </connector>-->
-                        <connector implementation="org.eclipse.jetty.server.ssl.SslSelectChannelConnector">
+                        <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+                            <port>8888</port>
+                            <maxIdleTime>60000</maxIdleTime>
+                        </connector>
+<!--                        <connector implementation="org.eclipse.jetty.server.ssl.SslSelectChannelConnector">
                             <port>8443</port>
                             <maxIdleTime>0</maxIdleTime>
-                            <!-- MODIFY THIS TO WHEREVER YOU PUT THE KEYSTORE. SHOULD BE OUTSIDE OF YOUR WORK DIR -->
+                            --><!-- MODIFY THIS TO WHEREVER YOU PUT THE KEYSTORE. SHOULD BE OUTSIDE OF YOUR WORK DIR --><!--
                             <keystore>C:/Programming/Projects/jetty-ssl.keystore2</keystore>
                             <password>jetty6</password>
                             <keyPassword>jetty6</keyPassword>
-                            <!-- MODIFY THIS TO WHEREVER YOU PUT THE CACERT. SHOULD BE OUTSIDE OF YOUR WORK DIR -->
+                            --><!-- MODIFY THIS TO WHEREVER YOU PUT THE CACERT. SHOULD BE OUTSIDE OF YOUR WORK DIR --><!--
                             <truststore>C:/Programming/Projects/cacerts</truststore>
                             <trustPassword>changeit</trustPassword>
                             <needClientAuth>true</needClientAuth>
-                        </connector>
+                        </connector>-->
                     </connectors>
                 </configuration>
             </plugin>
