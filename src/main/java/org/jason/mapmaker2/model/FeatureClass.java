@@ -1,10 +1,16 @@
 package org.jason.mapmaker2.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
  * @author Jason Ferguson
  */
+@Entity
+@Table(name="T_FEATURECLASS")
 public class FeatureClass implements Serializable {
 
     private Integer id;
@@ -12,6 +18,8 @@ public class FeatureClass implements Serializable {
     private String classCodeShortDesc;
     private String classCodeDesc;
 
+    @Id
+    @Column(name="ID")
     public Integer getId() {
         return id;
     }
@@ -20,6 +28,7 @@ public class FeatureClass implements Serializable {
         this.id = id;
     }
 
+    @Column(name="CLASSCODE")
     public String getClassCode() {
         return classCode;
     }
@@ -28,6 +37,7 @@ public class FeatureClass implements Serializable {
         this.classCode = classCode;
     }
 
+    @Column(name="SHORTDESC")
     public String getClassCodeShortDesc() {
         return classCodeShortDesc;
     }
@@ -36,6 +46,7 @@ public class FeatureClass implements Serializable {
         this.classCodeShortDesc = classCodeShortDesc;
     }
 
+    @Column(name="DESCRIPTION")
     public String getClassCodeDesc() {
         return classCodeDesc;
     }
