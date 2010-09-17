@@ -33,26 +33,43 @@ public class CensusCodeAction extends ActionSupport {
 
     // field values
 
-    private String censusCode;
-    private String description;
+    private Integer stateCode;
+    private String stateName;
+    private Integer countyCode;
+    private String countyName;
+
     private List<CensusCode> censusCodeList;
 
-    @RequiredStringValidator(message = "You must provide a census code")
-    public String getCensusCode() {
-        return censusCode;
+    public Integer getStateCode() {
+        return stateCode;
     }
 
-    public void setCensusCode(String censusCode) {
-        this.censusCode = censusCode;
+    public void setStateCode(Integer stateCode) {
+        this.stateCode = stateCode;
     }
 
-    @RequiredStringValidator(message = "You must provide a description of the census code")
-    public String getDescription() {
-        return description;
+    public String getStateName() {
+        return stateName;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setStateName(String stateName) {
+        this.stateName = stateName;
+    }
+
+    public Integer getCountyCode() {
+        return countyCode;
+    }
+
+    public void setCountyCode(Integer countyCode) {
+        this.countyCode = countyCode;
+    }
+
+    public String getCountyName() {
+        return countyName;
+    }
+
+    public void setCountyName(String countyName) {
+        this.countyName = countyName;
     }
 
     public List<CensusCode> getCensusCodeList() {
@@ -76,8 +93,10 @@ public class CensusCodeAction extends ActionSupport {
     public String create() throws Exception {
 
         CensusCode code = new CensusCode();
-        code.setCensusCode(censusCode);
-        code.setDescription(description);
+        code.setStateCode(stateCode);
+        code.setStateName(stateName);
+        code.setCountyCode(countyCode);
+        code.setCountyName(countyName);
 
         CensusCode persistedCode = censusCodeService.save(code);
         if (persistedCode == null) {
