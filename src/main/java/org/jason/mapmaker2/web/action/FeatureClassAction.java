@@ -2,7 +2,10 @@ package org.jason.mapmaker2.web.action;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
-import org.apache.struts2.convention.annotation.*;
+import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.Namespace;
+import org.apache.struts2.convention.annotation.Result;
+import org.apache.struts2.convention.annotation.Results;
 import org.apache.struts2.interceptor.validation.SkipValidation;
 import org.jason.mapmaker2.model.FeatureClass;
 import org.jason.mapmaker2.service.FeatureClassService;
@@ -67,13 +70,20 @@ public class FeatureClassAction extends ActionSupport {
         this.featureClasses = featureClasses;
     }
 
-    @Action("")
+    @Action("/")
     @SkipValidation
     public String execute() throws Exception {
 
         featureClasses = featureClassService.getAll();
 
         return SUCCESS;
+    }
+
+    @SkipValidation
+    @Action("showCreate")
+    public String showCreate() throws Exception {
+
+        return INPUT;
     }
 
     @Action("create")
@@ -88,16 +98,5 @@ public class FeatureClassAction extends ActionSupport {
 
         return SUCCESS;
 
-    }
-
-    // TODO: Reset the JSON result root to only return the feature class list
-    @Action(value="featureClassesJSON", results=
-        @Result(name="success", type="json")
-    )
-    public String getFeatureClassesJSON() throws Exception {
-
-        featureClasses = featureClassService.getAll();
-
-        return SUCCESS;
     }
 }
