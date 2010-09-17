@@ -9,8 +9,6 @@ import javax.persistence.Table;
  * CensusCode.java
  *
  * Represents the CensusCode (formerly FIPS55) code
- *
- * Maybe this would be better as an enum?
  * 
  * @author Jason Ferguson
  */
@@ -18,36 +16,56 @@ import javax.persistence.Table;
 @Table(name="T_CENSUSCODE")
 public class CensusCode {
 
-    private int id;
-    private String censusCode;
-    private String description;
+    private Integer id;
+    private Integer stateCode;
+    private Integer countyCode;
+    private String stateName;
+    private String countyName;
 
     @Id
     @Column(name="ID")
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    @Column(name="CENSUSCODE")
-    public String getCensusCode() {
-        return censusCode;
+    @Column(name="STATECODEID")
+    public Integer getStateCode() {
+        return stateCode;
     }
 
-    public void setCensusCode(String censusCode) {
-        this.censusCode = censusCode;
+    public void setStateCode(Integer stateCode) {
+        this.stateCode = stateCode;
     }
 
-    @Column(name="DESCRIPTION")
-    public String getDescription() {
-        return description;
+    @Column(name="COUNTYCODEID")
+    public Integer getCountyCode() {
+        return countyCode;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setCountyCode(Integer countyCode) {
+        this.countyCode = countyCode;
+    }
+
+    @Column(name="STATENAME")
+    public String getStateName() {
+        return stateName;
+    }
+
+    public void setStateName(String stateName) {
+        this.stateName = stateName;
+    }
+
+    @Column(name="COUNTYNAME")
+    public String getCountyName() {
+        return countyName;
+    }
+
+    public void setCountyName(String countyName) {
+        this.countyName = countyName;
     }
 
     @Override
@@ -57,13 +75,16 @@ public class CensusCode {
 
         CensusCode that = (CensusCode) o;
 
-        if (id != that.id) return false;
+        if (!countyCode.equals(that.countyCode)) return false;
+        if (!stateCode.equals(that.stateCode)) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return id;
+        int result = stateCode.hashCode();
+        result = 31 * result + countyCode.hashCode();
+        return result;
     }
 }
