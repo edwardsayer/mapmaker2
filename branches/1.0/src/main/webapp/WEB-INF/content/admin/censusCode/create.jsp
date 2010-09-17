@@ -10,8 +10,10 @@
   <s:actionerror />
   
   <s:form namespace="censusCode" action="create" validate="true">
-      <s:textfield label="Census Code" name="censusCode" />
-      <s:textfield label="Description" name="description" />
+      <s:textfield label="State Code" name="stateCode" />
+      <s:textfield label="State Name" name="stateName" />
+      <s:textfield label="County Code" name="countyCode" />
+      <s:textfield label="County Name" name="countyName" />
       <s:submit value="Create" name="create" />
       
   </s:form>
