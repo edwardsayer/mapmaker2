@@ -12,7 +12,6 @@ import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.opengis.feature.Feature;
-import org.opengis.feature.GeometryAttribute;
 
 import javax.servlet.ServletContext;
 import java.io.BufferedInputStream;
@@ -90,7 +89,12 @@ public class ShapeFileAction extends ActionSupport implements ServletContextAwar
         return SUCCESS;
     }
 
-    @Action("processShapefile")
+    @Action(value = "/processShapefile", results =
+            {
+                    @Result(name = "success", location = "/WEB-INF/content/admin/shapefile/uploadShapefile.jsp"),
+                    @Result(name = "input", location = "/WEB-INF/content/admin/shapefile/uploadShapefile.jsp")
+            }
+    )
     public String processShapefile() throws Exception {
         List<File> filenames = new ArrayList<File>();
 
@@ -100,7 +104,7 @@ public class ShapeFileAction extends ActionSupport implements ServletContextAwar
         // upload zip file and make sure it's valid
         File tempZipFile = new File(tempFileDir, fileUploadFileName);
         FileUtils.copyFile(fileUpload, tempZipFile);
-        
+
         ZipFile zipFile = new ZipFile(tempZipFile, ZipFile.OPEN_READ);
         Enumeration zipFileEntries = zipFile.entries();
 
@@ -133,7 +137,7 @@ public class ShapeFileAction extends ActionSupport implements ServletContextAwar
                 dest.close();
                 is.close();
             }
-            
+
         }
         zipFile.close();
 
@@ -148,18 +152,31 @@ public class ShapeFileAction extends ActionSupport implements ServletContextAwar
             FeatureCollection featureCollection = featureSource.getFeatures();
             FeatureIterator iterator = featureCollection.features();
 
-            int counter = 0;
-            while (iterator.hasNext()) {
-                Feature feature = iterator.next();
-                GeometryAttribute geometryAttribute = feature.getDefaultGeometryProperty();
-                counter++;
+            try {
+                int counter = 0;
+                while (iterator.hasNext()) {
+                    Feature feature = iterator.next();
+                    //GeometryAttribute geometryAttribute = feature.getDefaultGeometryProperty();
+                    counter++;
 
+                }
+            }
+            finally {
+                featureCollection.close(iterator);
             }
         }
 
-        for (File f: filenames) {
-            f.delete();
+        System.gc();        // argh. Due to a bug in geotools 2.6.5 and previous, the prj file cannot be removed until
+                            // garbage collection occurs. I _hate_ explicitly calling System.gc()
+        
+        for (File f : filenames) {
+
+            boolean deleteResult = f.delete();
+            System.out.println(f.getName() + ": " + deleteResult);
         }
+        shpFile.delete();
+
+        addActionMessage("Successfully processed shapefile");
         return SUCCESS;
     }
 }
