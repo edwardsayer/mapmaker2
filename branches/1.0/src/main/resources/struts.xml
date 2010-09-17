@@ -11,10 +11,11 @@
         <result-types>
             <result-type name="json" class="org.apache.struts2.json.JSONResult">
                 <param name="prettyPrint">true</param>
-                <param name="excludeProperties">serviceRanks</param>
             </result-type>
         </result-types>
-        <action name="featureClassesJSON" class="org.jason.mapmaker2.web.action.json.featureClass.FeatureClassJsonAction" method="getFeatureClassesJSON">
+        <action name="featureClassesJSON"
+                class="org.jason.mapmaker2.web.action.json.featureClass.FeatureClassJsonAction"
+                method="getFeatureClassesJSON">
             <result name="success" type="json" />
         </action>
     </package>
