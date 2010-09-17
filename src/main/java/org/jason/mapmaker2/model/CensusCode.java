@@ -41,7 +41,7 @@ public class CensusCode {
         this.stateCode = stateCode;
     }
 
-    @Column(name="COUNTYCODEID")
+    @Column(name="COUNTYCODE")
     public Integer getCountyCode() {
         return countyCode;
     }
