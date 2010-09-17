@@ -9,7 +9,7 @@
 
   <s:actionerror />
   
-  <s:form action="/censusCode/create" validate="true">
+  <s:form namespace="censusCode" action="create" validate="true">
       <s:textfield label="Census Code" name="censusCode" />
       <s:textfield label="Description" name="description" />
       <s:submit value="Create" name="create" />
