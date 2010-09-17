@@ -58,6 +58,7 @@
         <property name="annotatedClasses">
             <list>
                 <value>org.jason.mapmaker2.model.CensusCode</value>
+                <value>org.jason.mapmaker2.model.FeatureClass</value>
             </list>
         </property>
         <property name="configurationClass" value="org.hibernate.cfg.AnnotationConfiguration"/>
