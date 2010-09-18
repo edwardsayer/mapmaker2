@@ -18,7 +18,8 @@ import java.util.List;
  */
 @Namespace("/censusCode")
 @Results({
-        @Result(name = "success", location = "/WEB-INF/content/admin/censusCode/list.jsp")
+        @Result(name = "success", location = "/WEB-INF/content/admin/censusCode/list.jsp"),
+        @Result(name="input", location = "/WEB-INF/content/admin/censusCode/create.jsp")
 })
 public class CensusCodeAction extends ActionSupport {
 
@@ -87,6 +88,13 @@ public class CensusCodeAction extends ActionSupport {
         censusCodeList = censusCodeService.getAll();
 
         return SUCCESS;
+    }
+
+    @SkipValidation
+    @Action("/showCreate")
+    public String showCreate() throws Exception {
+
+        return INPUT;
     }
 
     @Action("/create")
