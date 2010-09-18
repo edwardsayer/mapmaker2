@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 /**
- * @author TSgt Jason Ferguson
+ * @author Jason Ferguson
  */
 @Namespace("/censusCode")
 @Results({
@@ -82,11 +82,10 @@ public class CensusCodeAction extends ActionSupport {
     }
 
     @SkipValidation
-    @Action("")
+    @Action("/")
     public String execute() throws Exception {
 
         censusCodeList = censusCodeService.getAll();
-
         return SUCCESS;
     }
 
