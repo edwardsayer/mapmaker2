@@ -6,6 +6,7 @@ import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.Results;
+import org.apache.struts2.interceptor.validation.SkipValidation;
 import org.jason.mapmaker2.model.State;
 import org.jason.mapmaker2.service.StateService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ import java.util.List;
 @Namespace("/state")
 @Results({
         @Result(name="success", location = "/WEB-INF/content/admin/state/list.jsp"),
-        @Result(name="success", location = "/WEB-INF/content/admin/state/create.jsp")
+        @Result(name="input", location = "/WEB-INF/content/admin/state/create.jsp")
 })
 public class StateAction extends ActionSupport {
 
@@ -63,6 +64,7 @@ public class StateAction extends ActionSupport {
     private List<State> states;
 
     @Action("/")
+    @SkipValidation
     public String execute() throws Exception {
 
         states = stateService.getAll();
@@ -70,6 +72,7 @@ public class StateAction extends ActionSupport {
     }
 
     @Action("showCreate")
+    @SkipValidation
     public String showCreateState() throws Exception {
 
         return INPUT;
