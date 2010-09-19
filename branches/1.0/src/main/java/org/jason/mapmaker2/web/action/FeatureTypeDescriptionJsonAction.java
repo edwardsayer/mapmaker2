@@ -39,7 +39,7 @@ public class FeatureTypeDescriptionJsonAction extends ActionSupport {
         return SUCCESS;
     }
 
-    @Action(value="featureTypeDescriptsionJson", results = {
+    @Action(value="featureTypeDescriptionsJson", results = {
             @Result(name="success", type = "json")
     })
     public String getFeatureTypeDescriptionsJson() throws Exception {
