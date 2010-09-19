@@ -8,7 +8,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name="T_STATE")
-public class State implements Serializable {
+public class State implements Serializable, Comparable<State> {
 
     private Integer id;
     private String stateName;
@@ -77,5 +77,9 @@ public class State implements Serializable {
     @Override
     public int hashCode() {
         return id != null ? id.hashCode() : 0;
+    }
+
+    public int compareTo(State o) {
+        return this.getStateName().compareTo(o.getStateName());
     }
 }
