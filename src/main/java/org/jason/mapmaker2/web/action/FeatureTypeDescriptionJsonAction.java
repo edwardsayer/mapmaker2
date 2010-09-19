@@ -2,6 +2,7 @@ package org.jason.mapmaker2.web.action;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
 import org.jason.mapmaker2.model.FeatureTypeDescription;
@@ -15,6 +16,7 @@ import java.util.List;
  * @author Jason Ferguson
  */
 @ParentPackage("json-default")
+@Namespace("/featureTypeDescription")
 public class FeatureTypeDescriptionJsonAction extends ActionSupport {
 
     private FeatureTypeDescriptionService featureTypeDescriptionService;
