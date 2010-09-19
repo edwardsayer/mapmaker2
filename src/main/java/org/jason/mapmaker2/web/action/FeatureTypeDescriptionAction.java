@@ -6,6 +6,7 @@ import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.Results;
+import org.apache.struts2.interceptor.validation.SkipValidation;
 import org.jason.mapmaker2.model.FeatureTypeDescription;
 import org.jason.mapmaker2.service.FeatureTypeDescriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +62,7 @@ public class FeatureTypeDescriptionAction extends ActionSupport {
     }
 
     @Action("/")
+    @SkipValidation
     public String execute() throws Exception {
 
         featureTypeDescriptions = featureTypeDescriptionService.getAll();
@@ -68,6 +70,7 @@ public class FeatureTypeDescriptionAction extends ActionSupport {
     }
 
     @Action("showCreate")
+    @SkipValidation
     public String showCreate() throws Exception {
         return INPUT;
     }
