@@ -5,9 +5,13 @@ import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.Results;
+import org.jason.mapmaker2.model.FeatureTypeDescription;
 import org.jason.mapmaker2.model.Location;
+import org.jason.mapmaker2.model.State;
+import org.jason.mapmaker2.service.FeatureTypeDescriptionService;
 import org.jason.mapmaker2.service.LocationService;
 import org.jason.mapmaker2.service.ServiceException;
+import org.jason.mapmaker2.service.StateService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -29,18 +33,33 @@ public class LocationAction extends ActionSupport {
         this.locationService = locationService;
     }
 
-    private Integer stateId;
+    private StateService stateService;
+
+    @Autowired
+    public void setStateService(StateService stateService) {
+        this.stateService = stateService;
+    }
+
+    private FeatureTypeDescriptionService featureTypeDescriptionService;
+
+    @Autowired
+    public void setFeatureTypeDescriptionService(FeatureTypeDescriptionService featureTypeDescriptionService) {
+        this.featureTypeDescriptionService = featureTypeDescriptionService;
+    }
+
+    private int stateId;
     private String locationName;
     private String fipsCode;
     private Integer featureClassId;
 
     private List<Location> locations;
+    private List<FeatureTypeDescription> featureTypeDescriptions;
 
-    public Integer getStateId() {
+    public int getStateId() {
         return stateId;
     }
 
-    public void setStateId(Integer stateId) {
+    public void setStateId(int stateId) {
         this.stateId = stateId;
     }
 
@@ -76,6 +95,14 @@ public class LocationAction extends ActionSupport {
         this.locations = locations;
     }
 
+    public List<FeatureTypeDescription> getFeatureTypeDescriptions() {
+        return featureTypeDescriptions;
+    }
+
+    public void setFeatureTypeDescriptions(List<FeatureTypeDescription> featureTypeDescriptions) {
+        this.featureTypeDescriptions = featureTypeDescriptions;
+    }
+
     @Action("/")
     public String execute() throws Exception {
 
@@ -83,9 +110,21 @@ public class LocationAction extends ActionSupport {
         return SUCCESS;
     }
 
+    private List<State> states;
+
+    public List<State> getStates() {
+        return states;
+    }
+
+    public void setStates(List<State> states) {
+        this.states = states;
+    }
+
     @Action("showCreate")
     public String showCreateLocation() throws Exception {
 
+        featureTypeDescriptions = featureTypeDescriptionService.getAll();
+        states = stateService.getAll();
         return INPUT;
     }
 
