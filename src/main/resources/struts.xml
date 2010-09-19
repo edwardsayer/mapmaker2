@@ -6,18 +6,4 @@
     <constant name="struts.objectFactory" value="spring"/>
     <constant name="struts.devMode" value="true"/>
 
-
-    <package name="featureClassJSON" extends="json-default" namespace="/featureClass">
-        <result-types>
-            <result-type name="json" class="org.apache.struts2.json.JSONResult">
-                <param name="prettyPrint">true</param>
-            </result-type>
-        </result-types>
-        <action name="featureClassesJSON"
-                class="org.jason.mapmaker2.web.action.json.featureClass.FeatureClassJsonAction"
-                method="getFeatureClassesJSON">
-            <result name="success" type="json" />
-        </action>
-    </package>
-
 </struts>
