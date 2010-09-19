@@ -1,16 +1,23 @@
 package org.jason.mapmaker2.model;
 
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.io.Serializable;
 
 /**
  * @author Jason Ferguson
  */
-public class FeatureTypeDescription implements Serializable {
+public class FeatureTypeDescription implements Serializable, Comparable<FeatureTypeDescription> {
 
     private Integer id;
     private String featureTypeName;
     private String featureClassCode;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="ID")
     public Integer getId() {
         return id;
     }
@@ -19,6 +26,7 @@ public class FeatureTypeDescription implements Serializable {
         this.id = id;
     }
 
+    @Column(name="TYPENAME")
     public String getFeatureTypeName() {
         return featureTypeName;
     }
@@ -27,6 +35,7 @@ public class FeatureTypeDescription implements Serializable {
         this.featureTypeName = featureTypeName;
     }
 
+    @Column(name="CLASSCODE")
     public String getFeatureClassCode() {
         return featureClassCode;
     }
@@ -50,5 +59,10 @@ public class FeatureTypeDescription implements Serializable {
     @Override
     public int hashCode() {
         return id != null ? id.hashCode() : 0;
+    }
+
+    public int compareTo(FeatureTypeDescription o) {
+
+        return this.getFeatureClassCode().compareTo(o.getFeatureClassCode());
     }
 }
