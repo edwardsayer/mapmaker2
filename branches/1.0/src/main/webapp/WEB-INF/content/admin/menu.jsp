@@ -10,7 +10,7 @@
   <p><s:a id="censusCodeManagement" namespace="/censusCode" action="">Manage Census Codes</s:a></p>
   <p><s:a id="featureTypeDescription" namespace="/featureTypeDescription" action="">Manage Feature Type Descriptions</s:a> </p>
   <p><s:a id="locationManagement" namespace="/location" action="">Manage Locations</s:a> </p>
-  <p><s:a id="stateManagement" namespace="/state" action="showCreate">Manage States</s:a> </p>
+  <p><s:a id="stateManagement" namespace="/state" action="">Manage States</s:a> </p>
   <p><s:a id="importShapefile" namespace="/shapefile" action="">Import Shapefile</s:a>
   </body>
 </html>
