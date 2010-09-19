@@ -2,10 +2,7 @@ package org.jason.mapmaker2.web.action;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
-import org.apache.struts2.convention.annotation.Action;
-import org.apache.struts2.convention.annotation.Namespace;
-import org.apache.struts2.convention.annotation.Result;
-import org.apache.struts2.convention.annotation.Results;
+import org.apache.struts2.convention.annotation.*;
 import org.apache.struts2.interceptor.validation.SkipValidation;
 import org.jason.mapmaker2.model.FeatureTypeDescription;
 import org.jason.mapmaker2.service.FeatureTypeDescriptionService;
@@ -16,6 +13,7 @@ import java.util.List;
 /**
  * @author Jason Ferguson
  */
+@ParentPackage("struts-default")
 @Namespace("/featureTypeDescription")
 @Results({
         @Result(name="success", location = "/WEB-INF/content/admin/featureTypeDescription/list.jsp"),
