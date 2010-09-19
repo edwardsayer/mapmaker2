@@ -59,6 +59,9 @@
             <list>
                 <value>org.jason.mapmaker2.model.CensusCode</value>
                 <value>org.jason.mapmaker2.model.FeatureClass</value>
+                <value>org.jason.mapmaker2.model.FeatureTypeDescription</value>
+                <value>org.jason.mapmaker2.model.Location</value>
+                <value>org.jason.mapmaker2.model.State</value>
             </list>
         </property>
         <property name="configurationClass" value="org.hibernate.cfg.AnnotationConfiguration"/>
