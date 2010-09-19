@@ -9,6 +9,7 @@ import org.jason.mapmaker2.model.State;
 import org.jason.mapmaker2.service.StateService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -45,6 +46,7 @@ public class StateJsonAction extends ActionSupport {
     public String getStatesJson() throws Exception {
 
         states = stateService.getAll();
+        Collections.sort(states);
         return SUCCESS;
     }
 }
