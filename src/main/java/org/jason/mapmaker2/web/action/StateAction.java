@@ -61,7 +61,7 @@ public class StateAction extends ActionSupport {
 
     private List<State> states;
 
-    @Action("list")
+    @Action("")
     @SkipValidation
     public String execute() throws Exception {
 
