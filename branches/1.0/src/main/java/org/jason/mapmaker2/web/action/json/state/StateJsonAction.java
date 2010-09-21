@@ -6,7 +6,6 @@ import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 import org.apache.struts2.convention.annotation.Result;
 import org.jason.mapmaker2.model.State;
-import org.jason.mapmaker2.service.StateService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collections;
