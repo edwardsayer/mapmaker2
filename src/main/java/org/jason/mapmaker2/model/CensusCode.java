@@ -32,7 +32,7 @@ public class CensusCode {
         this.id = id;
     }
 
-    @Column(name="STATECODEID")
+    @Column(name="STATECODE")
     public Integer getStateCode() {
         return stateCode;
     }
