@@ -5,7 +5,6 @@ import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 import org.apache.struts2.convention.annotation.*;
 import org.apache.struts2.interceptor.validation.SkipValidation;
 import org.jason.mapmaker2.model.State;
-import org.jason.mapmaker2.service.StateService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
