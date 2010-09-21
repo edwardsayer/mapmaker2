@@ -1,4 +1,4 @@
-package org.jason.mapmaker2.web.action.json.state;
+package org.jason.mapmaker2.web.action;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.convention.annotation.Action;
