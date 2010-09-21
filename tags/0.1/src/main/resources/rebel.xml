@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns="http://www.zeroturnaround.com"
+             xsi:schemaLocation="http://www.zeroturnaround.com/alderaan/rebel-2_0.xsd">
+
+	<classpath>
+<!--		<dir name="C:/Users/Jason/Documents/Projects/mapmaker2/src/main/resources">
+		</dir>-->
+		<dir name="C:/Users/Jason/Documents/Projects/mapmaker2/target/classes">
+		</dir>
+	</classpath>
+
+	<web>
+		<link target="/">
+			<dir name="C:/Users/Jason/Documents/Projects/mapmaker2/src/main/webapp">
+			</dir>
+		</link>
+	</web>
+
+</application>
