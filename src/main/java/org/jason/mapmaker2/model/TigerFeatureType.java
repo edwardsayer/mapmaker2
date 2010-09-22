@@ -43,6 +43,12 @@ public class TigerFeatureType implements Serializable, Comparable<TigerFeatureTy
         this.description = description;
     }
 
+    @Transient
+    public String getLabel() {
+        String label = tigerFeatureClassCode + " (" + description + ")";
+        return label;
+    }
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
