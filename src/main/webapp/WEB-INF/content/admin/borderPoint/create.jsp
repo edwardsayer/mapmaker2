@@ -10,17 +10,20 @@
 
 <p>Use this form to create a new set of border points for a given state and feature type.</p>
 
-<s:form namespace="/borderPoint" action="create">
-    <s:select list="%{states}"
+<s:form namespace="/borderPoint" action="create" enctype="multipart/form-data" method="POST">
+    <s:select list="%{statesList}"
+              listKey="id"
+              listValue="stateName"
               name="stateId"
+              id="stateId"
               label="State"
-              listKey="id"
-              listValue="stateName"/>
+/>
     <s:select list="%{tigerFeatureTypes}"
-              name="tigerFeatureTypeId"
-              label="Tiger Feature Type"
               listKey="id"
-              listValue="tigerFeatureClassCode"/>
+              listValue="label"
+              name="featureTypeId"
+              label="Tiger Feature Type"
+/>
 
     <s:file name="fileUpload" label="Shapefile"/>
     <s:submit value="Create" name="Create"/>
