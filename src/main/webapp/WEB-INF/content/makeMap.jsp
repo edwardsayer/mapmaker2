@@ -7,7 +7,7 @@
   <body>
 
   <div id="mapSection">
-
+    <p>Generated Map Will Go Here</p>
   </div>
 
   <s:a id="menuPage" namespace="/" action="menu">Menu</s:a>
