@@ -38,7 +38,7 @@ public class BorderPoint implements Serializable {
     }
 
     @ManyToOne
-    @JoinColumn(name="FEATURETYPEID")
+    @JoinColumn(name="TIGERFEATURETYPEID")
     public TigerFeatureType getTigerFeatureType() {
         return tigerFeatureType;
     }
