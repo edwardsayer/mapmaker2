@@ -1,32 +1,33 @@
 package org.jason.mapmaker2.web.action;
 
 import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Preparable;
+import org.apache.commons.io.FileUtils;
 import org.apache.struts2.convention.annotation.*;
 import org.apache.struts2.interceptor.validation.SkipValidation;
 import org.apache.struts2.util.ServletContextAware;
-import org.apache.commons.io.FileUtils;
+import org.geotools.data.FeatureSource;
+import org.geotools.data.shapefile.ShapefileDataStore;
+import org.geotools.feature.FeatureCollection;
+import org.geotools.feature.FeatureIterator;
 import org.jason.mapmaker2.model.State;
 import org.jason.mapmaker2.model.TigerFeatureType;
 import org.jason.mapmaker2.service.BorderPointService;
 import org.jason.mapmaker2.service.StateService;
 import org.jason.mapmaker2.service.TigerFeatureTypeService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.geotools.data.shapefile.ShapefileDataStore;
-import org.geotools.data.FeatureSource;
-import org.geotools.feature.FeatureCollection;
-import org.geotools.feature.FeatureIterator;
 import org.opengis.feature.Feature;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.ServletContext;
-import java.io.File;
 import java.io.BufferedInputStream;
-import java.io.FileOutputStream;
 import java.io.BufferedOutputStream;
-import java.util.List;
-import java.util.Enumeration;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
-import java.util.zip.ZipFile;
+import java.util.Enumeration;
+import java.util.List;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 /**
  * @author Jason Ferguson
@@ -38,7 +39,7 @@ import java.util.zip.ZipEntry;
         @Result(name = "input", location = "/WEB-INF/content/admin/borderPoint/create.jsp")
 })
 
-public class BorderPointAction extends ActionSupport implements ServletContextAware {
+public class BorderPointAction extends ActionSupport implements ServletContextAware, Preparable {
 
     ServletContext servletContext;
 
@@ -140,6 +141,11 @@ public class BorderPointAction extends ActionSupport implements ServletContextAw
         this.tigerFeatureTypes = tigerFeatureTypes;
     }
 
+    public void prepare() throws Exception {
+        statesList = stateService.getAll();
+        tigerFeatureTypes = tigerFeatureTypeService.getAll();
+    }
+
     @Action("")
     @SkipValidation
     public String execute() throws Exception {
@@ -150,8 +156,6 @@ public class BorderPointAction extends ActionSupport implements ServletContextAw
     @SkipValidation
     public String showCreate() throws Exception {
 
-        statesList = stateService.getAll();
-        tigerFeatureTypes = tigerFeatureTypeService.getAll();
         return INPUT;
     }
 
