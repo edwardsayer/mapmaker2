@@ -28,7 +28,7 @@ public class TigerFeatureTypeAction extends ActionSupport {
 
     private List<TigerFeatureType> tigerFeatureTypes;
 
-    @Action("/")
+    @Action("")
     public String execute() throws Exception {
 
         tigerFeatureTypes = tigerFeatureTypeService.getAll();
