@@ -4,6 +4,7 @@ import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
+import org.apache.struts2.convention.annotation.Result;
 import org.jason.mapmaker2.model.TigerFeatureType;
 import org.jason.mapmaker2.service.TigerFeatureTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,9 @@ public class TigerFeatureTypeJsonAction extends ActionSupport {
         this.tigerFeatureTypes = tigerFeatureTypes;
     }
 
-    @Action("tigerFeatureTypesJson")
+    @Action(value="tigerFeatureTypesJson", results={
+            @Result(name="success", type = "json")
+    })
     public String getTigerFeatureTypesJson() throws Exception {
 
         tigerFeatureTypes = tigerFeatureTypeService.getAll();
