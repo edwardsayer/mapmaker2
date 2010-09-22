@@ -60,6 +60,7 @@
                 <value>org.jason.mapmaker2.model.BorderPoint</value>
                 <value>org.jason.mapmaker2.model.Location</value>
                 <value>org.jason.mapmaker2.model.State</value>
+                <value>org.jason.mapmaker2.model.TigerFeatureType</value>
             </list>
         </property>
         <property name="configurationClass" value="org.hibernate.cfg.AnnotationConfiguration"/>
