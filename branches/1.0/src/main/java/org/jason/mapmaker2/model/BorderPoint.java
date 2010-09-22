@@ -13,8 +13,8 @@ public class BorderPoint implements Serializable {
     private Integer id;
     private State state;
     private TigerFeatureType tigerFeatureType;
-    private Float lat;
-    private Float lng;
+    private Float latitude;
+    private Float longitude;
 
     @Id
     @Column(name="ID")
@@ -48,21 +48,21 @@ public class BorderPoint implements Serializable {
     }
 
     @Column(name="LATITUDE")
-    public Float getLat() {
-        return lat;
+    public Float getLatitude() {
+        return latitude;
     }
 
-    public void setLat(Float lat) {
-        this.lat = lat;
+    public void setLatitude(Float latitude) {
+        this.latitude = latitude;
     }
 
     @Column(name="LONGITUDE")
-    public Float getLng() {
-        return lng;
+    public Float getLongitude() {
+        return longitude;
     }
 
-    public void setLng(Float lng) {
-        this.lng = lng;
+    public void setLongitude(Float longitude) {
+        this.longitude = longitude;
     }
 
     @Override
@@ -72,8 +72,8 @@ public class BorderPoint implements Serializable {
 
         BorderPoint that = (BorderPoint) o;
 
-        if (!lat.equals(that.lat)) return false;
-        if (!lng.equals(that.lng)) return false;
+        if (!latitude.equals(that.latitude)) return false;
+        if (!longitude.equals(that.longitude)) return false;
         if (!state.equals(that.state)) return false;
         if (tigerFeatureType != that.tigerFeatureType) return false;
 
@@ -84,8 +84,8 @@ public class BorderPoint implements Serializable {
     public int hashCode() {
         int result = state.hashCode();
         result = 31 * result + tigerFeatureType.hashCode();
-        result = 31 * result + lat.hashCode();
-        result = 31 * result + lng.hashCode();
+        result = 31 * result + latitude.hashCode();
+        result = 31 * result + longitude.hashCode();
         return result;
     }
 }
