@@ -6,6 +6,8 @@ import org.jason.mapmaker2.model.TigerFeatureType;
 import org.jason.mapmaker2.service.TigerFeatureTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 /**
  * @author TSgt Jason Ferguson
  */
@@ -24,9 +26,12 @@ public class TigerFeatureTypeAction extends ActionSupport {
         this.tigerFeatureTypeService = tigerFeatureTypeService;
     }
 
+    private List<TigerFeatureType> tigerFeatureTypes;
+
     @Action("/")
     public String execute() throws Exception {
 
+        tigerFeatureTypes = tigerFeatureTypeService.getAll();
         return SUCCESS;
     }
 
