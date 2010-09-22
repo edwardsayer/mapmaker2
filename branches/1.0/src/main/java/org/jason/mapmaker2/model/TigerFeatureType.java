@@ -8,7 +8,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "T_TIGERFEATURETYPE")
-public class TigerFeatureType implements Serializable {
+public class TigerFeatureType implements Serializable, Comparable<TigerFeatureType> {
 
     private Integer id;
     private String tigerFeatureClassCode;
@@ -58,5 +58,10 @@ public class TigerFeatureType implements Serializable {
     @Override
     public int hashCode() {
         return id != null ? id.hashCode() : 0;
+    }
+
+    public int compareTo(TigerFeatureType o) {
+
+        return this.getTigerFeatureClassCode().compareTo(o.getTigerFeatureClassCode());
     }
 }
