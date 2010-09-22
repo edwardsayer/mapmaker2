@@ -20,7 +20,9 @@
     <sjg:gridColumn name="stateAbbr" index="stateAbbr" title="Abbreviation" />
     <sjg:gridColumn name="stateFIPS" index="stateFIPS" title="FIPS Code" />
 </sjg:grid>
-<s:a namespace="/state" action="showCreate">Create New State</s:a>
+
+<p><s:a namespace="/state" action="showCreate">Create New State</s:a></p>
+<p><s:a id="menuPage" namespace="/" action="menu">Menu</s:a></p>
 
 </body>
 </html>
