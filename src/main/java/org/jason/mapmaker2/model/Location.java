@@ -1,10 +1,13 @@
 package org.jason.mapmaker2.model;
 
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
  * @author Jason Ferguson
  */
+@Entity
+@Table(name = "T_LOCATION")
 public class Location implements Serializable {
 
     private Integer id;
@@ -13,6 +16,9 @@ public class Location implements Serializable {
     private Float lat;
     private Float lng;
 
+    @Id
+    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public Integer getId() {
         return id;
     }
@@ -21,6 +27,8 @@ public class Location implements Serializable {
         this.id = id;
     }
 
+    @ManyToOne
+    @JoinColumn(name="STATEID")
     public State getState() {
         return state;
     }
@@ -29,6 +37,7 @@ public class Location implements Serializable {
         this.state = state;
     }
 
+    @Column(name="DESCRIPTION")
     public String getDescription() {
         return description;
     }
@@ -37,6 +46,7 @@ public class Location implements Serializable {
         this.description = description;
     }
 
+    @Column(name="LATITUDE")
     public Float getLat() {
         return lat;
     }
@@ -45,6 +55,7 @@ public class Location implements Serializable {
         this.lat = lat;
     }
 
+    @Column(name="LONGITUDE")
     public Float getLng() {
         return lng;
     }
