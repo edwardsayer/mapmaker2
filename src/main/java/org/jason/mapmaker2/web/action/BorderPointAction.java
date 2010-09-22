@@ -2,6 +2,7 @@ package org.jason.mapmaker2.web.action;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.convention.annotation.*;
+import org.apache.struts2.interceptor.validation.SkipValidation;
 import org.jason.mapmaker2.service.BorderPointService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -82,11 +83,13 @@ public class BorderPointAction extends ActionSupport {
     }
 
     @Action("/")
+    @SkipValidation
     public String execute() throws Exception {
         return SUCCESS;
     }
 
     @Action("showCreate")
+    @SkipValidation
     public String showCreate() throws Exception {
         return INPUT;
     }
