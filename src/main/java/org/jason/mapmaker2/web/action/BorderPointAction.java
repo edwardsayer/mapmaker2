@@ -3,10 +3,15 @@ package org.jason.mapmaker2.web.action;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.convention.annotation.*;
 import org.apache.struts2.interceptor.validation.SkipValidation;
+import org.jason.mapmaker2.model.State;
+import org.jason.mapmaker2.model.TigerFeatureType;
 import org.jason.mapmaker2.service.BorderPointService;
+import org.jason.mapmaker2.service.StateService;
+import org.jason.mapmaker2.service.TigerFeatureTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
+import java.util.List;
 
 /**
  * @author Jason Ferguson
@@ -25,6 +30,19 @@ public class BorderPointAction extends ActionSupport {
     @Autowired
     public void setBorderPointService(BorderPointService borderPointService) {
         this.borderPointService = borderPointService;
+    }
+
+    private StateService stateService;
+    private TigerFeatureTypeService tigerFeatureTypeService;
+
+    @Autowired
+    public void setStateService(StateService stateService) {
+        this.stateService = stateService;
+    }
+
+    @Autowired
+    public void setTigerFeatureTypeService(TigerFeatureTypeService tigerFeatureTypeService) {
+        this.tigerFeatureTypeService = tigerFeatureTypeService;
     }
 
     private Integer stateId;
@@ -82,6 +100,25 @@ public class BorderPointAction extends ActionSupport {
         this.fileCaption = fileCaption;
     }
 
+    List<State> states;
+    List<TigerFeatureType> tigerFeatureTypes;
+
+    public List<State> getStates() {
+        return states;
+    }
+
+    public void setStates(List<State> states) {
+        this.states = states;
+    }
+
+    public List<TigerFeatureType> getTigerFeatureTypes() {
+        return tigerFeatureTypes;
+    }
+
+    public void setTigerFeatureTypes(List<TigerFeatureType> tigerFeatureTypes) {
+        this.tigerFeatureTypes = tigerFeatureTypes;
+    }
+
     @Action("/")
     @SkipValidation
     public String execute() throws Exception {
@@ -91,6 +128,9 @@ public class BorderPointAction extends ActionSupport {
     @Action("showCreate")
     @SkipValidation
     public String showCreate() throws Exception {
+
+        states = stateService.getAll();
+        tigerFeatureTypes = tigerFeatureTypeService.getAll();
         return INPUT;
     }
 
