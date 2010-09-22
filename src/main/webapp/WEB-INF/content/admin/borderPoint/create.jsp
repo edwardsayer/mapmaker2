@@ -31,5 +31,4 @@
 
 <p><s:a id="menuPage" namespace="/" action="menu">Menu</s:a></p>
 </body>
-</body>
 </html>
