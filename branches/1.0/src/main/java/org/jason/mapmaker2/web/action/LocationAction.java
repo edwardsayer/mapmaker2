@@ -24,7 +24,7 @@ public class LocationAction extends ActionSupport {
         this.locationService = locationService;
     }
 
-    @Action("/")
+    @Action("")
     @SkipValidation
     public String execute() throws Exception {
 
