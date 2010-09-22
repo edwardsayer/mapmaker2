@@ -28,5 +28,8 @@
     <s:file name="fileUpload" label="Shapefile"/>
     <s:submit value="Create" name="Create"/>
 </s:form>
+
+<p><s:a id="menuPage" namespace="/" action="menu">Menu</s:a></p>
+</body>
 </body>
 </html>
