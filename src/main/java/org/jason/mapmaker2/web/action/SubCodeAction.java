@@ -1,9 +1,11 @@
 package org.jason.mapmaker2.web.action;
 
 import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.Preparable;
 import com.opensymphony.xwork2.validator.annotations.RequiredFieldValidator;
 import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 import org.apache.struts2.convention.annotation.*;
+import org.apache.struts2.interceptor.validation.SkipValidation;
 import org.jason.mapmaker2.model.StateCode;
 import org.jason.mapmaker2.service.StateCodeService;
 import org.jason.mapmaker2.service.SubCodeService;
@@ -20,7 +22,7 @@ import java.util.List;
         @Result(name = "success", location = "/WEB-INF/content/admin/subCode/list.jsp"),
         @Result(name = "input", location = "/WEB-INF/content/admin/subCode/create.jsp")
 })
-public class SubCodeAction extends ActionSupport {
+public class SubCodeAction extends ActionSupport implements Preparable {
 
     private SubCodeService subCodeService;
 
@@ -77,15 +79,21 @@ public class SubCodeAction extends ActionSupport {
         this.stateCodeList = stateCodeList;
     }
 
+    public void prepare() throws Exception {
+        stateCodeList = stateCodeService.getAll();
+    }
+
     @Action("")
+    @SkipValidation
     public String execute() throws Exception {
 
         return SUCCESS;
     }
 
     @Action("showCreate")
+    @SkipValidation
     public String showCreate() throws Exception {
-        stateCodeList = stateCodeService.getAll();
+
         return INPUT;
     }
 
