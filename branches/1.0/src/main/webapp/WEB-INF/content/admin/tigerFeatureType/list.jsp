@@ -5,6 +5,7 @@
 <html>
 <head>
     <title>Tiger Feature Types</title>
+    <sj:head />
 </head>
 <body>
 
