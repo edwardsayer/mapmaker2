@@ -1,0 +1,42 @@
+package org.jason.mapmaker2.service;
+
+import org.jason.mapmaker2.dao.SubCodeDao;
+import org.jason.mapmaker2.model.SubCode;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+/**
+ * @author Jason Ferguson
+ */
+@Service("subCodeService")
+public class SubCodeServiceImpl implements SubCodeService {
+
+    private SubCodeDao subCodeDao;
+
+    @Autowired
+    public void setSubCodeDao(SubCodeDao subCodeDao) {
+        this.subCodeDao = subCodeDao;
+    }
+
+    public SubCode save(SubCode obj) {
+        return subCodeDao.save(obj);
+    }
+
+    public void update(SubCode obj) {
+        subCodeDao.update(obj);
+    }
+
+    public void delete(SubCode obj) {
+        subCodeDao.delete(obj);
+    }
+
+    public List<SubCode> getAll() {
+        return subCodeDao.getAll();
+    }
+
+    public SubCode getById(int id) {
+        return subCodeDao.getById(id);
+    }
+}
