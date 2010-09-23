@@ -22,7 +22,10 @@
                listKey="id"
                dataType="json"
                listValue="label"
-               label="State Code"/>
+               label="State Code"
+               emptyOption="true"
+               headerKey="-1"
+               headerValue="Please Select A State"/>
 
     <sj:select id="subCodeId"
                name="subCodeId"
@@ -33,7 +36,10 @@
                list="subCodeList"
                listKey="id"
                listValue="subCodeDescription"
-               label="Sub Code"/>
+               label="Sub Code"
+               emptyOption="true"
+               headerKey="-1"
+               headerValue="Please Select A Code"/>
 
     <s:file name="fileUpload" label="Shapefile"/>
     <s:submit value="Create" name="Create"/>
