@@ -34,7 +34,7 @@ import java.util.zip.ZipFile;
 @Namespace("/borderPoint")
 @Results({
         @Result(name = "success", location = "/WEB-INF/content/admin/borderPoint/list.jsp"),
-        @Result(name = "input", location = "/WEB-INF/content/admin/borderPoint/create.jsp")
+        @Result(name = "input", location = "/WEB-INF/content/admin/borderPoint/create2.jsp")
 })
 
 public class BorderPointAction extends ActionSupport implements ServletContextAware, Preparable {
