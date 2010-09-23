@@ -16,8 +16,8 @@
           caption="Tiger Feature Class Codes"
           dataType="json"
           href="%{tigerFeatureTypesJson}">
-    <sjg:gridColumn name="tigerFeatureClassCode" title="Class Code"/>
-    <sjg:gridColumn name="description" title="Description"/>
+    <sjg:gridColumn name="tigerFeatureClassCode" title="Class Code" align="center"/>
+    <sjg:gridColumn name="description" title="Description" width="200"/>
 </sjg:grid>
 
 <p><s:a id="createTFT" namespace="/tigerFeatureType" action="showCreate">Create New Feature Type</s:a></p>
