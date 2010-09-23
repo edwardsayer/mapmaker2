@@ -1,7 +1,9 @@
 package org.jason.mapmaker2.web.action;
 
 import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 import org.apache.struts2.convention.annotation.*;
+import org.apache.struts2.interceptor.validation.SkipValidation;
 import org.jason.mapmaker2.model.TigerFeatureType;
 import org.jason.mapmaker2.service.TigerFeatureTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,7 @@ public class TigerFeatureTypeAction extends ActionSupport {
     private List<TigerFeatureType> tigerFeatureTypes;
 
     @Action("")
+    @SkipValidation
     public String execute() throws Exception {
 
         tigerFeatureTypes = tigerFeatureTypeService.getAll();
@@ -38,6 +41,7 @@ public class TigerFeatureTypeAction extends ActionSupport {
     private String tigerFeatureClassCode;
     private String tigerFeatureClassCodeDescription;
 
+    @RequiredStringValidator(message="You must provide a class code!")
     public String getTigerFeatureClassCode() {
         return tigerFeatureClassCode;
     }
@@ -46,6 +50,7 @@ public class TigerFeatureTypeAction extends ActionSupport {
         this.tigerFeatureClassCode = tigerFeatureClassCode;
     }
 
+    @RequiredStringValidator(message = "You must provide a description!")
     public String getTigerFeatureClassCodeDescription() {
         return tigerFeatureClassCodeDescription;
     }
@@ -55,6 +60,7 @@ public class TigerFeatureTypeAction extends ActionSupport {
     }
 
     @Action("showCreate")
+    @SkipValidation
     public String showCreate() throws Exception {
 
         return INPUT;
