@@ -4,9 +4,10 @@
 <html>
 <head>
     <title>Add SubCode</title>
+    <sj:head />
 </head>
 <body>
-<s:form name="/subCode" action="create" method="POST">
+<s:form name="/subCode" action="create" method="POST" enctype="multipart/form-data">
     <s:select name="stateCodeId"
               id="stateCodeId"
               list="stateCodeList"
