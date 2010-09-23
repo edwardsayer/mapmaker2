@@ -1,7 +1,10 @@
 package org.jason.mapmaker2.web.action;
 
 import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.validator.annotations.RequiredFieldValidator;
+import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
 import org.apache.struts2.convention.annotation.*;
+import org.apache.struts2.interceptor.validation.SkipValidation;
 import org.jason.mapmaker2.model.StateCode;
 import org.jason.mapmaker2.service.StateCodeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +31,9 @@ public class StateCodeAction extends ActionSupport {
 
     private String stateName;
     private String stateAbbr;
-    private String stateCode;
+    private Integer stateCode;
 
+    @RequiredStringValidator(message = "You must provide the name of the state!")
     public String getStateName() {
         return stateName;
     }
@@ -38,6 +42,7 @@ public class StateCodeAction extends ActionSupport {
         this.stateName = stateName;
     }
 
+    @RequiredStringValidator(message = "You must provide the state abbreviation!")
     public String getStateAbbr() {
         return stateAbbr;
     }
@@ -46,24 +51,27 @@ public class StateCodeAction extends ActionSupport {
         this.stateAbbr = stateAbbr;
     }
 
-    public String getStateCode() {
+    @RequiredFieldValidator(message = "You must provide the state FIPS code!")
+    public Integer getStateCode() {
         return stateCode;
     }
 
-    public void setStateCode(String stateCode) {
+    public void setStateCode(Integer stateCode) {
         this.stateCode = stateCode;
     }
 
     List<StateCode> stateCodeList;
 
     @Action("")
+    @SkipValidation
     public String execute() throws Exception {
 
         stateCodeList = stateCodeService.getAll();
         return SUCCESS;
-    }
+    }                                                    String stateCode
 
     @Action("showCreate")
+    @SkipValidation
     public String showCreate() throws Exception {
 
         return INPUT;
