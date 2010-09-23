@@ -2,6 +2,7 @@ package org.jason.mapmaker2.service;
 
 import org.jason.mapmaker2.dao.SubCodeDao;
 import org.jason.mapmaker2.model.SubCode;
+import org.jason.mapmaker2.model.StateCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,5 +39,13 @@ public class SubCodeServiceImpl implements SubCodeService {
 
     public SubCode getById(int id) {
         return subCodeDao.getById(id);
+    }
+
+    public List<SubCode> getByStateCode(StateCode stateCode) {
+
+        SubCode subCode = new SubCode();
+        subCode.setStateCode(stateCode);
+
+        return subCodeDao.queryByExample(subCode);
     }
 }
