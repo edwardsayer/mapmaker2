@@ -23,9 +23,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
+import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -156,6 +154,11 @@ public class BorderPointAction extends ActionSupport implements ServletContextAw
     @SkipValidation
     public String showCreate() throws Exception {
 
+        Collections.sort(tigerFeatureTypes, new Comparator<TigerFeatureType>() {
+            public int compare(TigerFeatureType o1, TigerFeatureType o2) {
+                return o1.getLabel().compareTo(o2.getLabel());
+            }
+        });
         return INPUT;
     }
 
