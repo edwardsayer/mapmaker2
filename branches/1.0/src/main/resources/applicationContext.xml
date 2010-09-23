@@ -61,6 +61,8 @@
                 <value>org.jason.mapmaker2.model.Location</value>
                 <value>org.jason.mapmaker2.model.State</value>
                 <value>org.jason.mapmaker2.model.TigerFeatureType</value>
+                <value>org.jason.mapmaker2.model.StateCode</value>
+                <value>org.jason.mapmaker2.model.SubCode</value>
             </list>
         </property>
         <property name="configurationClass" value="org.hibernate.cfg.AnnotationConfiguration"/>
