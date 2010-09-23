@@ -1,10 +1,13 @@
 package org.jason.mapmaker2.model;
 
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
  * @author Jason Ferguson
  */
+@Entity
+@Table(name="T_SUBCODE")
 public class SubCode implements Serializable {
 
     private Integer id;
@@ -12,6 +15,9 @@ public class SubCode implements Serializable {
     private String subcodeDescription;
     private Integer code;
 
+    @Id
+    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public Integer getId() {
         return id;
     }
@@ -20,6 +26,8 @@ public class SubCode implements Serializable {
         this.id = id;
     }
 
+    @ManyToOne
+    @JoinColumn(name="STATECODEID")
     public StateCode getStateCode() {
         return stateCode;
     }
@@ -28,6 +36,7 @@ public class SubCode implements Serializable {
         this.stateCode = stateCode;
     }
 
+    @Column(name="DESCRIPTION")
     public String getSubcodeDescription() {
         return subcodeDescription;
     }
@@ -36,6 +45,7 @@ public class SubCode implements Serializable {
         this.subcodeDescription = subcodeDescription;
     }
 
+    @Column(name="CODE")
     public Integer getCode() {
         return code;
     }
