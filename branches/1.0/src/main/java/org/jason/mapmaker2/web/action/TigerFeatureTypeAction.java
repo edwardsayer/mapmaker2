@@ -8,6 +8,7 @@ import org.jason.mapmaker2.model.TigerFeatureType;
 import org.jason.mapmaker2.service.TigerFeatureTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -16,7 +17,7 @@ import java.util.List;
 @ParentPackage("struts-default")
 @Namespace("/tigerFeatureType")
 @Results({
-        @Result(name="success", location = "/WEB-INF/content/admin/tigerFeatureType/list.jsp", type = "redirect"),
+        @Result(name="success", location = "/WEB-INF/content/admin/tigerFeatureType/list.jsp"),
         @Result(name="input", location = "/WEB-INF/content/admin/tigerFeatureType/create.jsp")
 })
 public class TigerFeatureTypeAction extends ActionSupport {
@@ -35,6 +36,7 @@ public class TigerFeatureTypeAction extends ActionSupport {
     public String execute() throws Exception {
 
         tigerFeatureTypes = tigerFeatureTypeService.getAll();
+        Collections.sort(tigerFeatureTypes);
         return SUCCESS;
     }
 
