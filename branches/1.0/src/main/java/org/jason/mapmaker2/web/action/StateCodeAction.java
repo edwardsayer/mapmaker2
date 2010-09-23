@@ -68,7 +68,7 @@ public class StateCodeAction extends ActionSupport {
 
         stateCodeList = stateCodeService.getAll();
         return SUCCESS;
-    }                                                    String stateCode
+    }
 
     @Action("showCreate")
     @SkipValidation
