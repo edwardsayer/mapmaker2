@@ -10,7 +10,7 @@
 <s:form name="/subCode" action="create" method="POST" enctype="multipart/form-data">
     <s:select name="stateCodeId"
               id="stateCodeId"
-              list="stateCodeList"
+              list="%{stateCodeList}"
               listKey="id"
               listValue="label"
               label="State"/>
