@@ -2,6 +2,7 @@ package org.jason.mapmaker2.web.action;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
+import com.vividsolutions.jts.geom.MultiPolygon;
 import org.apache.commons.io.FileUtils;
 import org.apache.struts2.convention.annotation.*;
 import org.apache.struts2.interceptor.validation.SkipValidation;
@@ -11,11 +12,14 @@ import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.jason.mapmaker2.model.State;
+import org.jason.mapmaker2.model.SubCode;
 import org.jason.mapmaker2.model.TigerFeatureType;
 import org.jason.mapmaker2.service.BorderPointService;
 import org.jason.mapmaker2.service.StateService;
+import org.jason.mapmaker2.service.SubCodeService;
 import org.jason.mapmaker2.service.TigerFeatureTypeService;
 import org.opengis.feature.Feature;
+import org.opengis.feature.GeometryAttribute;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.ServletContext;
@@ -53,6 +57,7 @@ public class BorderPointAction extends ActionSupport implements ServletContextAw
     }
 
     private StateService stateService;
+    private SubCodeService subCodeService;
     private TigerFeatureTypeService tigerFeatureTypeService;
 
     @Autowired
@@ -61,12 +66,18 @@ public class BorderPointAction extends ActionSupport implements ServletContextAw
     }
 
     @Autowired
+    public void setSubCodeService(SubCodeService subCodeService) {
+        this.subCodeService = subCodeService;
+    }
+
+    @Autowired
     public void setTigerFeatureTypeService(TigerFeatureTypeService tigerFeatureTypeService) {
         this.tigerFeatureTypeService = tigerFeatureTypeService;
     }
 
     private Integer stateId;
-    private Integer featureTypeId;
+    private Integer subCodeId;
+    //private Integer featureTypeId;
     private File fileUpload;
     private String fileUploadContentType;
     private String fileUploadFileName;
@@ -80,13 +91,21 @@ public class BorderPointAction extends ActionSupport implements ServletContextAw
         this.stateId = stateId;
     }
 
-    public Integer getFeatureTypeId() {
-        return featureTypeId;
+    public Integer getSubCodeId() {
+        return subCodeId;
     }
 
-    public void setFeatureTypeId(Integer featureTypeId) {
-        this.featureTypeId = featureTypeId;
+    public void setSubCodeId(Integer subCodeId) {
+        this.subCodeId = subCodeId;
     }
+
+    //    public Integer getFeatureTypeId() {
+//        return featureTypeId;
+//    }
+//
+//    public void setFeatureTypeId(Integer featureTypeId) {
+//        this.featureTypeId = featureTypeId;
+//    }
 
     public File getFileUpload() {
         return fileUpload;
@@ -165,11 +184,12 @@ public class BorderPointAction extends ActionSupport implements ServletContextAw
     @Action("create")
     public String create() throws Exception {
 
-        // get the state
+        // get the state and subcode
         State state = stateService.getById(stateId);
+        SubCode subCode = subCodeService.getById(subCodeId);
 
         // get the tiger feature type
-        TigerFeatureType tft = tigerFeatureTypeService.getById(featureTypeId);
+        //TigerFeatureType tft = tigerFeatureTypeService.getById(featureTypeId);
 
         // process the Shapefile
         // create list of filenames so we know what to delete later
@@ -247,8 +267,9 @@ public class BorderPointAction extends ActionSupport implements ServletContextAw
                 // FeatureCollection doesn't implement Iterator, so no forEach() loop for me. Jerks.
                 while (iterator.hasNext()) {
                     Feature feature = iterator.next();
-                    //GeometryAttribute geometryAttribute = feature.getDefaultGeometryProperty();
-
+                    GeometryAttribute geometryAttribute = feature.getDefaultGeometryProperty();
+                    MultiPolygon multiPolygon = (MultiPolygon) geometryAttribute.getValue();
+                    //Polygon polygon = multiPolygon.getGeometryN(0).get;
                     // TODO: CREATE THE BORDERPOINT HERE!!!
                     counter++;
 
