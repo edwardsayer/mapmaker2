@@ -1,10 +1,13 @@
 package org.jason.mapmaker2.model;
 
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
  * @author Jason Ferguson
  */
+@Entity
+@Table(name="T_STATECODE")
 public class StateCode implements Serializable, Comparable<StateCode> {
 
     private int id;
@@ -22,6 +25,9 @@ public class StateCode implements Serializable, Comparable<StateCode> {
         this.stateAbbr = stateAbbr;
     }
 
+    @Id
+    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public int getId() {
         return id;
     }
@@ -30,6 +36,7 @@ public class StateCode implements Serializable, Comparable<StateCode> {
         this.id = id;
     }
 
+    @Column(name="STATECODE")
     public Integer getStateCode() {
         return stateCode;
     }
@@ -38,6 +45,7 @@ public class StateCode implements Serializable, Comparable<StateCode> {
         this.stateCode = stateCode;
     }
 
+    @Column(name="STATENAME")
     public String getStateName() {
         return stateName;
     }
@@ -46,12 +54,18 @@ public class StateCode implements Serializable, Comparable<StateCode> {
         this.stateName = stateName;
     }
 
+    @Column(name="STATEABBR")
     public String getStateAbbr() {
         return stateAbbr;
     }
 
     public void setStateAbbr(String stateAbbr) {
         this.stateAbbr = stateAbbr;
+    }
+
+    @Transient
+    public String getLabel() {
+        return stateName + " (" + stateCode + ")";    
     }
 
     @Override
