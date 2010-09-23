@@ -16,7 +16,7 @@ import java.util.List;
 @ParentPackage("struts-default")
 @Namespace("/tigerFeatureType")
 @Results({
-        @Result(name="success", location = "/WEB-INF/content/admin/tigerFeatureType/list.jsp"),
+        @Result(name="success", location = "/WEB-INF/content/admin/tigerFeatureType/list.jsp", type = "redirect"),
         @Result(name="input", location = "/WEB-INF/content/admin/tigerFeatureType/create.jsp")
 })
 public class TigerFeatureTypeAction extends ActionSupport {
