@@ -8,9 +8,19 @@ import java.io.Serializable;
 public class StateCode implements Serializable, Comparable<StateCode> {
 
     private int id;
-    private String stateCode;
+    private Integer stateCode;
     private String stateName;
     private String stateAbbr;
+
+    public StateCode() {
+
+    }
+
+    public StateCode(String stateName, String stateAbbr, Integer stateCode) {
+        this.stateCode = stateCode;
+        this.stateName = stateName;
+        this.stateAbbr = stateAbbr;
+    }
 
     public int getId() {
         return id;
@@ -20,11 +30,11 @@ public class StateCode implements Serializable, Comparable<StateCode> {
         this.id = id;
     }
 
-    public String getStateCode() {
+    public Integer getStateCode() {
         return stateCode;
     }
 
-    public void setStateCode(String stateCode) {
+    public void setStateCode(Integer stateCode) {
         this.stateCode = stateCode;
     }
 
