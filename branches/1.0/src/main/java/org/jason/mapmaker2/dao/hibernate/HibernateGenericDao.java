@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -56,5 +57,9 @@ public class HibernateGenericDao<T> extends HibernateDaoSupport implements Gener
     public List<T> queryByExample(T exampleObj) {
 
         return getHibernateTemplate().findByExample(exampleObj);
+    }
+
+    public void saveAll(Collection<T> objList) {
+        throw new UnsupportedOperationException();
     }
 }
