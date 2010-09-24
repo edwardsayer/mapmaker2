@@ -1,5 +1,8 @@
 package org.jason.mapmaker2.model;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -8,6 +11,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name="T_STATECODE")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class StateCode implements Serializable, Comparable<StateCode> {
 
     private int id;
