@@ -11,6 +11,7 @@ import org.jason.mapmaker2.service.StateCodeService;
 import org.jason.mapmaker2.service.SubCodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -74,6 +75,7 @@ public class StateCodeJsonAction extends ActionSupport {
     })
     public String getStateCodesJson() throws Exception {
         stateCodeList = stateCodeService.getAll();
+        Collections.sort(stateCodeList);
 
         if (stateCodeId != null) {
             StateCode stateCode = stateCodeService.getById(stateCodeId);
