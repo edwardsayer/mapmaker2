@@ -4,7 +4,9 @@ import org.jason.mapmaker2.dao.BorderPointDao;
 import org.jason.mapmaker2.model.BorderPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -38,5 +40,10 @@ public class BorderPointServiceImpl implements BorderPointService {
 
     public BorderPoint getById(int id) {
         return borderPointDao.getById(id);
+    }
+
+    @Transactional
+    public void saveAll(Collection<BorderPoint> bpCollection) {
+        borderPointDao.saveAll(bpCollection);
     }
 }
