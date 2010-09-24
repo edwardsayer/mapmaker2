@@ -2,8 +2,11 @@ package org.jason.mapmaker2.web.action;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.Preparable;
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.math.util.MathUtils;
 import org.apache.struts2.convention.annotation.*;
 import org.apache.struts2.interceptor.validation.SkipValidation;
 import org.apache.struts2.util.ServletContextAware;
@@ -12,10 +15,7 @@ import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureImpl;
-import org.jason.mapmaker2.model.State;
-import org.jason.mapmaker2.model.StateCode;
-import org.jason.mapmaker2.model.SubCode;
-import org.jason.mapmaker2.model.TigerFeatureType;
+import org.jason.mapmaker2.model.*;
 import org.jason.mapmaker2.service.*;
 import org.opengis.feature.GeometryAttribute;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +38,7 @@ import java.util.zip.ZipFile;
         @Result(name = "success", location = "/WEB-INF/content/admin/borderPoint/list.jsp"),
         @Result(name = "input", location = "/WEB-INF/content/admin/borderPoint/create2.jsp")
 })
-
+@SuppressWarnings("unused")
 public class BorderPointAction extends ActionSupport implements ServletContextAware, Preparable {
 
     ServletContext servletContext;
@@ -81,7 +81,6 @@ public class BorderPointAction extends ActionSupport implements ServletContextAw
 
     private Integer stateId;
     private Integer subCodeId;
-    //private Integer featureTypeId;
     private File fileUpload;
     private String fileUploadContentType;
     private String fileUploadFileName;
@@ -102,14 +101,6 @@ public class BorderPointAction extends ActionSupport implements ServletContextAw
     public void setSubCodeId(Integer subCodeId) {
         this.subCodeId = subCodeId;
     }
-
-    //    public Integer getFeatureTypeId() {
-//        return featureTypeId;
-//    }
-//
-//    public void setFeatureTypeId(Integer featureTypeId) {
-//        this.featureTypeId = featureTypeId;
-//    }
 
     public File getFileUpload() {
         return fileUpload;
@@ -185,7 +176,7 @@ public class BorderPointAction extends ActionSupport implements ServletContextAw
         return INPUT;
     }
 
-    @SuppressWarnings({"deprecation","unchecked"})
+    @SuppressWarnings({"deprecation", "unchecked"})
     @Action("create")
     public String create() throws Exception {
 
@@ -277,7 +268,6 @@ public class BorderPointAction extends ActionSupport implements ServletContextAw
 
                     GeometryAttribute geometryAttribute = feature.getDefaultGeometryProperty();
                     MultiPolygon multiPolygon = (MultiPolygon) geometryAttribute.getValue();
-                    //Polygon polygon = multiPolygon.getGeometryN(0).get;
                     // TODO: CREATE THE BORDERPOINT HERE!!!
                     // process a county
                     String lineType = (String) feature.getAttribute(8);
@@ -286,24 +276,37 @@ public class BorderPointAction extends ActionSupport implements ServletContextAw
                         int stateCodeId = Integer.parseInt((String) feature.getAttribute(1));
                         StateCode stateCode = stateCodeService.getByStateCode(stateCodeId);
 
-                        SubCode subCode = new SubCode();
-
-                        subCode.setStateCode(stateCode);
-                        subCode.setSubCodeType("County");
                         int subCodeId = Integer.parseInt((String) feature.getAttribute(2));
-                        subCode.setSubCode(subCodeId);
-                        subCode.setSubCodeDescription((String) feature.getAttribute(5));
+                        String subCodeDescription = (String) feature.getAttribute(5);
 
+                        SubCode subCode = new SubCode(stateCode, subCodeId, subCodeDescription, "County");
                         SubCode result = subCodeService.save(subCode);
+
+                        MultiPolygon mp = (MultiPolygon) feature.getAttribute(0);
+                        Geometry g = mp.getGeometryN(0);
+                        Coordinate[] coordinates = g.getCoordinates();
+                        //List<Coordinate> coordinates = Arrays.asList(g.getCoordinates());
+
+                        Set<BorderPoint> bpSet = new HashSet<BorderPoint>();
+                        for (Coordinate c : coordinates) {
+                            Float lat = new Float(c.x);
+                            Float lng = new Float(c.y);
+
+                            lat = MathUtils.round(lat, 4);
+                            lng = MathUtils.round(lng, 4);
+
+                            if (lat != null && lng != null) {
+                                BorderPoint bp = new BorderPoint(stateCode, lat, lng);
+                                bpSet.add(bp);
+                            }
+                        }
+
+                        borderPointService.saveAll(bpSet);
 
                     } else {
                         System.out.println(lineType);
                     }
 
-
-                    if (feature.getAttribute(8).equals("h1")) {
-
-                    }
 
                     counter++;
 
@@ -311,10 +314,11 @@ public class BorderPointAction extends ActionSupport implements ServletContextAw
             }
             finally {
                 featureCollection.close(iterator);
+                System.gc();        // argh. Due to a bug in geotools 2.6.5 and previous, the prj file cannot be removed until
+                // garbage collection occurs. I _hate_ explicitly calling System.gc()
             }
         }
-        System.gc();        // argh. Due to a bug in geotools 2.6.5 and previous, the prj file cannot be removed until
-        // garbage collection occurs. I _hate_ explicitly calling System.gc()
+
 
         // delete the temporary files
         for (File f : filenames) {
