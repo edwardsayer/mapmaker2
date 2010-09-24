@@ -272,8 +272,8 @@ public class BorderPointAction extends ActionSupport implements ServletContextAw
                     MultiPolygon multiPolygon = (MultiPolygon) geometryAttribute.getValue();
                     // TODO: CREATE THE BORDERPOINT HERE!!!
                     // process a county
-                    String lineType = (String) feature.getAttribute(8);
-                    if (lineType.equals("H1")) {
+                    String lineType = (String) feature.getAttribute(9);
+                    if (lineType.equals("G4020")) {
                         // get the StateCode
                         int stateCodeId = Integer.parseInt((String) feature.getAttribute(1));
                         StateCode stateCode = stateCodeService.getByStateCode(stateCodeId);
