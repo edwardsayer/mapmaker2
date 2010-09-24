@@ -309,12 +309,12 @@ public class BorderPointAction extends ActionSupport implements ServletContextAw
             }
             finally {
                 featureCollection.close(iterator);
-                System.gc();        // argh. Due to a bug in geotools 2.6.5 and previous, the prj file cannot be removed until
-                // garbage collection occurs. I _hate_ explicitly calling System.gc()
+
             }
         }
 
-
+        System.gc();        // argh. Due to a bug in geotools 2.6.5 and previous, the prj file cannot be removed until
+        // garbage collection occurs. I _hate_ explicitly calling System.gc()
         // delete the temporary files
         for (File f : filenames) {
             boolean deleteResult = f.delete();
