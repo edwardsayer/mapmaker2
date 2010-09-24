@@ -8,6 +8,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name="T_SUBCODE")
+@SuppressWarnings("unused")
 public class SubCode implements Serializable {
 
     private Integer id;
@@ -15,6 +16,17 @@ public class SubCode implements Serializable {
     private Integer subCode;
     private String subCodeDescription;
     private String subCodeType;
+
+    public SubCode() {
+
+    }
+
+    public SubCode(StateCode stateCode, Integer subCode, String subCodeDescription, String subCodeType) {
+        this.stateCode = stateCode;
+        this.subCode = subCode;
+        this.subCodeDescription = subCodeDescription;
+        this.subCodeType = subCodeType;
+    }
 
     @Id
     @Column(name = "ID")
