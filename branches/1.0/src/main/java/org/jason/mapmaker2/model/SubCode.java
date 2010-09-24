@@ -12,8 +12,9 @@ public class SubCode implements Serializable {
 
     private Integer id;
     private StateCode stateCode;
-    private String subcodeDescription;
-    private Integer code;
+    private Integer subCode;
+    private String subCodeDescription;
+    private String subCodeType;
 
     @Id
     @Column(name = "ID")
@@ -36,21 +37,30 @@ public class SubCode implements Serializable {
         this.stateCode = stateCode;
     }
 
-    @Column(name="DESCRIPTION")
-    public String getSubcodeDescription() {
-        return subcodeDescription;
+    @Column(name="SUBCODE")
+    public Integer getSubCode() {
+        return subCode;
     }
 
-    public void setSubcodeDescription(String subcodeDescription) {
-        this.subcodeDescription = subcodeDescription;
+    public void setSubCode(Integer subCode) {
+        this.subCode = subCode;
     }
 
-    @Column(name="CODE")
-    public Integer getCode() {
-        return code;
+    @Column(name="SUBCODEDESCRIPTION")
+    public String getSubCodeDescription() {
+        return subCodeDescription;
     }
 
-    public void setCode(Integer code) {
-        this.code = code;
+    public void setSubCodeDescription(String subCodeDescription) {
+        this.subCodeDescription = subCodeDescription;
+    }
+
+    @Column(name="SUBCODETYPE")
+    public String getSubCodeType() {
+        return subCodeType;
+    }
+
+    public void setSubCodeType(String subCodeType) {
+        this.subCodeType = subCodeType;
     }
 }
