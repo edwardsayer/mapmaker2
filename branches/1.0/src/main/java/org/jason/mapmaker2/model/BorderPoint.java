@@ -96,16 +96,14 @@ public class BorderPoint implements Serializable {
 
         if (!latitude.equals(that.latitude)) return false;
         if (!longitude.equals(that.longitude)) return false;
-        if (!state.equals(that.state)) return false;
-        //if (tigerFeatureType != that.tigerFeatureType) return false;
+        if (!stateCode.equals(that.stateCode)) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = state.hashCode();
-        //result = 31 * result + tigerFeatureType.hashCode();
+        int result = stateCode.hashCode();
         result = 31 * result + latitude.hashCode();
         result = 31 * result + longitude.hashCode();
         return result;
