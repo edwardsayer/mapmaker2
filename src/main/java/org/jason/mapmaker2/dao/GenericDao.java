@@ -1,5 +1,6 @@
 package org.jason.mapmaker2.dao;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -50,4 +51,11 @@ public interface GenericDao<T> {
      * @return
      */
     List<T> queryByExample(T exampleObj);
+
+    /**
+     * Save all members of a collection. Method implementations need to implement transactions or it will take forever
+     *
+     * @param objList
+     */
+    void saveAll(Collection<T> objList);
 }
