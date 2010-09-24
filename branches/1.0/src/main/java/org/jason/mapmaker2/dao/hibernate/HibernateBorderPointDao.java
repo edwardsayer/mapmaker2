@@ -2,6 +2,7 @@ package org.jason.mapmaker2.dao.hibernate;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.CacheMode;
 import org.hibernate.Transaction;
 import org.jason.mapmaker2.dao.BorderPointDao;
 import org.jason.mapmaker2.model.BorderPoint;
@@ -26,6 +27,7 @@ public class HibernateBorderPointDao extends HibernateGenericDao<BorderPoint> im
     @Override
     public void saveAll(Collection<BorderPoint> objList) {
 
+        getSession().setCacheMode(CacheMode.IGNORE);
         log.debug("Saving " + objList.size() + " BorderPoints");
         Transaction tx = getSession().beginTransaction();
 
@@ -43,6 +45,7 @@ public class HibernateBorderPointDao extends HibernateGenericDao<BorderPoint> im
 
         tx.commit();
 
+        getSession().setCacheMode(CacheMode.NORMAL);
     }
 
 }
