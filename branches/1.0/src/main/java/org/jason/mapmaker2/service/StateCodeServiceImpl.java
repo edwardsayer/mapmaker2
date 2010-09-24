@@ -39,4 +39,15 @@ public class StateCodeServiceImpl implements StateCodeService {
     public StateCode getById(int id) {
         return stateCodeDao.getById(id);
     }
+
+    public StateCode getByStateCode(Integer stateCode) {
+        StateCode example = new StateCode();
+        example.setStateCode(stateCode);
+
+        List<StateCode> results = stateCodeDao.queryByExample(example);
+        if (results.size() < 1) {
+            return null;
+        }
+        return results.get(0);
+    }
 }
