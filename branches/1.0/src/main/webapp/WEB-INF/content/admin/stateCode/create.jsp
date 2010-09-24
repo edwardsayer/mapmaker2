@@ -2,14 +2,16 @@
 <%@ taglib prefix="s" uri="/struts-tags" %>
 <html>
   <head>
-      <title>Add State Code</title>
+      <title>Add State Codes From National Shapefile</title>
   </head>
   <body>
-  <s:form namespace="/stateCode" action="create">
-      <s:textfield name="stateName" label="State Name" />
-      <s:textfield name="stateAbbr" label="State Abbreviation" />
-      <s:textfield name="stateCode" label="Code" />
-      <s:submit name="Create" value="Create" />
+
+  <p>Use this form to upload the National State and Equivalent Shapefile. This will populate the StateCode list
+  for the application.</p>
+
+  <s:form namespace="/stateCode" action="create" enctype="multipart/form-data" method="POST">
+      <s:file name="fileUpload" label="Shapefile"/>
+      <s:submit value="Upload" name="Upload" />
   </s:form>
 
   </body>
