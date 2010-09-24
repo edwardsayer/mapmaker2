@@ -13,6 +13,7 @@ public class BorderPoint implements Serializable {
     private Integer id;
     //private State state;
     private StateCode stateCode;
+    private SubCode subCode;
     //private TigerFeatureType tigerFeatureType;
     private Float latitude;
     private Float longitude;
@@ -21,8 +22,9 @@ public class BorderPoint implements Serializable {
 
     }
 
-    public BorderPoint(StateCode stateCode, Float latitude, Float longitude) {
+    public BorderPoint(StateCode stateCode, SubCode subCode, Float latitude, Float longitude) {
         this.stateCode = stateCode;
+        this.subCode = subCode;
         this.latitude = latitude;
         this.longitude = longitude;
     }
@@ -58,6 +60,15 @@ public class BorderPoint implements Serializable {
         this.stateCode = stateCode;
     }
 
+    @ManyToOne
+    @JoinColumn(name="SUBCODEID")
+    public SubCode getSubCode() {
+        return subCode;
+    }
+
+    public void setSubCode(SubCode subCode) {
+        this.subCode = subCode;
+    }
 
 //    @ManyToOne
 //    @JoinColumn(name="TIGERFEATURETYPEID")
