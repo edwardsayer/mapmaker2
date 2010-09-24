@@ -39,8 +39,9 @@ public class SubCodeAction extends ActionSupport implements Preparable {
     }
 
     private Integer stateCodeId;
+    private Integer subCode;
     private String subCodeDescription;
-    private Integer code;
+    private String subCodeType;
 
     @RequiredFieldValidator(message = "You must select a state!")
     public Integer getStateCodeId() {
@@ -51,7 +52,16 @@ public class SubCodeAction extends ActionSupport implements Preparable {
         this.stateCodeId = stateCodeId;
     }
 
-    @RequiredStringValidator(message = "You must provide a description!")
+    @RequiredFieldValidator(message = "You must enter a sub code!")
+    public Integer getSubCode() {
+        return subCode;
+    }
+
+    public void setSubCodeId(Integer subCode) {
+        this.subCode = subCode;
+    }
+
+    @RequiredStringValidator(message = "You must enter a description!")
     public String getSubCodeDescription() {
         return subCodeDescription;
     }
@@ -60,13 +70,13 @@ public class SubCodeAction extends ActionSupport implements Preparable {
         this.subCodeDescription = subCodeDescription;
     }
 
-    @RequiredFieldValidator(message = "You must provide a FIPS code!")
-    public Integer getCode() {
-        return code;
+    @RequiredStringValidator(message = "You must enter a type (i.e. 'county')!")
+    public String getSubCodeType() {
+        return subCodeType;
     }
 
-    public void setCode(Integer code) {
-        this.code = code;
+    public void setSubCodeType(String subCodeType) {
+        this.subCodeType = subCodeType;
     }
 
     private List<StateCode> stateCodeList;
