@@ -19,6 +19,7 @@ import org.jason.mapmaker2.model.*;
 import org.jason.mapmaker2.service.*;
 import org.opengis.feature.GeometryAttribute;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StopWatch;
 
 import javax.servlet.ServletContext;
 import java.io.BufferedInputStream;
@@ -180,6 +181,8 @@ public class BorderPointAction extends ActionSupport implements ServletContextAw
     @Action("create")
     public String create() throws Exception {
 
+        StopWatch timer = new StopWatch();
+        timer.start();
         // get the state and subcode
         State state = stateService.getById(stateId);
         if (subCodeId > -1) {
@@ -260,7 +263,6 @@ public class BorderPointAction extends ActionSupport implements ServletContextAw
             FeatureIterator iterator = featureCollection.features();
 
             try {
-                int counter = 0;
 
                 // FeatureCollection doesn't implement Iterator, so no forEach() loop for me. Jerks.
                 while (iterator.hasNext()) {
@@ -285,15 +287,14 @@ public class BorderPointAction extends ActionSupport implements ServletContextAw
                         MultiPolygon mp = (MultiPolygon) feature.getAttribute(0);
                         Geometry g = mp.getGeometryN(0);
                         Coordinate[] coordinates = g.getCoordinates();
-                        //List<Coordinate> coordinates = Arrays.asList(g.getCoordinates());
 
                         Set<BorderPoint> bpSet = new HashSet<BorderPoint>();
                         for (Coordinate c : coordinates) {
                             Float lat = new Float(c.x);
                             Float lng = new Float(c.y);
 
-                            lat = MathUtils.round(lat, 4);
-                            lng = MathUtils.round(lng, 4);
+                            lat = MathUtils.round(lat, 3);
+                            lng = MathUtils.round(lng, 3);
 
                             if (lat != null && lng != null) {
                                 BorderPoint bp = new BorderPoint(stateCode, lat, lng);
@@ -303,13 +304,7 @@ public class BorderPointAction extends ActionSupport implements ServletContextAw
 
                         borderPointService.saveAll(bpSet);
 
-                    } else {
-                        System.out.println(lineType);
                     }
-
-
-                    counter++;
-
                 }
             }
             finally {
@@ -322,12 +317,14 @@ public class BorderPointAction extends ActionSupport implements ServletContextAw
 
         // delete the temporary files
         for (File f : filenames) {
-
             boolean deleteResult = f.delete();
-            System.out.println(f.getName() + ": " + deleteResult);
         }
 
         shpFile.delete();
+
+        timer.stop();
+        System.out.println("Executed import in " + timer.getTotalTimeSeconds() + " seconds");
+
         return SUCCESS;
     }
 }
