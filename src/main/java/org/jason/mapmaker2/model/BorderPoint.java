@@ -11,10 +11,21 @@ import java.io.Serializable;
 public class BorderPoint implements Serializable {
 
     private Integer id;
-    private State state;
+    //private State state;
+    private StateCode stateCode;
     //private TigerFeatureType tigerFeatureType;
     private Float latitude;
     private Float longitude;
+
+    public BorderPoint() {
+
+    }
+
+    public BorderPoint(StateCode stateCode, Float latitude, Float longitude) {
+        this.stateCode = stateCode;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
 
     @Id
     @Column(name="ID")
@@ -27,15 +38,26 @@ public class BorderPoint implements Serializable {
         this.id = id;
     }
 
+//    @ManyToOne
+//    @JoinColumn(name="STATEID")
+//    public State getState() {
+//        return state;
+//    }
+//
+//    public void setState(State state) {
+//        this.state = state;
+//    }
+
     @ManyToOne
-    @JoinColumn(name="STATEID")
-    public State getState() {
-        return state;
+    @JoinColumn(name="STATECODEID")
+    public StateCode getStateCode() {
+        return stateCode;
     }
 
-    public void setState(State state) {
-        this.state = state;
+    public void setStateCode(StateCode stateCode) {
+        this.stateCode = stateCode;
     }
+
 
 //    @ManyToOne
 //    @JoinColumn(name="TIGERFEATURETYPEID")
