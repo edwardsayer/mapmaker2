@@ -11,14 +11,12 @@ import org.geotools.data.FeatureSource;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
+import org.geotools.feature.simple.SimpleFeatureImpl;
 import org.jason.mapmaker2.model.State;
+import org.jason.mapmaker2.model.StateCode;
 import org.jason.mapmaker2.model.SubCode;
 import org.jason.mapmaker2.model.TigerFeatureType;
-import org.jason.mapmaker2.service.BorderPointService;
-import org.jason.mapmaker2.service.StateService;
-import org.jason.mapmaker2.service.SubCodeService;
-import org.jason.mapmaker2.service.TigerFeatureTypeService;
-import org.opengis.feature.Feature;
+import org.jason.mapmaker2.service.*;
 import org.opengis.feature.GeometryAttribute;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -57,8 +55,14 @@ public class BorderPointAction extends ActionSupport implements ServletContextAw
     }
 
     private StateService stateService;
+    private StateCodeService stateCodeService;
     private SubCodeService subCodeService;
     private TigerFeatureTypeService tigerFeatureTypeService;
+
+    @Autowired
+    public void setStateCodeService(StateCodeService stateCodeService) {
+        this.stateCodeService = stateCodeService;
+    }
 
     @Autowired
     public void setStateService(StateService stateService) {
@@ -181,12 +185,15 @@ public class BorderPointAction extends ActionSupport implements ServletContextAw
         return INPUT;
     }
 
+    @SuppressWarnings({"deprecation","unchecked"})
     @Action("create")
     public String create() throws Exception {
 
         // get the state and subcode
         State state = stateService.getById(stateId);
-        SubCode subCode = subCodeService.getById(subCodeId);
+        if (subCodeId > -1) {
+            SubCode subCode = subCodeService.getById(subCodeId);
+        }
 
         // get the tiger feature type
         //TigerFeatureType tft = tigerFeatureTypeService.getById(featureTypeId);
@@ -266,11 +273,38 @@ public class BorderPointAction extends ActionSupport implements ServletContextAw
 
                 // FeatureCollection doesn't implement Iterator, so no forEach() loop for me. Jerks.
                 while (iterator.hasNext()) {
-                    Feature feature = iterator.next();
+                    SimpleFeatureImpl feature = (SimpleFeatureImpl) iterator.next();
+
                     GeometryAttribute geometryAttribute = feature.getDefaultGeometryProperty();
                     MultiPolygon multiPolygon = (MultiPolygon) geometryAttribute.getValue();
                     //Polygon polygon = multiPolygon.getGeometryN(0).get;
                     // TODO: CREATE THE BORDERPOINT HERE!!!
+                    // process a county
+                    String lineType = (String) feature.getAttribute(8);
+                    if (lineType.equals("H1")) {
+                        // get the StateCode
+                        int stateCodeId = Integer.parseInt((String) feature.getAttribute(1));
+                        StateCode stateCode = stateCodeService.getByStateCode(stateCodeId);
+
+                        SubCode subCode = new SubCode();
+
+                        subCode.setStateCode(stateCode);
+                        subCode.setSubCodeType("County");
+                        int subCodeId = Integer.parseInt((String) feature.getAttribute(2));
+                        subCode.setSubCode(subCodeId);
+                        subCode.setSubCodeDescription((String) feature.getAttribute(5));
+
+                        SubCode result = subCodeService.save(subCode);
+
+                    } else {
+                        System.out.println(lineType);
+                    }
+
+
+                    if (feature.getAttribute(8).equals("h1")) {
+
+                    }
+
                     counter++;
 
                 }
