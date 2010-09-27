@@ -41,6 +41,7 @@ public class StateCodeJsonAction extends ActionSupport {
     }
 
     private Integer stateCodeId;
+    private Integer subCodeId;
 
     public Integer getStateCodeId() {
         return stateCodeId;
@@ -48,6 +49,14 @@ public class StateCodeJsonAction extends ActionSupport {
 
     public void setStateCodeId(Integer stateCodeId) {
         this.stateCodeId = stateCodeId;
+    }
+
+    public Integer getSubCodeId() {
+        return subCodeId;
+    }
+
+    public void setSubCodeId(Integer subCodeId) {
+        this.subCodeId = subCodeId;
     }
 
     private List<StateCode> stateCodeList;
