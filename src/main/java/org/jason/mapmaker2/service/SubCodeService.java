@@ -11,4 +11,6 @@ import java.util.List;
 public interface SubCodeService extends BasicServiceOperations<SubCode>{
 
     List<SubCode> getByStateCode(StateCode stateCode);
+
+    List<String> getUniqueSubCodeTypesByStateCode(StateCode stateCode);
 }
