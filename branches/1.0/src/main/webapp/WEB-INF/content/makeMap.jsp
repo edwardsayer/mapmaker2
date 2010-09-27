@@ -6,6 +6,17 @@
     <title>Make Map</title>
     <sj:head debug="true"/>
     <script type="text/javascript">
+        $(document).ready(function() {
+            $.getJSON("/getStateCodesJson", null, function(j) {
+                var options='';
+                var stateCodeList = j.stateCodeList;
+                for (var i=0; i<stateCodeList.length; i++) {
+                    options += '<option value="' + stateCodeList.id + '">' + stateCodeList.label + '</option>';
+                }
+                $("select#stateCodeId").html(options);
+            })
+        });
+
         function reloadSubcode() {
             $.getJSON("/getSubCodesJson", {id: $("select#stateCodeId").val(), ajax:'true'}, function(j) {
                 var options = '';
@@ -28,20 +39,28 @@
 
 <s:form name="mapGeneratorForm">
     <fieldset>
-        <s:url id="ajaxActionUrl" namespace="/" action="getStateCodesJson"/>
+<%--        <s:url id="ajaxActionUrl" namespace="/" action="getStateCodesJson"/>
         <s:select name="stateCodeId"
                   id="stateCodeId"
                   label="State"
                   list="stateCodeList"
                   listKey="id"
                   listValue="label"
-                onchange="reloadSubcode();"/>
+                onchange="reloadSubcode();"/>--%>
 
+        <p>
+            <label for = "stateCodeId">State</label>
+            <select id="stateCodeId" name="stateCodeId" onchange="reloadSubcode();">
+                <option value="-1">Please Select A State</option>
+            </select>
+        </p>
 
-        <p><label for="subCodeId">SubCode</label>
+        <p>
+            <label for="subCodeId">SubCode</label>
             <select id="subCodeId" name="subCodeId">
                 <option value="-1">Please Select A SubCode</option>
-            </select></p>
+            </select>
+        </p>
 
     </fieldset>
 
