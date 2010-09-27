@@ -1,9 +1,8 @@
 package org.jason.mapmaker2.model.composite;
 
 import org.jason.mapmaker2.model.BorderPoint;
-import org.jason.mapmaker2.model.Location;
-import org.jason.mapmaker2.model.State;
-import org.jason.mapmaker2.model.TigerFeatureType;
+import org.jason.mapmaker2.model.StateCode;
+import org.jason.mapmaker2.model.SubCode;
 
 import java.io.Serializable;
 import java.util.List;
@@ -13,26 +12,44 @@ import java.util.List;
  */
 public class CustomMap implements Serializable {
 
-    private State state;
-    private TigerFeatureType featureType;
+    private Float minLat;
+    private Float maxLat;
+    private Float minLng;
+    private Float maxLng;
     private List<BorderPoint> borderPoints;
-    private List<Location> locations;
-    private String caption;
+    private StateCode stateCode;
+    private SubCode subCode;
 
-    public State getState() {
-        return state;
+    public Float getMinLat() {
+        return minLat;
     }
 
-    public void setState(State state) {
-        this.state = state;
+    public void setMinLat(Float minLat) {
+        this.minLat = minLat;
     }
 
-    public TigerFeatureType getFeatureType() {
-        return featureType;
+    public Float getMaxLat() {
+        return maxLat;
     }
 
-    public void setFeatureType(TigerFeatureType featureType) {
-        this.featureType = featureType;
+    public void setMaxLat(Float maxLat) {
+        this.maxLat = maxLat;
+    }
+
+    public Float getMinLng() {
+        return minLng;
+    }
+
+    public void setMinLng(Float minLng) {
+        this.minLng = minLng;
+    }
+
+    public Float getMaxLng() {
+        return maxLng;
+    }
+
+    public void setMaxLng(Float maxLng) {
+        this.maxLng = maxLng;
     }
 
     public List<BorderPoint> getBorderPoints() {
@@ -43,19 +60,19 @@ public class CustomMap implements Serializable {
         this.borderPoints = borderPoints;
     }
 
-    public List<Location> getLocations() {
-        return locations;
+    public StateCode getStateCode() {
+        return stateCode;
     }
 
-    public void setLocations(List<Location> locations) {
-        this.locations = locations;
+    public void setStateCode(StateCode stateCode) {
+        this.stateCode = stateCode;
     }
 
-    public String getCaption() {
-        return caption;
+    public SubCode getSubCode() {
+        return subCode;
     }
 
-    public void setCaption(String caption) {
-        this.caption = caption;
+    public void setSubCode(SubCode subCode) {
+        this.subCode = subCode;
     }
 }
