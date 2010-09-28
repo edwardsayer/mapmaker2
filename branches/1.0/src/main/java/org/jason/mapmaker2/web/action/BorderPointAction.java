@@ -58,7 +58,6 @@ public class BorderPointAction extends ActionSupport implements ServletContextAw
     private StateService stateService;
     private StateCodeService stateCodeService;
     private SubCodeService subCodeService;
-    private TigerFeatureTypeService tigerFeatureTypeService;
 
     @Autowired
     public void setStateCodeService(StateCodeService stateCodeService) {
@@ -73,11 +72,6 @@ public class BorderPointAction extends ActionSupport implements ServletContextAw
     @Autowired
     public void setSubCodeService(SubCodeService subCodeService) {
         this.subCodeService = subCodeService;
-    }
-
-    @Autowired
-    public void setTigerFeatureTypeService(TigerFeatureTypeService tigerFeatureTypeService) {
-        this.tigerFeatureTypeService = tigerFeatureTypeService;
     }
 
     private Integer stateId;
@@ -136,7 +130,6 @@ public class BorderPointAction extends ActionSupport implements ServletContextAw
     }
 
     private List<State> statesList;
-    private List<TigerFeatureType> tigerFeatureTypes;
 
     public List<State> getStatesList() {
         return statesList;
@@ -146,17 +139,8 @@ public class BorderPointAction extends ActionSupport implements ServletContextAw
         this.statesList = statesList;
     }
 
-    public List<TigerFeatureType> getTigerFeatureTypes() {
-        return tigerFeatureTypes;
-    }
-
-    public void setTigerFeatureTypes(List<TigerFeatureType> tigerFeatureTypes) {
-        this.tigerFeatureTypes = tigerFeatureTypes;
-    }
-
     public void prepare() throws Exception {
         statesList = stateService.getAll();
-        tigerFeatureTypes = tigerFeatureTypeService.getAll();
     }
 
     @Action("")
@@ -169,11 +153,6 @@ public class BorderPointAction extends ActionSupport implements ServletContextAw
     @SkipValidation
     public String showCreate() throws Exception {
 
-        Collections.sort(tigerFeatureTypes, new Comparator<TigerFeatureType>() {
-            public int compare(TigerFeatureType o1, TigerFeatureType o2) {
-                return o1.getLabel().compareTo(o2.getLabel());
-            }
-        });
         return INPUT;
     }
 
