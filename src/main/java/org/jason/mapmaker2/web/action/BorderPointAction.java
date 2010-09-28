@@ -18,10 +18,10 @@ import org.jason.mapmaker2.model.BorderPoint;
 import org.jason.mapmaker2.model.State;
 import org.jason.mapmaker2.model.StateCode;
 import org.jason.mapmaker2.model.SubCode;
+import org.jason.mapmaker2.model.factory.BorderPointFactory;
 import org.jason.mapmaker2.service.BorderPointService;
 import org.jason.mapmaker2.service.StateCodeService;
 import org.jason.mapmaker2.service.SubCodeService;
-import org.opengis.feature.GeometryAttribute;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StopWatch;
 
@@ -234,18 +234,23 @@ public class BorderPointAction extends ActionSupport implements ServletContextAw
             try {
 
                 // FeatureCollection doesn't implement Iterator, so no forEach() loop for me. Jerks.
+                StateCode stateCode = null;
+                Integer stateCodeId = null;
                 while (iterator.hasNext()) {
                     SimpleFeatureImpl feature = (SimpleFeatureImpl) iterator.next();
 
-                    GeometryAttribute geometryAttribute = feature.getDefaultGeometryProperty();
-                    MultiPolygon multiPolygon = (MultiPolygon) geometryAttribute.getValue();
+                    //GeometryAttribute geometryAttribute = feature.getDefaultGeometryProperty();
+                    //MultiPolygon multiPolygon = (MultiPolygon) geometryAttribute.getValue();
                     // TODO: CREATE THE BORDERPOINT HERE!!!
                     // process a county
                     String lineType = (String) feature.getAttribute(9);
                     if (lineType.equals("G4020")) {
-                        // get the StateCode
-                        int stateCodeId = Integer.parseInt((String) feature.getAttribute(1));
-                        StateCode stateCode = stateCodeService.getByStateCode(stateCodeId);
+                        // get the StateCode.. statecode isn't going to change since user is required to upload
+                        // state-based shapefiles
+                        if (stateCodeId == null) {
+                            stateCodeId = Integer.parseInt((String) feature.getAttribute(1));
+                            stateCode = stateCodeService.getByStateCode(stateCodeId);
+                        }
 
                         int subCodeId = Integer.parseInt((String) feature.getAttribute(2));
                         String subCodeDescription = (String) feature.getAttribute(5);
@@ -253,12 +258,15 @@ public class BorderPointAction extends ActionSupport implements ServletContextAw
                         SubCode subCode = new SubCode(stateCode, subCodeId, subCodeDescription, "County");
                         SubCode result = subCodeService.save(subCode);
 
+                        BorderPointFactory bpFactory = new BorderPointFactory(stateCode, subCode);
+
                         MultiPolygon mp = (MultiPolygon) feature.getAttribute(0);
                         Geometry g = mp.getGeometryN(0);
                         Coordinate[] coordinates = g.getCoordinates();
 
                         Set<BorderPoint> bpSet = new HashSet<BorderPoint>();
                         for (Coordinate c : coordinates) {
+
                             Float lat = new Float(c.x);
                             Float lng = new Float(c.y);
 
@@ -266,8 +274,13 @@ public class BorderPointAction extends ActionSupport implements ServletContextAw
                             lng = MathUtils.round(lng, 3);
 
                             if (lat != null && lng != null) {
-                                BorderPoint bp = new BorderPoint(stateCode, subCode, lat, lng);
+                                BorderPoint bp = bpFactory.getBorderPoint();
+                                bp.setLatitude(lat);
+                                bp.setLongitude(lng);
+                                //BorderPoint bp = new BorderPoint(stateCode, subCode, lat, lng);
                                 bpSet.add(bp);
+                                
+                                bp = null;
                             }
                         }
 
