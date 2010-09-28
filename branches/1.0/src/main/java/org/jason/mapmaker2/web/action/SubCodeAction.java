@@ -14,9 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 /**
+ * SubCodeAction.java
+ *
+ * All actions relating to SubCode, normal and JSON.
+ * 
  * @author Jason Ferguson
  */
-@ParentPackage("struts-default")
+@ParentPackage("json-default")
 @Namespace("/subCode")
 @Results({
         @Result(name = "success", location = "/WEB-INF/content/admin/subCode/list.jsp"),
@@ -109,6 +113,14 @@ public class SubCodeAction extends ActionSupport implements Preparable {
 
     @Action("create")
     public String create() throws Exception {
+        return SUCCESS;
+    }
+
+    @Action(value = "subCodeByStateJson", results = {
+            @Result(name = "success", type = "json")
+    })
+    public String getSubCodesByStateJson() throws Exception {
+
         return SUCCESS;
     }
 }
