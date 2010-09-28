@@ -132,4 +132,27 @@ public class DefaultAction extends ActionSupport implements ParameterAware {
 
         return SUCCESS;
     }
+
+    List<String> descriptions;
+
+    public List<String> getDescriptions() {
+        return descriptions;
+    }
+
+    public void setDescriptions(List<String> descriptions) {
+        this.descriptions = descriptions;
+    }
+
+    @Action(value="getSubCodeDescriptionsByFeatureTypeJson", results = {
+            @Result(name="success", type = "json")
+    })
+    public String getSubCodeDescriptionsByFeatureType() throws Exception {
+
+        if (parameters != null && parameters.get("featureName") != null) {
+            String featureType = parameters.get("featureName")[0];
+            descriptions = subCodeService.getUniqueDescriptionsByFeatureType(featureType);
+        }
+
+        return SUCCESS;
+    }
 }
