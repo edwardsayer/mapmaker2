@@ -4,29 +4,36 @@
 <html>
 <head>
     <title>Make Map</title>
-    <sj:head debug="true"/>
+    <sj:head />
+    <style type="text/css">
+        label   {width: 10em; display:block}
+    </style>
     <script type="text/javascript">
         $(document).ready(function() {
             $.getJSON("/getStateCodesJson", null, function(j) {
-                var options='';
                 var stateCodeList = j.stateCodeList;
                 for (var i=0; i<stateCodeList.length; i++) {
-                    options += '<option value="' + stateCodeList[i].id + '">' + stateCodeList[i].label + '</option>';
+                    $("select#stateCodeId").append(new Option(stateCodeList[i].label, stateCodeList[i].id));
                 }
-                $("select#stateCodeId").html(options);
             })
         });
 
         function reloadSubcode() {
             $.getJSON("/getSubCodesJson", {id: $("select#stateCodeId").val(), ajax:'true'}, function(j) {
-                var options = '';
                 var subCodeList = j.distinctSubCodes;
                 for (var i = 0; i < subCodeList.length; i++) {
-                    options += '<option value="' + subCodeList[i] + '">' + subCodeList[i] + '</option>';
+                    $("select#subCodeId").append(new Option(subCodeList[i],subCodeList[i]));
                 }
-
-                $("select#subCodeId").html(options);
             });
+        }
+
+        function reloadDescriptions() {
+            $.getJSON("/getSubCodeDescriptionsByFeatureTypeJson", {featureName: $("select#subCodeId").val(), ajax:'true'}, function(j) {
+                var descriptionList = j.descriptions;
+                for (var i = 0; i< descriptionList.length; i++) {
+                    $("select#featureName").append(new Option(descriptionList[i],descriptionList[i]));
+                }
+            })
         }
 
     </script>
@@ -39,14 +46,6 @@
 
 <s:form name="mapGeneratorForm">
     <fieldset>
-<%--        <s:url id="ajaxActionUrl" namespace="/" action="getStateCodesJson"/>
-        <s:select name="stateCodeId"
-                  id="stateCodeId"
-                  label="State"
-                  list="stateCodeList"
-                  listKey="id"
-                  listValue="label"
-                onchange="reloadSubcode();"/>--%>
 
         <p>
             <label for = "stateCodeId">State</label>
@@ -57,8 +56,15 @@
 
         <p>
             <label for="subCodeId">SubCode</label>
-            <select id="subCodeId" name="subCodeId">
+            <select id="subCodeId" name="subCodeId" onchange="reloadDescriptions();">
                 <option value="-1">Please Select A SubCode</option>
+            </select>
+        </p>
+
+        <p>
+            <label for="featureName">Feature Name</label>
+            <select id="featureName" name="featureName">
+                <option value="-1">Please Select A Feature Name</option>
             </select>
         </p>
 
