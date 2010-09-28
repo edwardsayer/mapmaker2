@@ -53,4 +53,8 @@ public class SubCodeServiceImpl implements SubCodeService {
         return subCodeDao.getUniqueSubCodeTypesByStateCode(stateCode);
         //return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
+
+    public List<String> getUniqueDescriptionsByFeatureType(String featureType) {
+        return subCodeDao.getUniqueDescriptionsByFeatureType(featureType);
+    }
 }
