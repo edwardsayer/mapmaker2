@@ -8,7 +8,9 @@ import java.util.List;
 /**
  * @author Jason Ferguson
  */
-public interface SubCodeDao extends GenericDao<SubCode>{
+public interface SubCodeDao extends GenericDao<SubCode> {
 
-        List<String> getUniqueSubCodeTypesByStateCode(StateCode stateCode);
+    List<String> getUniqueSubCodeTypesByStateCode(StateCode stateCode);
+
+    List<String> getUniqueDescriptionsByFeatureType(String featureType);
 }

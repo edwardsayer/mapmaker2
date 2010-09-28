@@ -32,9 +32,22 @@ public class HibernateSubCodeDao extends HibernateGenericDao<SubCode> implements
                 String hql = "select distinct sc.subCodeType from SubCode sc";
                 Query query = session.createQuery(hql);
                 return query.list();
-                //return null;  //To change body of implemented methods use File | Settings | File Templates.
             }
         });
-        //return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<String> getUniqueDescriptionsByFeatureType(final String featureType) {
+
+        return (List<String>) getHibernateTemplate().execute(new HibernateCallback() {
+            public Object doInHibernate(Session session) throws HibernateException, SQLException {
+
+                String hql = "select distinct sc.subCodeDescription from SubCode sc where sc.subCodeType = :type";
+                Query query = session.createQuery(hql);
+                query.setString("type", featureType);
+
+                return query.list();
+            }
+        });
     }
 }
