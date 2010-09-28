@@ -18,6 +18,6 @@
         <sjg:gridColumn name="stateCode" title="FIPS Code" />
     </sjg:grid>
 
-
+    <s:a namespace="/stateCode" action="showCreate">Create Statecode</s:a>
   </body>
 </html>
