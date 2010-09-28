@@ -1,7 +1,6 @@
 package org.jason.mapmaker2.web.action;
 
 import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.Preparable;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiPolygon;
@@ -15,8 +14,13 @@ import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureImpl;
-import org.jason.mapmaker2.model.*;
-import org.jason.mapmaker2.service.*;
+import org.jason.mapmaker2.model.BorderPoint;
+import org.jason.mapmaker2.model.State;
+import org.jason.mapmaker2.model.StateCode;
+import org.jason.mapmaker2.model.SubCode;
+import org.jason.mapmaker2.service.BorderPointService;
+import org.jason.mapmaker2.service.StateCodeService;
+import org.jason.mapmaker2.service.SubCodeService;
 import org.opengis.feature.GeometryAttribute;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StopWatch;
@@ -40,7 +44,7 @@ import java.util.zip.ZipFile;
         @Result(name = "input", location = "/WEB-INF/content/admin/borderPoint/create2.jsp")
 })
 @SuppressWarnings("unused")
-public class BorderPointAction extends ActionSupport implements ServletContextAware, Preparable {
+public class BorderPointAction extends ActionSupport implements ServletContextAware {
 
     ServletContext servletContext;
 
@@ -55,18 +59,12 @@ public class BorderPointAction extends ActionSupport implements ServletContextAw
         this.borderPointService = borderPointService;
     }
 
-    private StateService stateService;
     private StateCodeService stateCodeService;
     private SubCodeService subCodeService;
 
     @Autowired
     public void setStateCodeService(StateCodeService stateCodeService) {
         this.stateCodeService = stateCodeService;
-    }
-
-    @Autowired
-    public void setStateService(StateService stateService) {
-        this.stateService = stateService;
     }
 
     @Autowired
@@ -139,10 +137,6 @@ public class BorderPointAction extends ActionSupport implements ServletContextAw
         this.statesList = statesList;
     }
 
-    public void prepare() throws Exception {
-        statesList = stateService.getAll();
-    }
-
     @Action("")
     @SkipValidation
     public String execute() throws Exception {
@@ -162,14 +156,10 @@ public class BorderPointAction extends ActionSupport implements ServletContextAw
 
         StopWatch timer = new StopWatch();
         timer.start();
-        // get the state and subcode
-        State state = stateService.getById(stateId);
+        // get the subcode
         if (subCodeId > -1) {
             SubCode subCode = subCodeService.getById(subCodeId);
         }
-
-        // get the tiger feature type
-        //TigerFeatureType tft = tigerFeatureTypeService.getById(featureTypeId);
 
         // process the Shapefile
         // create list of filenames so we know what to delete later
