@@ -11,7 +11,7 @@
                 var options='';
                 var stateCodeList = j.stateCodeList;
                 for (var i=0; i<stateCodeList.length; i++) {
-                    options += '<option value="' + stateCodeList.id + '">' + stateCodeList.label + '</option>';
+                    options += '<option value="' + stateCodeList[i].id + '">' + stateCodeList[i].label + '</option>';
                 }
                 $("select#stateCodeId").html(options);
             })
