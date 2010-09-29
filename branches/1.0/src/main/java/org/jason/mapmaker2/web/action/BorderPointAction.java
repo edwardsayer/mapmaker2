@@ -15,7 +15,6 @@ import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureImpl;
 import org.jason.mapmaker2.model.BorderPoint;
-import org.jason.mapmaker2.model.State;
 import org.jason.mapmaker2.model.StateCode;
 import org.jason.mapmaker2.model.SubCode;
 import org.jason.mapmaker2.model.factory.BorderPointFactory;
@@ -125,16 +124,6 @@ public class BorderPointAction extends ActionSupport implements ServletContextAw
 
     public void setFileCaption(String fileCaption) {
         this.fileCaption = fileCaption;
-    }
-
-    private List<State> statesList;
-
-    public List<State> getStatesList() {
-        return statesList;
-    }
-
-    public void setStatesList(List<State> statesList) {
-        this.statesList = statesList;
     }
 
     @Action("")
