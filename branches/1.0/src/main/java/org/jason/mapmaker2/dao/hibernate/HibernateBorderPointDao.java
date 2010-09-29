@@ -2,13 +2,17 @@ package org.jason.mapmaker2.dao.hibernate;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.CacheMode;
-import org.hibernate.Transaction;
+import org.hibernate.*;
 import org.jason.mapmaker2.dao.BorderPointDao;
 import org.jason.mapmaker2.model.BorderPoint;
+import org.jason.mapmaker2.model.StateCode;
+import org.jason.mapmaker2.model.SubCode;
+import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.stereotype.Repository;
 
+import java.sql.SQLException;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author Jason Ferguson
@@ -48,4 +52,25 @@ public class HibernateBorderPointDao extends HibernateGenericDao<BorderPoint> im
         getSession().setCacheMode(CacheMode.NORMAL);
     }
 
+    @SuppressWarnings("unchecked")
+    public Float getMinimumLatitude(final StateCode stateCode, final SubCode subCode) {
+
+        List<Float> results =  (List<Float>) getHibernateTemplate().execute(new HibernateCallback() {
+            public Object doInHibernate(Session session) throws HibernateException, SQLException {
+
+                String hql = "select min(bp.latitude) from BorderPoint bp where bp.stateCode = :stateCode and bp.subCode = :subCode";
+                Query query = session.createQuery(hql);
+                query.setParameter("stateCode", stateCode);
+                query.setParameter("subCode", subCode);
+
+                return query.list();
+            }
+        });
+
+        if (results.size() < 1) {
+            return null;
+        }
+
+        return results.get(0);
+    }
 }
