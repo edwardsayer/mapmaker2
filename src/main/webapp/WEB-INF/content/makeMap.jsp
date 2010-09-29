@@ -61,7 +61,7 @@
 
         function drawMap2() {
 
-                $.getJSON("/customMap/getCustomMapJson", {stateId: $("stateCodeId").val(), subCodeId: $("subCodeId").val()}, function(j) {
+                $.getJSON("/customMap/getCustomMapJson", {stateId: $("stateCodeId").val(), subCodeId: $("subCodeId").val(), ajax:'true'}, function(j) {
                     // get the map
                     var mapData = j.map;
 
@@ -95,14 +95,7 @@
                     //var map = new google.maps.Map($("div#map_canvas"), myOptions);
                     var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
                 });
-//            var latlng = new google.maps.LatLng(lat, lng);
-//            var myOptions = {
-//                zoom: 8,
-//                center: latlng,
-//                mapTypeId: google.maps.MapTypeId.ROADMAP
-//            };
-//            //var map = new google.maps.Map($("div#map_canvas"), myOptions);
-//            var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+
         }
     </script>
 </head>
@@ -131,7 +124,7 @@
 
         <p>
             <label for="featureName">Feature Name</label>
-            <select id="featureName" name="featureName" onchange="drawmap2();">
+            <select id="featureName" name="featureName" onchange="drawMap2();">
                 <option value="-1">Please Select A Feature Name</option>
             </select>
         </p>
