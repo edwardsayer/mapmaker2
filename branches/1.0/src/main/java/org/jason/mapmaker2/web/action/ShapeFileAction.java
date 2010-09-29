@@ -11,10 +11,7 @@ import org.geotools.data.FeatureSource;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
-import org.jason.mapmaker2.model.State;
-import org.jason.mapmaker2.service.StateService;
 import org.opengis.feature.Feature;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.ServletContext;
 import java.io.BufferedInputStream;
@@ -46,13 +43,6 @@ public class ShapeFileAction extends ActionSupport implements ServletContextAwar
 
     public void setServletContext(ServletContext servletContext) {
         this.servletContext = servletContext;
-    }
-
-    private StateService stateService;
-
-    @Autowired
-    public void setStateService(StateService stateService) {
-        this.stateService = stateService;
     }
 
     private File fileUpload;
@@ -92,20 +82,9 @@ public class ShapeFileAction extends ActionSupport implements ServletContextAwar
         this.fileCaption = fileCaption;
     }
 
-    private List<State> states;
-
-    public List<State> getStates() {
-        return states;
-    }
-
-    public void setStates(List<State> states) {
-        this.states = states;
-    }
-
     @Action("")
     public String execute() throws Exception {
 
-        states = stateService.getAll();
         return SUCCESS;
     }
 
