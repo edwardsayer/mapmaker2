@@ -2,6 +2,8 @@ package org.jason.mapmaker2.service;
 
 import org.jason.mapmaker2.dao.BorderPointDao;
 import org.jason.mapmaker2.model.BorderPoint;
+import org.jason.mapmaker2.model.StateCode;
+import org.jason.mapmaker2.model.SubCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,5 +47,14 @@ public class BorderPointServiceImpl implements BorderPointService {
     @Transactional
     public void saveAll(Collection<BorderPoint> bpCollection) {
         borderPointDao.saveAll(bpCollection);
+    }
+
+    public List<BorderPoint> getByStateCodeAndSubCode(StateCode stateCode, SubCode subCode) {
+
+        BorderPoint example = new BorderPoint();
+        example.setStateCode(stateCode);
+        example.setSubCode(subCode);
+
+        return borderPointDao.queryByExample(example);
     }
 }
