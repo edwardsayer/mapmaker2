@@ -57,4 +57,9 @@ public class BorderPointServiceImpl implements BorderPointService {
 
         return borderPointDao.queryByExample(example);
     }
+
+    public Float getMinimumLatitude(StateCode stateCode, SubCode subCode) {
+
+        return borderPointDao.getMinimumLatitude(stateCode, subCode);
+    }
 }
