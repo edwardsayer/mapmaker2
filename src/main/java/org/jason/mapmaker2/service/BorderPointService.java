@@ -15,4 +15,6 @@ public interface BorderPointService extends BasicServiceOperations<BorderPoint>{
     void saveAll(Collection<BorderPoint> bpCollection);
 
     List<BorderPoint> getByStateCodeAndSubCode(StateCode stateCode, SubCode subCode);
+
+    Float getMinimumLatitude(StateCode stateCode, SubCode subCode);
 }
