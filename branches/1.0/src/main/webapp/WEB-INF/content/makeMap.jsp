@@ -38,7 +38,7 @@
                 }
             });
 
-            drawMap(-34.397, 150.644);
+            //drawMap2(-34.397, 150.644);
         });
 
         function reloadSubcode() {
@@ -56,18 +56,53 @@
                 for (var i = 0; i < descriptionList.length; i++) {
                     $("select#featureName").append(new Option(descriptionList[i], descriptionList[i]));
                 }
-            })
+            });
         }
 
-        function drawMap(lat, lng) {
-            var latlng = new google.maps.LatLng(lat, lng);
-            var myOptions = {
-                zoom: 8,
-                center: latlng,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            };
-            //var map = new google.maps.Map($("div#map_canvas"), myOptions);
-            var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+        function drawMap2() {
+
+                $.getJSON("/customMap/getCustomMapJson", {stateId: $("stateCodeId").val(), subCodeId: $("subCodeId").val()}, function(j) {
+                    // get the map
+                    var mapData = j.map;
+
+                    // figure out the center
+                    var ctrLat = (j.minLat + j.maxLat) / 2;
+                    var ctrLng = (j.minLng + j.maxLng) / 2;
+
+                    //compute the polygon
+                    var borderPoints;
+
+                    for (var i = 0; i < j.borderPoints; i++) {
+                        var ll = new (google.maps.LatLng(j.borderPoints[i].latitude, j.borderPoints[i].longitude));
+                        borderPoints.push(ll);
+                    }
+
+                    borderPolygon = new google.maps.Polygon({
+                        paths: borderPoints,
+                        strokeColor: "#FF0000",
+                        strokeOpacity: 0.8,
+                        strokeWeight: 2,
+                        fillColor: "#FF0000",
+                        fillOpacity: 0.35
+                    });
+
+                    var latLng = new google.maps.LatLng(ctrLat, ctrLng);
+                    var myOptions = {
+                        zoom: 8,
+                        center: latlng,
+                        mapTypeId: google.maps.MapTypeId.ROADMAP
+                    };
+                    //var map = new google.maps.Map($("div#map_canvas"), myOptions);
+                    var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+                });
+//            var latlng = new google.maps.LatLng(lat, lng);
+//            var myOptions = {
+//                zoom: 8,
+//                center: latlng,
+//                mapTypeId: google.maps.MapTypeId.ROADMAP
+//            };
+//            //var map = new google.maps.Map($("div#map_canvas"), myOptions);
+//            var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
         }
     </script>
 </head>
@@ -96,7 +131,7 @@
 
         <p>
             <label for="featureName">Feature Name</label>
-            <select id="featureName" name="featureName">
+            <select id="featureName" name="featureName" onchange="drawmap2();">
                 <option value="-1">Please Select A Feature Name</option>
             </select>
         </p>
