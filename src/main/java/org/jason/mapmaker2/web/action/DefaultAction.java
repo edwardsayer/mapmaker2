@@ -133,7 +133,7 @@ public class DefaultAction extends ActionSupport implements ParameterAware {
         return SUCCESS;
     }
 
-    List<String> descriptions;
+    private List<String> descriptions;
 
     public List<String> getDescriptions() {
         return descriptions;
@@ -143,16 +143,49 @@ public class DefaultAction extends ActionSupport implements ParameterAware {
         this.descriptions = descriptions;
     }
 
+    private List<SubCode> subCodes;
+
+    public List<SubCode> getSubCodes() {
+        return subCodes;
+    }
+
+    public void setSubCodes(List<SubCode> subCodes) {
+        this.subCodes = subCodes;
+    }
+
     @Action(value="getSubCodeDescriptionsByFeatureTypeJson", results = {
-            @Result(name="success", type = "json")
+            @Result(name="success", type = "json"),
+            @Result(name="input", location = "/WEB-INF/content/makeMap.jsp")
     })
     public String getSubCodeDescriptionsByFeatureType() throws Exception {
 
-        if (parameters != null && parameters.get("featureName") != null) {
+        // TODO: need to get all of the subcodes back by feature type, not a list of Strings
+        // get the subcodes by stateId and feature type (i.e. county names if the feature is a county)
+        if (parameters != null) {
+            if (parameters.get("stateCodeId") == null) {
+                addActionError("No State Code ID received!");
+                return INPUT;
+            }
+
+            if (parameters.get("featureName") == null) {
+                addActionError("No Feature Name received for AJAX call!");
+                return INPUT;
+            }
+
+            StateCode stateCode = stateCodeService.getById(stateCodeId);
             String featureType = parameters.get("featureName")[0];
-            descriptions = subCodeService.getUniqueDescriptionsByFeatureType(featureType);
+            subCodes = subCodeService.getByStateCodeAndFeatureType(stateCode, featureType);
+
+            return SUCCESS;
+
         }
 
-        return SUCCESS;
+        return INPUT;
+//        if (parameters != null && parameters.get("featureName") != null) {
+//            String featureType = parameters.get("featureName")[0];
+//            descriptions = subCodeService.getUniqueDescriptionsByFeatureType(featureType);
+//        }
+//
+//        return SUCCESS;
     }
 }
