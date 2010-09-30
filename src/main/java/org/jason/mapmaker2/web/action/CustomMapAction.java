@@ -140,10 +140,23 @@ public class CustomMapAction extends ActionSupport implements ParameterAware {
     }
 
     @Action(value = "getCustomMapJson", results = {
-            @Result(name="success", type = "json")
+            @Result(name="success", type = "json"),
+            @Result(name="input", location = "/WEB-INF/content/makeMap.jsp")
     })
     public String getCustomMapJson() throws Exception {
 
+//        if (parameters != null) {
+//            if (parameters.get("stateId") == null) {
+//                addActionError("Unable to get State Code ID!");
+//                return INPUT;
+//            }
+//
+//            if (parameters.get("subCodeFeatureType") == null) {
+//                addActionError("Unable to get Sub Code Feature Type");
+//            }
+//
+//            StateCode stateCode = st
+//        }
         stateId = Integer.parseInt(parameters.get("stateId")[0]);
         subCodeId = Integer.parseInt(parameters.get("subCodeId")[0]);
         
