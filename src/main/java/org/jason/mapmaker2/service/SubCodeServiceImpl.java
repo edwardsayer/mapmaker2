@@ -49,6 +49,15 @@ public class SubCodeServiceImpl implements SubCodeService {
         return subCodeDao.queryByExample(subCode);
     }
 
+    public List<SubCode> getByStateCodeAndFeatureType(StateCode stateCode, String featureType) {
+
+        SubCode example = new SubCode();
+        example.setStateCode(stateCode);
+        example.setSubCodeType(featureType);
+
+        return subCodeDao.queryByExample(example);
+    }
+
     public List<String> getUniqueSubCodeTypesByStateCode(StateCode stateCode) {
         return subCodeDao.getUniqueSubCodeTypesByStateCode(stateCode);
         //return null;  //To change body of implemented methods use File | Settings | File Templates.
