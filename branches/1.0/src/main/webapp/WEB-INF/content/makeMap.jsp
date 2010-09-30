@@ -38,64 +38,75 @@
                 }
             });
 
-            //drawMap2(-34.397, 150.644);
         });
 
         function reloadSubcode() {
             $.getJSON("/getSubCodesJson", {id: $("select#stateCodeId").val(), ajax:'true'}, function(j) {
                 var subCodeList = j.distinctSubCodes;
                 for (var i = 0; i < subCodeList.length; i++) {
-                    $("select#subCodeId").append(new Option(subCodeList[i], subCodeList[i]));
+                    $("select#subCodeFeatureType").append(new Option(subCodeList[i], subCodeList[i]));
                 }
             });
         }
 
+        // descriptions need to come back with description and actual subcode id
         function reloadDescriptions() {
-            $.getJSON("/getSubCodeDescriptionsByFeatureTypeJson", {featureName: $("select#subCodeId").val(), ajax:'true'}, function(j) {
-                var descriptionList = j.descriptions;
-                for (var i = 0; i < descriptionList.length; i++) {
-                    $("select#featureName").append(new Option(descriptionList[i], descriptionList[i]));
+            $.getJSON("/getSubCodeDescriptionsByFeatureTypeJson", {stateCodeId: $("select#stateCodeId") , featureName: $("select#subCodeFeatureType").val(), ajax:'true'}, function(j) {
+                var subcodes = j.subCodes;
+                for (var i=0; i <subcodes.length; i++) {
+                    $("select#featureName").append(new Option(subcodes[i].subCodeDescription, subcodes[i].id));
                 }
+//                var descriptionList = j.descriptions;
+//                for (var i = 0; i < descriptionList.length; i++) {
+//                    $("select#featureName").append(new Option(descriptionList[i], descriptionList[i]));
+//                }
             });
         }
 
         function drawMap2() {
 
-                $.getJSON("/customMap/getCustomMapJson", {stateId: $("stateCodeId").val(), subCodeId: $("subCodeId").val(), ajax:'true'}, function(j) {
-                    // get the map
-                    var mapData = j.map;
+            $.getJSON("/customMap/getCustomMapJson", {stateId: $("select#stateCodeId").val(), subCodeId: $("select#subCodeId").val()}, function(j) {
+                // get the map
+                var mapData = j.map;
 
-                    // figure out the center
-                    var ctrLat = (j.minLat + j.maxLat) / 2;
-                    var ctrLng = (j.minLng + j.maxLng) / 2;
+                // figure out the center
+                var ctrLat = (j.minLat + j.maxLat) / 2;
+                var ctrLng = (j.minLng + j.maxLng) / 2;
 
-                    //compute the polygon
-                    var borderPoints;
+                //compute the polygon
+                var borderPoints;
 
-                    for (var i = 0; i < j.borderPoints; i++) {
-                        var ll = new (google.maps.LatLng(j.borderPoints[i].latitude, j.borderPoints[i].longitude));
-                        borderPoints.push(ll);
-                    }
+                for (var i = 0; i < j.borderPoints; i++) {
+                    var ll = new (google.maps.LatLng(j.borderPoints[i].latitude, j.borderPoints[i].longitude));
+                    borderPoints.push(ll);
+                }
 
-                    borderPolygon = new google.maps.Polygon({
-                        paths: borderPoints,
-                        strokeColor: "#FF0000",
-                        strokeOpacity: 0.8,
-                        strokeWeight: 2,
-                        fillColor: "#FF0000",
-                        fillOpacity: 0.35
-                    });
-
-                    var latLng = new google.maps.LatLng(ctrLat, ctrLng);
-                    var myOptions = {
-                        zoom: 8,
-                        center: latlng,
-                        mapTypeId: google.maps.MapTypeId.ROADMAP
-                    };
-                    //var map = new google.maps.Map($("div#map_canvas"), myOptions);
-                    var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+                borderPolygon = new google.maps.Polygon({
+                    paths: borderPoints,
+                    strokeColor: "#FF0000",
+                    strokeOpacity: 0.8,
+                    strokeWeight: 2,
+                    fillColor: "#FF0000",
+                    fillOpacity: 0.35
                 });
 
+                var latLng = new google.maps.LatLng(ctrLat, ctrLng);
+                var myOptions = {
+                    zoom: 8,
+                    center: latlng,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                };
+                //var map = new google.maps.Map($("div#map_canvas"), myOptions);
+                var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+            });
+            //            var latlng = new google.maps.LatLng(lat, lng);
+            //            var myOptions = {
+            //                zoom: 8,
+            //                center: latlng,
+            //                mapTypeId: google.maps.MapTypeId.ROADMAP
+            //            };
+            //            //var map = new google.maps.Map($("div#map_canvas"), myOptions);
+            //            var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
         }
     </script>
 </head>
@@ -104,6 +115,7 @@
 <div id="map_canvas" style="width: 640px; height: 480px; display: block; margin-left:auto; margin-right:auto">
 
 </div>
+<s:actionerror/>
 
 <s:form name="mapGeneratorForm">
     <fieldset>
@@ -116,15 +128,19 @@
         </p>
 
         <p>
-            <label for="subCodeId">SubCode</label>
+            <label for="subCodeFeatureType">Sub Code Feature Type</label>
+            <select name="subCodeFeatureType" id="subCodeFeatureType" onchange="reloadDescriptions();">
+                <option value="-1">Please Select A Feature Type</option>
+            </select>
+<%--            <label for="subCodeId">SubCode</label>
             <select id="subCodeId" name="subCodeId" onchange="reloadDescriptions();">
                 <option value="-1">Please Select A SubCode</option>
-            </select>
+            </select>--%>
         </p>
 
         <p>
             <label for="featureName">Feature Name</label>
-            <select id="featureName" name="featureName" onchange="drawMap2();">
+            <select id="featureName" name="featureName" onchange="drawmap2();">
                 <option value="-1">Please Select A Feature Name</option>
             </select>
         </p>
