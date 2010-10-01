@@ -25,6 +25,14 @@
             height: 100%
         }
 
+        #left {
+            width: 250px;
+        }
+
+        #main {
+            width: 750px;
+        }
+
     </style>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
     <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false">
@@ -53,13 +61,13 @@
         function reloadDescriptions() {
             $.getJSON("/getSubCodeDescriptionsByFeatureTypeJson", {stateCodeId: $("select#stateCodeId").val() , featureName: $("select#subCodeFeatureType").val(), ajax:'true'}, function(j) {
                 var subcodes = j.subCodes;
-                for (var i=0; i <subcodes.length; i++) {
+                for (var i = 0; i < subcodes.length; i++) {
                     $("select#featureName").append(new Option(subcodes[i].subCodeDescription, subcodes[i].id));
                 }
-//                var descriptionList = j.descriptions;
-//                for (var i = 0; i < descriptionList.length; i++) {
-//                    $("select#featureName").append(new Option(descriptionList[i], descriptionList[i]));
-//                }
+                //                var descriptionList = j.descriptions;
+                //                for (var i = 0; i < descriptionList.length; i++) {
+                //                    $("select#featureName").append(new Option(descriptionList[i], descriptionList[i]));
+                //                }
             });
         }
 
@@ -74,13 +82,18 @@
                 var ctrLng = (j.minLng + j.maxLng) / 2;
 
                 //compute the polygon
-                var borderPoints;
+                var mapBorderPoints = mapData.borderPoints;
+                var borderPoints = new Array();
 
-                for (var i = 0; i < j.borderPoints; i++) {
-                    var ll = new (google.maps.LatLng(j.borderPoints[i].latitude, j.borderPoints[i].longitude));
+                alert(mapBorderPoints.length);
+                alert("First point:" + mapBorderPoints[0].latitude + "," + mapBorderPoints[0].longitude);
+                for (var i = 0; i < mapBorderPoints.length; i++) {
+                    var ll = new (google.maps.LatLng(mapBorderPoints[i].latitude, mapBorderPoints[i].longitude));
                     borderPoints.push(ll);
                 }
 
+                alert(borderPoints.length);
+                
                 borderPolygon = new google.maps.Polygon({
                     paths: borderPoints,
                     strokeColor: "#FF0000",
@@ -112,37 +125,43 @@
 </head>
 <body>
 
-<div id="map_canvas" style="width: 640px; height: 480px; display: block; margin-left:auto; margin-right:auto">
+<div id="left">
+    <s:form name="mapGeneratorForm">
+        <fieldset>
 
+            <p>
+                <label for="stateCodeId">State</label>
+                <select id="stateCodeId" name="stateCodeId" onchange="reloadSubcode();">
+                    <option value="-1">Please Select A State</option>
+                </select>
+            </p>
+
+            <p>
+                <label for="subCodeFeatureType">Sub Code Feature Type</label>
+                <select name="subCodeFeatureType" id="subCodeFeatureType" onchange="reloadDescriptions();">
+                    <option value="-1">Please Select A Feature Type</option>
+                </select>
+            <p>
+                <label for="featureName">Feature Name</label>
+                <select id="featureName" name="featureName" onchange="drawMap2();">
+                    <option value="-1">Please Select A Feature Name</option>
+                </select>
+            </p>
+
+        </fieldset>
+
+    </s:form>
+    <s:a id="menuPage" namespace="/" action="menu">Menu</s:a>
 </div>
-<s:actionerror/>
 
-<s:form name="mapGeneratorForm">
-    <fieldset>
+<div id="main">
+    <s:actionerror/>
 
-        <p>
-            <label for="stateCodeId">State</label>
-            <select id="stateCodeId" name="stateCodeId" onchange="reloadSubcode();">
-                <option value="-1">Please Select A State</option>
-            </select>
-        </p>
+    <div id="map_canvas" style="width: 640px; height: 480px; display: block; margin-left:auto; margin-right:auto">
 
-        <p>
-            <label for="subCodeFeatureType">Sub Code Feature Type</label>
-            <select name="subCodeFeatureType" id="subCodeFeatureType" onchange="reloadDescriptions();">
-                <option value="-1">Please Select A Feature Type</option>
-            </select>
-        <p>
-            <label for="featureName">Feature Name</label>
-            <select id="featureName" name="featureName" onchange="drawMap2();">
-                <option value="-1">Please Select A Feature Name</option>
-            </select>
-        </p>
+    </div>
+</div>
 
-    </fieldset>
-
-</s:form>
-<s:a id="menuPage" namespace="/" action="menu">Menu</s:a>
 
 </body>
 </html>
