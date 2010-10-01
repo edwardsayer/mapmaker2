@@ -65,7 +65,6 @@
         <property name="annotatedClasses">
             <list>
                 <value>org.jason.mapmaker2.model.BorderPoint</value>
-                <value>org.jason.mapmaker2.model.State</value>
                 <value>org.jason.mapmaker2.model.StateCode</value>
                 <value>org.jason.mapmaker2.model.SubCode</value>
             </list>
