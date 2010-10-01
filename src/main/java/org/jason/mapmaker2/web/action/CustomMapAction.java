@@ -140,8 +140,7 @@ public class CustomMapAction extends ActionSupport implements ParameterAware {
     }
 
     @Action(value = "getCustomMapJson", results = {
-            @Result(name="success", type = "json"),
-            @Result(name="input", location = "/WEB-INF/content/makeMap.jsp")
+            @Result(name="success", type = "json")
     })
     public String getCustomMapJson() throws Exception {
 
