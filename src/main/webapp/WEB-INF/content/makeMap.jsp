@@ -65,7 +65,7 @@
 
         function drawMap2() {
 
-            $.getJSON("/customMap/getCustomMapJson", {stateId: $("select#stateCodeId").val(), subCodeId: $("select#subCodeId").val()}, function(j) {
+            $.getJSON("/customMap/getCustomMapJson", {stateId: $("select#stateCodeId").val(), subCodeId: $("select#featureName").val(), ajax:'true'}, function(j) {
                 // get the map
                 var mapData = j.map;
 
