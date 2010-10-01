@@ -51,7 +51,7 @@
 
         // descriptions need to come back with description and actual subcode id
         function reloadDescriptions() {
-            $.getJSON("/getSubCodeDescriptionsByFeatureTypeJson", {stateCodeId: $("select#stateCodeId") , featureName: $("select#subCodeFeatureType").val(), ajax:'true'}, function(j) {
+            $.getJSON("/getSubCodeDescriptionsByFeatureTypeJson", {stateCodeId: $("select#stateCodeId").val() , featureName: $("select#subCodeFeatureType").val(), ajax:'true'}, function(j) {
                 var subcodes = j.subCodes;
                 for (var i=0; i <subcodes.length; i++) {
                     $("select#featureName").append(new Option(subcodes[i].subCodeDescription, subcodes[i].id));
