@@ -51,11 +51,13 @@ public class BorderPointServiceImpl implements BorderPointService {
 
     public List<BorderPoint> getByStateCodeAndSubCode(StateCode stateCode, SubCode subCode) {
 
-        BorderPoint example = new BorderPoint();
-        example.setStateCode(stateCode);
-        example.setSubCode(subCode);
+//        BorderPoint example = new BorderPoint();
+//        example.setStateCode(stateCode);
+//        example.setSubCode(subCode);
+//
+//        return borderPointDao.queryByExample(example);
 
-        return borderPointDao.queryByExample(example);
+        return borderPointDao.getByStateCodeAndSubCode(stateCode, subCode);
     }
 
     public Float getMinimumLatitude(StateCode stateCode, SubCode subCode) {
