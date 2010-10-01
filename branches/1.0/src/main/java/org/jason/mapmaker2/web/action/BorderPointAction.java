@@ -262,13 +262,9 @@ public class BorderPointAction extends ActionSupport implements ServletContextAw
                             lng = MathUtils.round(lng, 3);
 
                             if (lat != null && lng != null) {
-                                //BorderPoint bp = bpFactory.getBorderPoint();
-                                ///bp.setLatitude(lat);
-                                //bp.setLongitude(lng);
                                 BorderPoint bp = new BorderPoint(stateCode, subCode, lat, lng);
                                 bpSet.add(bp);
                                 
-                                //bp = null;
                             }
                         }
 
