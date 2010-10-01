@@ -17,7 +17,6 @@ import org.geotools.feature.simple.SimpleFeatureImpl;
 import org.jason.mapmaker2.model.BorderPoint;
 import org.jason.mapmaker2.model.StateCode;
 import org.jason.mapmaker2.model.SubCode;
-import org.jason.mapmaker2.model.factory.BorderPointFactory;
 import org.jason.mapmaker2.service.BorderPointService;
 import org.jason.mapmaker2.service.StateCodeService;
 import org.jason.mapmaker2.service.SubCodeService;
@@ -247,7 +246,7 @@ public class BorderPointAction extends ActionSupport implements ServletContextAw
                         SubCode subCode = new SubCode(stateCode, subCodeId, subCodeDescription, "County");
                         SubCode result = subCodeService.save(subCode);
 
-                        BorderPointFactory bpFactory = new BorderPointFactory(stateCode, subCode);
+                        //BorderPointFactory bpFactory = new BorderPointFactory(stateCode, subCode);
 
                         MultiPolygon mp = (MultiPolygon) feature.getAttribute(0);
                         Geometry g = mp.getGeometryN(0);
@@ -263,13 +262,13 @@ public class BorderPointAction extends ActionSupport implements ServletContextAw
                             lng = MathUtils.round(lng, 3);
 
                             if (lat != null && lng != null) {
-                                BorderPoint bp = bpFactory.getBorderPoint();
-                                bp.setLatitude(lat);
-                                bp.setLongitude(lng);
-                                //BorderPoint bp = new BorderPoint(stateCode, subCode, lat, lng);
+                                //BorderPoint bp = bpFactory.getBorderPoint();
+                                ///bp.setLatitude(lat);
+                                //bp.setLongitude(lng);
+                                BorderPoint bp = new BorderPoint(stateCode, subCode, lat, lng);
                                 bpSet.add(bp);
                                 
-                                bp = null;
+                                //bp = null;
                             }
                         }
 
