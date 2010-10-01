@@ -13,6 +13,7 @@ import org.jason.mapmaker2.service.SubCodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -164,28 +165,27 @@ public class DefaultAction extends ActionSupport implements ParameterAware {
         if (parameters != null) {
             if (parameters.get("stateCodeId") == null) {
                 addActionError("No State Code ID received!");
-                return INPUT;
+                return SUCCESS;
             }
 
             if (parameters.get("featureName") == null) {
                 addActionError("No Feature Name received for AJAX call!");
-                return INPUT;
+                return SUCCESS;
             }
 
             StateCode stateCode = stateCodeService.getById(stateCodeId);
             String featureType = parameters.get("featureName")[0];
             subCodes = subCodeService.getByStateCodeAndFeatureType(stateCode, featureType);
-
+            Collections.sort(subCodes, new Comparator<SubCode>() {
+                public int compare(SubCode o1, SubCode o2) {
+                    return o1.getSubCodeDescription().compareTo(o2.getSubCodeDescription());
+                }
+            });
+            
             return SUCCESS;
 
         }
 
-        return INPUT;
-//        if (parameters != null && parameters.get("featureName") != null) {
-//            String featureType = parameters.get("featureName")[0];
-//            descriptions = subCodeService.getUniqueDescriptionsByFeatureType(featureType);
-//        }
-//
-//        return SUCCESS;
+        return SUCCESS;
     }
 }
