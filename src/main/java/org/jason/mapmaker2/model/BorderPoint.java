@@ -105,18 +105,20 @@ public class BorderPoint implements Serializable {
 
         BorderPoint that = (BorderPoint) o;
 
-        if (!latitude.equals(that.latitude)) return false;
-        if (!longitude.equals(that.longitude)) return false;
-        if (!stateCode.equals(that.stateCode)) return false;
+        if (latitude != null ? !latitude.equals(that.latitude) : that.latitude != null) return false;
+        if (longitude != null ? !longitude.equals(that.longitude) : that.longitude != null) return false;
+        if (stateCode != null ? !stateCode.equals(that.stateCode) : that.stateCode != null) return false;
+        if (subCode != null ? !subCode.equals(that.subCode) : that.subCode != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = stateCode.hashCode();
-        result = 31 * result + latitude.hashCode();
-        result = 31 * result + longitude.hashCode();
+        int result = stateCode != null ? stateCode.hashCode() : 0;
+        result = 31 * result + (subCode != null ? subCode.hashCode() : 0);
+        result = 31 * result + (latitude != null ? latitude.hashCode() : 0);
+        result = 31 * result + (longitude != null ? longitude.hashCode() : 0);
         return result;
     }
 }
