@@ -132,15 +132,9 @@
             <select name="subCodeFeatureType" id="subCodeFeatureType" onchange="reloadDescriptions();">
                 <option value="-1">Please Select A Feature Type</option>
             </select>
-<%--            <label for="subCodeId">SubCode</label>
-            <select id="subCodeId" name="subCodeId" onchange="reloadDescriptions();">
-                <option value="-1">Please Select A SubCode</option>
-            </select>--%>
-        </p>
-
         <p>
             <label for="featureName">Feature Name</label>
-            <select id="featureName" name="featureName" onchange="drawmap2();">
+            <select id="featureName" name="featureName" onchange="drawMap2();">
                 <option value="-1">Please Select A Feature Name</option>
             </select>
         </p>
