@@ -20,18 +20,18 @@ public class CustomMapServiceImpl implements CustomMapService {
     private BorderPointService borderPointService;
 
     @Autowired
-    public StateCodeService getStateCodeService() {
-        return stateCodeService;
+    public void setStateCodeService(StateCodeService stateCodeService) {
+        this.stateCodeService = stateCodeService;
     }
 
     @Autowired
-    public SubCodeService getSubCodeService() {
-        return subCodeService;
+    public void setSubCodeService(SubCodeService subCodeService) {
+        this.subCodeService = subCodeService;
     }
 
     @Autowired
-    public BorderPointService getBorderPointService() {
-        return borderPointService;
+    public void setBorderPointService(BorderPointService borderPointService) {
+        this.borderPointService = borderPointService;
     }
 
     public CustomMap createMap(Integer stateId, Integer subCodeId) throws ServiceException{
