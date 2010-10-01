@@ -75,4 +75,30 @@ public class SubCode implements Serializable {
     public void setSubCodeType(String subCodeType) {
         this.subCodeType = subCodeType;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        SubCode subCode1 = (SubCode) o;
+
+        if (stateCode != null ? !stateCode.equals(subCode1.stateCode) : subCode1.stateCode != null) return false;
+        if (subCode != null ? !subCode.equals(subCode1.subCode) : subCode1.subCode != null) return false;
+        if (subCodeDescription != null ? !subCodeDescription.equals(subCode1.subCodeDescription) : subCode1.subCodeDescription != null)
+            return false;
+        if (subCodeType != null ? !subCodeType.equals(subCode1.subCodeType) : subCode1.subCodeType != null)
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = stateCode != null ? stateCode.hashCode() : 0;
+        result = 31 * result + (subCode != null ? subCode.hashCode() : 0);
+        result = 31 * result + (subCodeDescription != null ? subCodeDescription.hashCode() : 0);
+        result = 31 * result + (subCodeType != null ? subCodeType.hashCode() : 0);
+        return result;
+    }
 }
