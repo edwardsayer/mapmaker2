@@ -73,4 +73,20 @@ public class HibernateBorderPointDao extends HibernateGenericDao<BorderPoint> im
 
         return results.get(0);
     }
+
+    @SuppressWarnings("unchecked")
+    public List<BorderPoint> getByStateCodeAndSubCode(final StateCode stateCode, final SubCode subCode) {
+
+        return (List<BorderPoint>) getHibernateTemplate().execute(new HibernateCallback() {
+            public Object doInHibernate(Session session) throws HibernateException, SQLException {
+
+                String hql = "from BorderPoint bp where bp.stateCode = :stateCode and bp.subCode = :subCode";
+                Query query = session.createQuery(hql);
+                query.setParameter("stateCode", stateCode);
+                query.setParameter("subCode", subCode);
+
+                return query.list();
+            }
+        });
+    }
 }
