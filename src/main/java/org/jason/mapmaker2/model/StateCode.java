@@ -7,6 +7,10 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
+ * StateCode.java
+ *
+ * Represents a state for Shapefiles that are state-based
+ *
  * @author Jason Ferguson
  */
 @Entity
