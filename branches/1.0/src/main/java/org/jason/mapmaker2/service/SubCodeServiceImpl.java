@@ -1,9 +1,8 @@
 package org.jason.mapmaker2.service;
 
-import org.geotools.data.FeatureSource;
 import org.jason.mapmaker2.dao.SubCodeDao;
-import org.jason.mapmaker2.model.SubCode;
 import org.jason.mapmaker2.model.StateCode;
+import org.jason.mapmaker2.model.SubCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -61,7 +60,6 @@ public class SubCodeServiceImpl implements SubCodeService {
 
     public List<String> getUniqueSubCodeTypesByStateCode(StateCode stateCode) {
         return subCodeDao.getUniqueSubCodeTypesByStateCode(stateCode);
-        //return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
 }
