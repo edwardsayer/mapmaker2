@@ -8,7 +8,6 @@
 
   <h1>Admin Menu</h1>
   <p><s:a id="stateCodeManagement" namespace="/stateCode" action="">Manage States</s:a> </p>
-  <p><s:a id="subCodeManagement" namespace="/subCode" action="">Manage Subcodes</s:a> </p>
   <p><s:a id="borderPointManagement" namespace="/borderPoint" action="">Manage Border Points</s:a> </p>
   </body>
 </html>
