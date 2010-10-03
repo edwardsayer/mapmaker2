@@ -85,13 +85,11 @@
                     borderPoints.push(ll);
                 }
 
-                var borderPolygon = new google.maps.Polygon({
-                    paths: borderPoints,
+                var borderPolyline = new google.maps.Polyline({
+                    path: borderPoints,
                     strokeColor: "#FF0000",
                     strokeOpacity: 0.8,
-                    strokeWeight: 2,
-                    fillColor: "#FF0000",
-                    fillOpacity: 0.35
+                    strokeWeight: 2
                 });
 
                 var latLng = new google.maps.LatLng(ctrLat, ctrLng);
@@ -103,7 +101,7 @@
 
                 var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
 
-                borderPolygon.setMap(map);
+                borderPolyline.setMap(map);
             });
         }
     </script>
