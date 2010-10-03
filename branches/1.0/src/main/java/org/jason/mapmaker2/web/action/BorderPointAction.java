@@ -228,7 +228,7 @@ public class BorderPointAction extends ActionSupport implements ServletContextAw
                     SimpleFeatureImpl feature = (SimpleFeatureImpl) iterator.next();
 
                     String MTFCC = (String) feature.getAttribute("MTFCC");
-                    Integer stateFP = (Integer) feature.getAttribute("STATEFP");
+                    Integer stateFP = Integer.parseInt((String) feature.getAttribute("STATEFP"));
                     stateCode = stateCodeService.getByStateCode(stateFP);
 
                     String subCodeType = null;
@@ -236,7 +236,7 @@ public class BorderPointAction extends ActionSupport implements ServletContextAw
                         subCodeType = "County";
                     }
 
-                    int subCodeId = (Integer) feature.getAttribute("COUNTYFP");
+                    Integer subCodeId = Integer.parseInt((String) feature.getAttribute("COUNTYFP"));
                     String subCodeDescription = (String) feature.getAttribute("NAME");
 
                     SubCode subCode = new SubCode(stateCode, subCodeId, subCodeDescription, subCodeType);
@@ -249,8 +249,8 @@ public class BorderPointAction extends ActionSupport implements ServletContextAw
                     Set<BorderPoint> bpSet = new HashSet<BorderPoint>();
                     for (Coordinate c : coordinates) {
 
-                        Float lat = new Float(c.x);
-                        Float lng = new Float(c.y);
+                        Float lng = new Float(c.x);
+                        Float lat = new Float(c.y);
 
                         lat = MathUtils.round(lat, 3);
                         lng = MathUtils.round(lng, 3);
