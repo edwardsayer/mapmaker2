@@ -4,6 +4,10 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
+ * SubCode.java
+ *
+ * Represents a subfeature of a state-based shapefile
+ *
  * @author Jason Ferguson
  */
 @Entity
