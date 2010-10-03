@@ -73,8 +73,8 @@
                 // get the map
                 var mapData = j.map;
                 // figure out the center
-                var ctrLat = (mapData.minLat + j.maxLat) / 2;
-                var ctrLng = (j.minLng + j.maxLng) / 2;
+                var ctrLat = (mapData.minLat + mapData.maxLat) / 2;
+                var ctrLng = (mapData.minLng + mapData.maxLng) / 2;
 
                 //compute the polygon
                 var mapBorderPoints = mapData.borderPoints;
@@ -101,7 +101,6 @@
                     mapTypeId: google.maps.MapTypeId.ROADMAP
                 };
 
-                alert(myOptions);
                 var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
 
                 borderPolygon.setMap(map);
