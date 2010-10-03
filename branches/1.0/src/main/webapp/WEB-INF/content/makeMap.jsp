@@ -64,10 +64,6 @@
                 for (var i = 0; i < subcodes.length; i++) {
                     $("select#featureName").append(new Option(subcodes[i].subCodeDescription, subcodes[i].id));
                 }
-                //                var descriptionList = j.descriptions;
-                //                for (var i = 0; i < descriptionList.length; i++) {
-                //                    $("select#featureName").append(new Option(descriptionList[i], descriptionList[i]));
-                //                }
             });
         }
 
@@ -76,25 +72,20 @@
             $.getJSON("/customMap/getCustomMapJson", {stateId: $("select#stateCodeId").val(), subCodeId: $("select#featureName").val(), ajax:'true'}, function(j) {
                 // get the map
                 var mapData = j.map;
-
                 // figure out the center
-                var ctrLat = (j.minLat + j.maxLat) / 2;
+                var ctrLat = (mapData.minLat + j.maxLat) / 2;
                 var ctrLng = (j.minLng + j.maxLng) / 2;
 
                 //compute the polygon
                 var mapBorderPoints = mapData.borderPoints;
                 var borderPoints = new Array();
 
-                alert(mapBorderPoints.length);
-                alert("First point:" + mapBorderPoints[0].latitude + "," + mapBorderPoints[0].longitude);
                 for (var i = 0; i < mapBorderPoints.length; i++) {
-                    var ll = new (google.maps.LatLng(mapBorderPoints[i].latitude, mapBorderPoints[i].longitude));
+                    var ll = new google.maps.LatLng(mapBorderPoints[i].latitude, mapBorderPoints[i].longitude);
                     borderPoints.push(ll);
                 }
 
-                alert(borderPoints.length);
-                
-                borderPolygon = new google.maps.Polygon({
+                var borderPolygon = new google.maps.Polygon({
                     paths: borderPoints,
                     strokeColor: "#FF0000",
                     strokeOpacity: 0.8,
@@ -106,20 +97,15 @@
                 var latLng = new google.maps.LatLng(ctrLat, ctrLng);
                 var myOptions = {
                     zoom: 8,
-                    center: latlng,
+                    center: latLng,
                     mapTypeId: google.maps.MapTypeId.ROADMAP
                 };
-                //var map = new google.maps.Map($("div#map_canvas"), myOptions);
+
+                alert(myOptions);
                 var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+
+                borderPolygon.setMap(map);
             });
-            //            var latlng = new google.maps.LatLng(lat, lng);
-            //            var myOptions = {
-            //                zoom: 8,
-            //                center: latlng,
-            //                mapTypeId: google.maps.MapTypeId.ROADMAP
-            //            };
-            //            //var map = new google.maps.Map($("div#map_canvas"), myOptions);
-            //            var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
         }
     </script>
 </head>
