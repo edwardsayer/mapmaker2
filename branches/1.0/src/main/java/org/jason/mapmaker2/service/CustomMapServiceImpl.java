@@ -49,11 +49,20 @@ public class CustomMapServiceImpl implements CustomMapService {
 
         List<BorderPoint> borderPoints = borderPointService.getByStateCodeAndSubCode(stateCode, subCode);
 
+        float minLat = borderPointService.getMinimumLatitude(stateCode, subCode);
+        float maxLat = borderPointService.getMaximumLatitude(stateCode, subCode);
+        float minLng = borderPointService.getMinimumLongitude(stateCode, subCode);
+        float maxLng = borderPointService.getMaximumLongitude(stateCode, subCode);
+
         CustomMap map = new CustomMap();
         map.setStateCode(stateCode);
         map.setSubCode(subCode);
         map.setBorderPoints(borderPoints);
-
+        map.setMinLat(minLat);
+        map.setMaxLat(maxLat);
+        map.setMinLng(minLng);
+        map.setMaxLng(maxLng);
+        
         return map;
     }
 }
