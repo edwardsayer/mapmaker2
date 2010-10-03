@@ -4,6 +4,10 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
+ * BorderPoint.java
+ *
+ * Represents a single point belonging to a State and a SubCode
+ *
  * @author Jason Ferguson
  */
 @Entity
@@ -11,10 +15,8 @@ import java.io.Serializable;
 public class BorderPoint implements Serializable {
 
     private Integer id;
-    //private State state;
     private StateCode stateCode;
     private SubCode subCode;
-    //private TigerFeatureType tigerFeatureType;
     private Float latitude;
     private Float longitude;
 
@@ -40,16 +42,6 @@ public class BorderPoint implements Serializable {
         this.id = id;
     }
 
-//    @ManyToOne
-//    @JoinColumn(name="STATEID")
-//    public State getState() {
-//        return state;
-//    }
-//
-//    public void setState(State state) {
-//        this.state = state;
-//    }
-
     @ManyToOne
     @JoinColumn(name="STATECODEID")
     public StateCode getStateCode() {
@@ -69,16 +61,6 @@ public class BorderPoint implements Serializable {
     public void setSubCode(SubCode subCode) {
         this.subCode = subCode;
     }
-
-//    @ManyToOne
-//    @JoinColumn(name="TIGERFEATURETYPEID")
-//    public TigerFeatureType getTigerFeatureType() {
-//        return tigerFeatureType;
-//    }
-//
-//    public void setTigerFeatureType(TigerFeatureType tigerFeatureType) {
-//        this.tigerFeatureType = tigerFeatureType;
-//    }
 
     @Column(name="LATITUDE")
     public Float getLatitude() {
