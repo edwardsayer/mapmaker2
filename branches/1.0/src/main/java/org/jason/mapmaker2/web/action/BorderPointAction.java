@@ -227,50 +227,43 @@ public class BorderPointAction extends ActionSupport implements ServletContextAw
                 while (iterator.hasNext()) {
                     SimpleFeatureImpl feature = (SimpleFeatureImpl) iterator.next();
 
-                    //GeometryAttribute geometryAttribute = feature.getDefaultGeometryProperty();
-                    //MultiPolygon multiPolygon = (MultiPolygon) geometryAttribute.getValue();
-                    // TODO: CREATE THE BORDERPOINT HERE!!!
-                    // process a county
-                    String lineType = (String) feature.getAttribute(9);
-                    if (lineType.equals("G4020")) {
-                        // get the StateCode.. statecode isn't going to change since user is required to upload
-                        // state-based shapefiles
-                        if (stateCodeId == null) {
-                            stateCodeId = Integer.parseInt((String) feature.getAttribute(1));
-                            stateCode = stateCodeService.getByStateCode(stateCodeId);
-                        }
+                    String MTFCC = (String) feature.getAttribute("MTFCC");
+                    Integer stateFP = (Integer) feature.getAttribute("STATEFP");
+                    stateCode = stateCodeService.getByStateCode(stateFP);
 
-                        int subCodeId = Integer.parseInt((String) feature.getAttribute(2));
-                        String subCodeDescription = (String) feature.getAttribute(5);
-
-                        SubCode subCode = new SubCode(stateCode, subCodeId, subCodeDescription, "County");
-                        SubCode result = subCodeService.save(subCode);
-
-                        //BorderPointFactory bpFactory = new BorderPointFactory(stateCode, subCode);
-
-                        MultiPolygon mp = (MultiPolygon) feature.getAttribute(0);
-                        Geometry g = mp.getGeometryN(0);
-                        Coordinate[] coordinates = g.getCoordinates();
-
-                        Set<BorderPoint> bpSet = new HashSet<BorderPoint>();
-                        for (Coordinate c : coordinates) {
-
-                            Float lat = new Float(c.x);
-                            Float lng = new Float(c.y);
-
-                            lat = MathUtils.round(lat, 3);
-                            lng = MathUtils.round(lng, 3);
-
-                            if (lat != null && lng != null) {
-                                BorderPoint bp = new BorderPoint(stateCode, subCode, lat, lng);
-                                bpSet.add(bp);
-                                
-                            }
-                        }
-
-                        borderPointService.saveAll(bpSet);
-
+                    String subCodeType = null;
+                    if (MTFCC.equals("G4020")) {
+                        subCodeType = "County";
                     }
+
+                    int subCodeId = (Integer) feature.getAttribute("COUNTYFP");
+                    String subCodeDescription = (String) feature.getAttribute("NAME");
+
+                    SubCode subCode = new SubCode(stateCode, subCodeId, subCodeDescription, subCodeType);
+                    SubCode result = subCodeService.save(subCode);
+
+                    MultiPolygon mp = (MultiPolygon) feature.getDefaultGeometry();
+                    Geometry g = mp.getGeometryN(0);
+                    Coordinate[] coordinates = g.getCoordinates();
+
+                    Set<BorderPoint> bpSet = new HashSet<BorderPoint>();
+                    for (Coordinate c : coordinates) {
+
+                        Float lat = new Float(c.x);
+                        Float lng = new Float(c.y);
+
+                        lat = MathUtils.round(lat, 3);
+                        lng = MathUtils.round(lng, 3);
+
+                        if (lat != null && lng != null) {
+                            BorderPoint bp = new BorderPoint(stateCode, subCode, lat, lng);
+                            bpSet.add(bp);
+
+                        }
+                    }
+
+                    borderPointService.saveAll(bpSet);
+
                 }
             }
             finally {
