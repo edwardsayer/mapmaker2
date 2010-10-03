@@ -21,7 +21,7 @@ import java.util.List;
 public class HibernateBorderPointDao extends HibernateGenericDao<BorderPoint> implements BorderPointDao {
 
     private static final Log log = LogFactory.getLog(HibernateBorderPointDao.class);
-    
+
     private static final int batchSize = 100;
 
     public HibernateBorderPointDao() {
@@ -55,7 +55,7 @@ public class HibernateBorderPointDao extends HibernateGenericDao<BorderPoint> im
     @SuppressWarnings("unchecked")
     public Float getMinimumLatitude(final StateCode stateCode, final SubCode subCode) {
 
-        List<Float> results =  (List<Float>) getHibernateTemplate().execute(new HibernateCallback() {
+        List<Float> results = (List<Float>) getHibernateTemplate().execute(new HibernateCallback() {
             public Object doInHibernate(Session session) throws HibernateException, SQLException {
 
                 String hql = "select min(bp.latitude) from BorderPoint bp where bp.stateCode = :stateCode and bp.subCode = :subCode";
@@ -88,5 +88,33 @@ public class HibernateBorderPointDao extends HibernateGenericDao<BorderPoint> im
                 return query.list();
             }
         });
+    }
+
+    public Float getMaximumLatitude(StateCode stateCode, SubCode subCode) {
+
+        String hql = "select max(bp.latitude) from BorderPoint bp where bp.stateCode = :stateCode and bp.subCode = :subCode";
+        Query query = getSession().createQuery(hql);
+        query.setParameter("stateCode", stateCode);
+        query.setParameter("subCode", subCode);
+
+        return (Float) query.uniqueResult();
+    }
+
+    public Float getMinimumLongitude(StateCode stateCode, SubCode subCode) {
+        String hql = "select min(bp.longitude) from BorderPoint bp where bp.stateCode = :stateCode and bp.subCode = :subCode";
+        Query query = getSession().createQuery(hql);
+        query.setParameter("stateCode", stateCode);
+        query.setParameter("subCode", subCode);
+
+        return (Float) query.uniqueResult();
+    }
+
+    public Float getMaximumLongitude(StateCode stateCode, SubCode subCode) {
+        String hql = "select max(bp.longitude) from BorderPoint bp where bp.stateCode = :stateCode and bp.subCode = :subCode";
+        Query query = getSession().createQuery(hql);
+        query.setParameter("stateCode", stateCode);
+        query.setParameter("subCode", subCode);
+
+        return (Float) query.uniqueResult();
     }
 }

@@ -64,4 +64,16 @@ public class BorderPointServiceImpl implements BorderPointService {
 
         return borderPointDao.getMinimumLatitude(stateCode, subCode);
     }
+
+    public Float getMaximumLatitude(StateCode stateCode, SubCode subCode) {
+        return borderPointDao.getMaximumLatitude(stateCode, subCode);
+    }
+
+    public Float getMinimumLongitude(StateCode stateCode, SubCode subCode) {
+        return borderPointDao.getMinimumLongitude(stateCode, subCode);
+    }
+
+    public Float getMaximumLongitude(StateCode stateCode, SubCode subCode) {
+        return borderPointDao.getMaximumLongitude(stateCode, subCode);
+    }
 }
