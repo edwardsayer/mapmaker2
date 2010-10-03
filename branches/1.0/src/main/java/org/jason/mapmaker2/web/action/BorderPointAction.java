@@ -5,7 +5,6 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.math.util.MathUtils;
 import org.apache.struts2.convention.annotation.*;
 import org.apache.struts2.interceptor.validation.SkipValidation;
 import org.apache.struts2.util.ServletContextAware;
@@ -144,10 +143,6 @@ public class BorderPointAction extends ActionSupport implements ServletContextAw
 
         StopWatch timer = new StopWatch();
         timer.start();
-        // get the subcode
-        if (subCodeId > -1) {
-            SubCode subCode = subCodeService.getById(subCodeId);
-        }
 
         // process the Shapefile
         // create list of filenames so we know what to delete later
@@ -227,42 +222,40 @@ public class BorderPointAction extends ActionSupport implements ServletContextAw
                 while (iterator.hasNext()) {
                     SimpleFeatureImpl feature = (SimpleFeatureImpl) iterator.next();
 
-                    String MTFCC = (String) feature.getAttribute("MTFCC");
-                    Integer stateFP = Integer.parseInt((String) feature.getAttribute("STATEFP"));
-                    stateCode = stateCodeService.getByStateCode(stateFP);
+                    Integer stateCodeId2 = Integer.parseInt((String) feature.getAttribute("STATE"));
+                    stateCode = stateCodeService.getByStateCode(stateCodeId2);
+                    Integer subCodeId = null;
 
-                    String subCodeType = null;
-                    if (MTFCC.equals("G4020")) {
-                        subCodeType = "County";
+                    String LSAD_TRANS = (String) feature.getAttribute("LSAD_TRANS");
+                    Integer subCodeId3 = null;
+                    if (LSAD_TRANS.equals("County")) {
+                        String subCodeId2 = (String) feature.getAttribute("COUNTY");
+                        subCodeId3 = Integer.parseInt(subCodeId2);
                     }
 
-                    Integer subCodeId = Integer.parseInt((String) feature.getAttribute("COUNTYFP"));
                     String subCodeDescription = (String) feature.getAttribute("NAME");
 
-                    SubCode subCode = new SubCode(stateCode, subCodeId, subCodeDescription, subCodeType);
-                    SubCode result = subCodeService.save(subCode);
+                    SubCode subCode = new SubCode(stateCode, subCodeId3, subCodeDescription, LSAD_TRANS);
+                    subCodeService.save(subCode);
 
                     MultiPolygon mp = (MultiPolygon) feature.getDefaultGeometry();
-                    Geometry g = mp.getGeometryN(0);
+                    Geometry g = mp.getBoundary();
                     Coordinate[] coordinates = g.getCoordinates();
 
-                    Set<BorderPoint> bpSet = new HashSet<BorderPoint>();
+                    List<BorderPoint> bpList = new ArrayList<BorderPoint>();
                     for (Coordinate c : coordinates) {
 
                         Float lng = new Float(c.x);
                         Float lat = new Float(c.y);
 
-                        lat = MathUtils.round(lat, 3);
-                        lng = MathUtils.round(lng, 3);
-
                         if (lat != null && lng != null) {
                             BorderPoint bp = new BorderPoint(stateCode, subCode, lat, lng);
-                            bpSet.add(bp);
+                            bpList.add(bp);
 
                         }
                     }
 
-                    borderPointService.saveAll(bpSet);
+                    borderPointService.saveAll(bpList);
 
                 }
             }
