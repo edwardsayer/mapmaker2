@@ -8,30 +8,63 @@
     <style type="text/css">
         label {
             width: 10em;
-            display: block
+            display: block;
+            font-size: 12px
         }
 
-        html {
-            height: 100%
+        select { font-size: 12px}
+
+        #container {
+            width: 90%;
+            margin: 10px auto;
+            background-color: #fff;
+            color: #333;
+            border: 1px solid gray;
+            line-height: 130%;
         }
 
-        body {
-            height: 100%;
-            margin: 0px;
-            padding: 0px
+        #top {
+            padding: .5em;
+            background-color: #ddd;
+            border-bottom: 1px solid gray;
         }
 
-        #map_canvas {
-            height: 100%
+        #top h1 {
+            padding: 0;
+            margin: 0;
         }
 
-        #left {
-            width: 250px;
+        #leftnav {
+            float: left;
+            width: 160px;
+            margin: 0;
+            padding: 1em;
         }
 
-        #main {
-            width: 750px;
+        #content {
+            margin-left: 200px;
+            border-left: 1px solid gray;
+            padding: 1em;
+            max-width: 36em;
         }
+
+        #footer {
+            clear: both;
+            margin: 0;
+            padding: .5em;
+            color: #333;
+            background-color: #ddd;
+            border-top: 1px solid gray;
+        }
+
+        #leftnav p {
+            margin: 0 0 1em 0;
+        }
+
+        #content h2 {
+            margin: 0 0 .5em 0;
+        }
+
 
     </style>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
@@ -107,44 +140,46 @@
     </script>
 </head>
 <body>
+<div id="container">
+    <div id="top">
+        <h1>Mapmaker 2: The Revenge</h1>
+    </div>
+    <div id="leftnav">
+        <s:form name="mapGeneratorForm">
+            <fieldset>
 
-<div id="left">
-    <s:form name="mapGeneratorForm">
-        <fieldset>
+                <p>
+                    <label for="stateCodeId">State</label>
+                    <select id="stateCodeId" name="stateCodeId" onchange="reloadSubcode();">
+                        <option value="-1">Please Select</option>
+                    </select>
+                </p>
 
-            <p>
-                <label for="stateCodeId">State</label>
-                <select id="stateCodeId" name="stateCodeId" onchange="reloadSubcode();">
-                    <option value="-1">Please Select A State</option>
-                </select>
-            </p>
+                <p>
+                    <label for="subCodeFeatureType">Sub Code Feature Type</label>
+                    <select name="subCodeFeatureType" id="subCodeFeatureType" onchange="reloadDescriptions();">
+                        <option value="-1">Please Select</option>
+                    </select>
+                <p>
+                    <label for="featureName">Feature Name</label>
+                    <select id="featureName" name="featureName" onchange="drawMap2();">
+                        <option value="-1">Please Select</option>
+                    </select>
+                </p>
 
-            <p>
-                <label for="subCodeFeatureType">Sub Code Feature Type</label>
-                <select name="subCodeFeatureType" id="subCodeFeatureType" onchange="reloadDescriptions();">
-                    <option value="-1">Please Select A Feature Type</option>
-                </select>
-            <p>
-                <label for="featureName">Feature Name</label>
-                <select id="featureName" name="featureName" onchange="drawMap2();">
-                    <option value="-1">Please Select A Feature Name</option>
-                </select>
-            </p>
+            </fieldset>
 
-        </fieldset>
+        </s:form>
+        <s:a id="menuPage" namespace="/" action="menu">Menu</s:a>
+    </div>
+    <div id="content" style="margin-left:auto; margin-right: auto;">
+        <s:actionerror/>
 
-    </s:form>
-    <s:a id="menuPage" namespace="/" action="menu">Menu</s:a>
-</div>
+        <div id="map_canvas" style="width: 640px; height: 480px; margin-left:auto; margin-right:auto">
 
-<div id="main">
-    <s:actionerror/>
-
-    <div id="map_canvas" style="width: 640px; height: 480px; display: block; margin-left:auto; margin-right:auto">
-
+        </div>
     </div>
 </div>
-
 
 </body>
 </html>
