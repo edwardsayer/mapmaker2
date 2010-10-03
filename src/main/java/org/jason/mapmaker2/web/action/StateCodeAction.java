@@ -30,12 +30,13 @@ import java.util.zip.ZipFile;
 /**
  * @author Jason Ferguson
  */
-@ParentPackage("struts-default")
+@ParentPackage("json-default")
 @Namespace("/stateCode")
 @Results({
         @Result(name = "success", location = "/WEB-INF/content/admin/stateCode/list.jsp"),
         @Result(name = "input", location = "/WEB-INF/content/admin/stateCode/create.jsp")
 })
+@SuppressWarnings("unused")
 public class StateCodeAction extends ActionSupport implements ServletContextAware {
 
     private ServletContext servletContext;
@@ -50,37 +51,6 @@ public class StateCodeAction extends ActionSupport implements ServletContextAwar
     public void setStateCodeService(StateCodeService stateCodeService) {
         this.stateCodeService = stateCodeService;
     }
-
-//    private String stateName;
-//    private String stateAbbr;
-//    private Integer stateCode;
-//
-//    @RequiredStringValidator(message = "You must provide the name of the state!")
-//    public String getStateName() {
-//        return stateName;
-//    }
-//
-//    public void setStateName(String stateName) {
-//        this.stateName = stateName;
-//    }
-//
-//    @RequiredStringValidator(message = "You must provide the state abbreviation!")
-//    public String getStateAbbr() {
-//        return stateAbbr;
-//    }
-//
-//    public void setStateAbbr(String stateAbbr) {
-//        this.stateAbbr = stateAbbr;
-//    }
-//
-//    @RequiredFieldValidator(message = "You must provide the state FIPS code!")
-//    public Integer getStateCode() {
-//        return stateCode;
-//    }
-//
-//    public void setStateCode(Integer stateCode) {
-//        this.stateCode = stateCode;
-//    }
 
     private File fileUpload;
     private String fileUploadContentType;
@@ -144,16 +114,9 @@ public class StateCodeAction extends ActionSupport implements ServletContextAwar
         return INPUT;
     }
 
-    @SuppressWarnings({"deprecation","unchecked"})
+    @SuppressWarnings({"deprecation", "unchecked"})
     @Action("create")
     public String create() throws Exception {
-
-//        StateCode result = stateCodeService.save(new StateCode(stateName, stateAbbr, stateCode));
-//
-//        if (result == null) {
-//            addActionError("Unable to save State Code!");
-//            return INPUT;
-//        }
 
         // process the Shapefile
         // create list of filenames so we know what to delete later
@@ -188,7 +151,6 @@ public class StateCodeAction extends ActionSupport implements ServletContextAwar
             filenames.add(destFile);
 
             // make sure the entry isn't a directory
-            // TODO: process this recursively if it IS a directory
             if (!entry.isDirectory()) {
 
                 // get the zipentry as a BIS
@@ -212,7 +174,7 @@ public class StateCodeAction extends ActionSupport implements ServletContextAwar
         }
         zipFile.close();
 
-                File shpFile = new File(tempFileDir, shpFilename);
+        File shpFile = new File(tempFileDir, shpFilename);
 
         // Create a ShapefileDataStore from the shapefile. This would be much easier if I could just use some sort
         // of stream and not have to deal with temporary files
@@ -225,7 +187,6 @@ public class StateCodeAction extends ActionSupport implements ServletContextAwar
             FeatureIterator iterator = featureCollection.features();
 
             try {
-                int counter = 0;
 
                 // FeatureCollection doesn't implement Iterator, so no forEach() loop for me. Jerks.
                 while (iterator.hasNext()) {
@@ -233,8 +194,6 @@ public class StateCodeAction extends ActionSupport implements ServletContextAwar
 
                     GeometryAttribute geometryAttribute = feature.getDefaultGeometryProperty();
                     MultiPolygon multiPolygon = (MultiPolygon) geometryAttribute.getValue();
-                    //Polygon polygon = multiPolygon.getGeometryN(0).get;
-                    // TODO: CREATE THE BORDERPOINT HERE!!!
                     // process a state
                     StateCode stateCode = new StateCode();
                     stateCode.setStateCode(Integer.parseInt((String) feature.getAttribute(3)));
@@ -242,12 +201,6 @@ public class StateCodeAction extends ActionSupport implements ServletContextAwar
                     stateCode.setStateName((String) feature.getAttribute(6));
 
                     StateCode result = stateCodeService.save(stateCode);
-
-                    //if (feature.getAttribute(8).equals("h1")) {
-
-                    //}
-
-                    counter++;
 
                 }
             }
@@ -268,4 +221,19 @@ public class StateCodeAction extends ActionSupport implements ServletContextAwar
         shpFile.delete();
         return SUCCESS;
     }
+
+//    @Action(value = "getStateCodesJson", results = {
+//            @Result(name = "success", type = "json")
+//    })
+//    public String getStateCodesJson() throws Exception {
+//        stateCodeList = stateCodeService.getAll();
+//        Collections.sort(stateCodeList);
+//
+//        if (stateCodeId != null) {
+//            StateCode stateCode = stateCodeService.getById(stateCodeId);
+//            subCodeList = subCodeService.getByStateCode(stateCode);
+//        }
+//
+//        return SUCCESS;
+//    }
 }
