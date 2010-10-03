@@ -1,5 +1,6 @@
 package org.jason.mapmaker2.service;
 
+import org.geotools.data.FeatureSource;
 import org.jason.mapmaker2.dao.SubCodeDao;
 import org.jason.mapmaker2.model.SubCode;
 import org.jason.mapmaker2.model.StateCode;
@@ -63,7 +64,4 @@ public class SubCodeServiceImpl implements SubCodeService {
         //return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public List<String> getUniqueDescriptionsByFeatureType(String featureType) {
-        return subCodeDao.getUniqueDescriptionsByFeatureType(featureType);
-    }
 }
