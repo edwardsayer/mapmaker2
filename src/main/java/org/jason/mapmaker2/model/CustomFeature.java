@@ -1,19 +1,25 @@
 package org.jason.mapmaker2.model;
 
+import javax.persistence.*;
 import java.io.Serializable;
 
 /**
  * @author Jason Ferguson
  */
+@Entity
+@Table(name = "T_CUSTOMFEATURE")
 public class CustomFeature implements Serializable {
 
     private Integer featureId;
     private String featureName;
     private String featureClass;
-    private Integer stateFIPS;
+    private StateCode stateCode;
     private Float latitude;
     private Float longitude;
 
+    @Id
+    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     public Integer getFeatureId() {
         return featureId;
     }
@@ -22,6 +28,7 @@ public class CustomFeature implements Serializable {
         this.featureId = featureId;
     }
 
+    @Column(name = "FEATURENAME")
     public String getFeatureName() {
         return featureName;
     }
@@ -30,6 +37,7 @@ public class CustomFeature implements Serializable {
         this.featureName = featureName;
     }
 
+    @Column(name = "FEATURECLASS")
     public String getFeatureClass() {
         return featureClass;
     }
@@ -38,14 +46,17 @@ public class CustomFeature implements Serializable {
         this.featureClass = featureClass;
     }
 
-    public Integer getStateFIPS() {
-        return stateFIPS;
+    @ManyToOne
+    @JoinColumn(name = "STATECODEID")
+    public StateCode getStateCode() {
+        return stateCode;
     }
 
-    public void setStateFIPS(Integer stateFIPS) {
-        this.stateFIPS = stateFIPS;
+    public void setStateCode(StateCode stateCode) {
+        this.stateCode = stateCode;
     }
 
+    @Column(name = "LATITUDE")
     public Float getLatitude() {
         return latitude;
     }
@@ -54,6 +65,7 @@ public class CustomFeature implements Serializable {
         this.latitude = latitude;
     }
 
+    @Column(name = "LONGITUDE")
     public Float getLongitude() {
         return longitude;
     }
