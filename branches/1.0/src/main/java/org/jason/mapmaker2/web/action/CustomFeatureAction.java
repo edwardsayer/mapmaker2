@@ -1,10 +1,27 @@
 package org.jason.mapmaker2.web.action;
 
 import com.opensymphony.xwork2.ActionSupport;
+import org.apache.commons.io.FileUtils;
 import org.apache.struts2.convention.annotation.*;
 import org.apache.struts2.interceptor.validation.SkipValidation;
+import org.apache.struts2.util.ServletContextAware;
+import org.jason.mapmaker2.model.CustomFeature;
+import org.jason.mapmaker2.model.StateCode;
 import org.jason.mapmaker2.service.CustomFeatureService;
+import org.jason.mapmaker2.service.StateCodeService;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.servlet.ServletContext;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Scanner;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 /**
  * @author Jason Ferguson
@@ -15,13 +32,54 @@ import org.springframework.beans.factory.annotation.Autowired;
         @Result(name = "success", location = "/WEB-INF/content/admin/customFeature/list.jsp"),
         @Result(name = "input", location = "/WEB-INF/content/admin/customFeature/create.jsp")
 })
-public class CustomFeatureAction extends ActionSupport {
+public class CustomFeatureAction extends ActionSupport implements ServletContextAware {
+
+    ServletContext servletContext;
+
+    public void setServletContext(ServletContext servletContext) {
+        this.servletContext = servletContext;
+    }
 
     private CustomFeatureService customFeatureService;
 
     @Autowired
     public void setCustomFeatureService(CustomFeatureService customFeatureService) {
         this.customFeatureService = customFeatureService;
+    }
+
+    private StateCodeService stateCodeService;
+
+    @Autowired
+    public void setStateCodeService(StateCodeService stateCodeService) {
+        this.stateCodeService = stateCodeService;
+    }
+
+    private File fileUpload;
+    private String fileUploadContentType;
+    private String fileUploadFileName;
+
+    public File getFileUpload() {
+        return fileUpload;
+    }
+
+    public void setFileUpload(File fileUpload) {
+        this.fileUpload = fileUpload;
+    }
+
+    public String getFileUploadContentType() {
+        return fileUploadContentType;
+    }
+
+    public void setFileUploadContentType(String fileUploadContentType) {
+        this.fileUploadContentType = fileUploadContentType;
+    }
+
+    public String getFileUploadFileName() {
+        return fileUploadFileName;
+    }
+
+    public void setFileUploadFileName(String fileUploadFileName) {
+        this.fileUploadFileName = fileUploadFileName;
     }
 
     @Action("")
@@ -37,6 +95,84 @@ public class CustomFeatureAction extends ActionSupport {
 
     @Action("create")
     public String create() throws Exception {
+
+        // get servlet temp directory
+        File tempFileDir = (File) servletContext.getAttribute("javax.servlet.context.tempdir");
+
+        // create list of filenames so we know what to delete later
+        List<File> filenames = new ArrayList<File>();
+
+        // upload zip file and make sure it's valid
+        File tempZipFile = new File(tempFileDir, fileUploadFileName);
+        FileUtils.copyFile(fileUpload, tempZipFile);
+
+        // open the zip file and get the entries
+        ZipFile zipFile = new ZipFile(tempZipFile, ZipFile.OPEN_READ);
+        Enumeration zipFileEntries = zipFile.entries();
+
+        while (zipFileEntries.hasMoreElements()) {
+
+            // get an entry
+            ZipEntry entry = (ZipEntry) zipFileEntries.nextElement();
+            String entryFileName = entry.getName();
+
+            // add the file to the list. It has to be a File so I can call File().delete()
+            File destFile = new File(tempFileDir, entryFileName);
+            filenames.add(destFile);
+
+            // make sure the entry isn't a directory
+            // TODO: process this recursively if it IS a directory
+            if (!entry.isDirectory()) {
+
+                // get the zipentry as a BIS
+                BufferedInputStream is = new BufferedInputStream(zipFile.getInputStream(entry));
+                int currentByte;
+                byte[] data = new byte[2048];
+
+                // create a FOS and BOS for transferring the input into an output file
+                FileOutputStream fos = new FileOutputStream(destFile);
+                BufferedOutputStream dest = new BufferedOutputStream(fos, 2048);
+
+                // read and write until last byte is encountered
+                while ((currentByte = is.read(data, 0, 2048)) != -1) {
+                    dest.write(data, 0, currentByte);
+                }
+                dest.flush();
+                dest.close();
+                is.close();
+            }
+
+            List<CustomFeature> customFeatureList = new ArrayList<CustomFeature>();
+
+            Scanner scanner = new Scanner(new File(entryFileName));
+            scanner.useDelimiter(System.getProperty("line.separator"));
+            while (scanner.hasNext()) {
+                String line = scanner.next();
+                String[] lineArray = line.split("|");
+
+                CustomFeature feature = new CustomFeature();
+                feature.setFeatureId(Integer.parseInt(lineArray[0]));
+                feature.setFeatureName(lineArray[1]);
+                feature.setFeatureClass(lineArray[2]);
+
+                Integer stateCodeId = Integer.parseInt(lineArray[4]);
+                StateCode stateCode = stateCodeService.getByStateCode(stateCodeId);
+                feature.setStateCode(stateCode);
+
+                feature.setLatitude(Float.parseFloat(lineArray[9]));
+                feature.setLongitude(Float.parseFloat(lineArray[10]));
+
+                customFeatureList.add(feature);
+            }
+
+            customFeatureService.saveAll(customFeatureList);
+        }
+        zipFile.close();
+
+        for (File f : filenames) {
+            boolean deleteResult = f.delete();
+        }
+
 
         return SUCCESS;
     }
