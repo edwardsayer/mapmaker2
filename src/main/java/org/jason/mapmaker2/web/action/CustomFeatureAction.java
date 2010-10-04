@@ -32,6 +32,7 @@ import java.util.zip.ZipFile;
         @Result(name = "success", location = "/WEB-INF/content/admin/customFeature/list.jsp"),
         @Result(name = "input", location = "/WEB-INF/content/admin/customFeature/create.jsp")
 })
+@SuppressWarnings("unused")
 public class CustomFeatureAction extends ActionSupport implements ServletContextAware {
 
     ServletContext servletContext;
@@ -144,15 +145,20 @@ public class CustomFeatureAction extends ActionSupport implements ServletContext
 
             List<CustomFeature> customFeatureList = new ArrayList<CustomFeature>();
 
-            Scanner scanner = new Scanner(new File(entryFileName));
+            Scanner scanner = new Scanner(new File(tempFileDir, entryFileName));
             scanner.useDelimiter(System.getProperty("line.separator"));
+            scanner.next(); // skip the first line, it's a header row
             while (scanner.hasNext()) {
                 String line = scanner.next();
-                String[] lineArray = line.split("|");
+                String[] lineArray = line.split("\\|");
 
                 CustomFeature feature = new CustomFeature();
                 feature.setFeatureId(Integer.parseInt(lineArray[0]));
-                feature.setFeatureName(lineArray[1]);
+                if (lineArray[1].length() > 25) {
+                    feature.setFeatureName(lineArray[1].substring(0, 24));
+                } else {
+                    feature.setFeatureName(lineArray[1]);
+                }
                 feature.setFeatureClass(lineArray[2]);
 
                 Integer stateCodeId = Integer.parseInt(lineArray[4]);
