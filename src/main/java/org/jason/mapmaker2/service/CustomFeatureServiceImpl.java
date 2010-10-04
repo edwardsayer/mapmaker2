@@ -21,22 +21,24 @@ public class CustomFeatureServiceImpl implements CustomFeatureService {
     }
 
     public CustomFeature save(CustomFeature obj) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+
+        return customFeatureDao.save(obj);
     }
 
     public void update(CustomFeature obj) {
-        //To change body of implemented methods use File | Settings | File Templates.
+
+        customFeatureDao.update(obj);
     }
 
     public void delete(CustomFeature obj) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        customFeatureDao.delete(obj);
     }
 
     public List<CustomFeature> getAll() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return customFeatureDao.getAll();
     }
 
     public CustomFeature getById(int id) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return customFeatureDao.getById(id);
     }
 }
