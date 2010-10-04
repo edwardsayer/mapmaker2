@@ -41,4 +41,8 @@ public class CustomFeatureServiceImpl implements CustomFeatureService {
     public CustomFeature getById(int id) {
         return customFeatureDao.getById(id);
     }
+
+    public void saveAll(List<CustomFeature> featureList) {
+        customFeatureDao.saveAll(featureList);
+    }
 }
