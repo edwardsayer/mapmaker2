@@ -1,0 +1,15 @@
+To Do List
+
+Implement USGS Feature Upload
+Custom Feature Upload
+Checkbox based Feature Select
+KML export
+User selects border color/size
+Overwrite duplicate
+Remove HibernateTemplate in favor of straight session code
+Documentation
+Feature popups
+Google Street View integration for popups
+Custom Icons for map
+
+GOOGLE APP ENGINE PORT
