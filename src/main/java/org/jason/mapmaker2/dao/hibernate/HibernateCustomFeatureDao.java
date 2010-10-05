@@ -1,12 +1,14 @@
 package org.jason.mapmaker2.dao.hibernate;
 
 import org.hibernate.CacheMode;
+import org.hibernate.Query;
 import org.hibernate.Transaction;
 import org.jason.mapmaker2.dao.CustomFeatureDao;
 import org.jason.mapmaker2.model.CustomFeature;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * @author Jason Ferguson
@@ -42,5 +44,20 @@ public class HibernateCustomFeatureDao extends HibernateGenericDao<CustomFeature
         tx.commit();
 
         getSession().setCacheMode(CacheMode.NORMAL);
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<CustomFeature> getCustomFeaturesWithBounds(float minLat, float maxLat, float minLng, float maxLng) {
+
+        String hql = "from CustomFeature cf where cf.latitude >= :minLat and cf.latitude <= :maxLat and " +
+                "cf.longtiude >= :minLng and cf.longitude <= :maxLng";
+
+        Query query = getSession().createQuery(hql);
+        query.setFloat("minLat", minLat);
+        query.setFloat("maxLat", maxLat);
+        query.setFloat("minLng", minLng);
+        query.setFloat("maxLng", maxLng);
+
+        return (List<CustomFeature>) query.list();
     }
 }

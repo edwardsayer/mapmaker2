@@ -10,4 +10,6 @@ import java.util.List;
 public interface CustomFeatureService extends BasicServiceOperations<CustomFeature>{
 
     void saveAll(List<CustomFeature> featureList);
+
+    List<CustomFeature> getCustomFeaturesWithBounds(float minLat, float maxLat, float minLng, float maxLng);
 }
