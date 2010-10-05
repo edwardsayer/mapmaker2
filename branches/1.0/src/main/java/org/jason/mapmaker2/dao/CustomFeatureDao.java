@@ -9,8 +9,6 @@ import java.util.List;
  */
 public interface CustomFeatureDao extends GenericDao<CustomFeature>{
 
-    List<CustomFeature> getCustomFeatures(float minLat, float maxLat, float minLng, float maxLng);
-
     List<CustomFeature> getCustomFeatures(float minLat, float maxLat, float minLng, float maxLng, List<String> featureClassList);
 
 }
