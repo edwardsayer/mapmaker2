@@ -8,7 +8,6 @@ import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.interceptor.ParameterAware;
 import org.jason.mapmaker2.model.BorderPoint;
 import org.jason.mapmaker2.model.composite.CustomMap;
-import org.jason.mapmaker2.service.BorderPointService;
 import org.jason.mapmaker2.service.CustomMapService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -16,6 +15,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * CustomMapAction.java
+ *
  * @author Jason Ferguson
  */
 @ParentPackage("json-default")
@@ -29,16 +30,10 @@ public class CustomMapAction extends ActionSupport implements ParameterAware {
     }
 
     private CustomMapService customMapService;
-    private BorderPointService borderPointService;
 
     @Autowired
     public void setCustomMapService(CustomMapService customMapService) {
         this.customMapService = customMapService;
-    }
-
-    @Autowired
-    public void setBorderPointService(BorderPointService borderPointService) {
-        this.borderPointService = borderPointService;
     }
 
     private CustomMap map;
