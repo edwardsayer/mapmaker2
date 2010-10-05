@@ -46,7 +46,11 @@ public class CustomFeatureServiceImpl implements CustomFeatureService {
         customFeatureDao.saveAll(featureList);
     }
 
-    public List<CustomFeature> getCustomFeaturesWithBounds(float minLat, float maxLat, float minLng, float maxLng) {
-        return customFeatureDao.getCustomFeaturesWithBounds(minLat, maxLat, minLng, maxLng);
+    public List<CustomFeature> getCustomFeatures(float minLat, float maxLat, float minLng, float maxLng) {
+        return customFeatureDao.getCustomFeatures(minLat, maxLat, minLng, maxLng);
+    }
+
+    public List<CustomFeature> getCustomFeatures(float minLat, float maxLat, float minLng, float maxLng, List<String> featureTypeList) {
+        return customFeatureDao.getCustomFeatures(minLat, maxLat, minLng, maxLng, featureTypeList);
     }
 }
