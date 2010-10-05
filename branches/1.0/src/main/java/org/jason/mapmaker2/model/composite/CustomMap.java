@@ -1,6 +1,7 @@
 package org.jason.mapmaker2.model.composite;
 
 import org.jason.mapmaker2.model.BorderPoint;
+import org.jason.mapmaker2.model.CustomFeature;
 import org.jason.mapmaker2.model.StateCode;
 import org.jason.mapmaker2.model.SubCode;
 
@@ -19,6 +20,7 @@ public class CustomMap implements Serializable {
     private List<BorderPoint> borderPoints;
     private StateCode stateCode;
     private SubCode subCode;
+    private List<CustomFeature> customFeatures;
 
     public Float getMinLat() {
         return minLat;
@@ -74,5 +76,14 @@ public class CustomMap implements Serializable {
 
     public void setSubCode(SubCode subCode) {
         this.subCode = subCode;
+    }
+
+    public List<CustomFeature> getCustomFeatures() {
+        
+        return customFeatures;
+    }
+
+    public void setCustomFeatures(List<CustomFeature> customFeatures) {
+        this.customFeatures = customFeatures;
     }
 }
