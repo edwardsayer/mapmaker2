@@ -11,6 +11,7 @@ import org.jason.mapmaker2.model.composite.CustomMap;
 import org.jason.mapmaker2.service.CustomMapService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -141,9 +142,10 @@ public class CustomMapAction extends ActionSupport implements ParameterAware {
 
         stateId = Integer.parseInt(parameters.get("stateId")[0]);
         subCodeId = Integer.parseInt(parameters.get("subCodeId")[0]);
+        String[] features = parameters.get("cmbFeatureTypes");
         
         // create the map with the borderpoints
-        map = customMapService.createMap(stateId, subCodeId);
+        map = customMapService.createMap(stateId, subCodeId, Arrays.asList(features));
 
         return SUCCESS;
     }
