@@ -72,7 +72,7 @@
     </script>
     <script type="text/javascript">
         $(document).ready(function() {
-            $.getJSON("/getStateCodesJson", null, function(j) {
+            $.getJSON("/stateCode/getStateCodes", null, function(j) {
                 var stateCodeList = j.stateCodeList;
                 for (var i = 0; i < stateCodeList.length; i++) {
                     $("select#stateCodeId").append(new Option(stateCodeList[i].label, stateCodeList[i].id));
