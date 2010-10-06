@@ -195,13 +195,13 @@ public class CustomFeatureAction extends ActionSupport implements ServletContext
         return SUCCESS;
     }
 
-    private String[] cmbFeatureTypes;
+    private List<String> cmbFeatureTypes;
 
-    public String[] getCmbFeatureTypes() {
+    public List<String> getCmbFeatureTypes() {
         return cmbFeatureTypes;
     }
 
-    public void setCmbFeatureTypes(String[] cmbFeatureTypes) {
+    public void setCmbFeatureTypes(List<String> cmbFeatureTypes) {
         this.cmbFeatureTypes = cmbFeatureTypes;
     }
 
@@ -212,7 +212,7 @@ public class CustomFeatureAction extends ActionSupport implements ServletContext
 
         // get the state code id and the sub code id (from the featureName select box)
         Integer stateCodeId = Integer.parseInt(parameters.get("stateCodeId")[0]);
-        Integer subCodeId = Integer.parseInt(parameters.get("featureName")[0]);
+        Integer subCodeId = Integer.parseInt(parameters.get("subCodeId")[0]);
 
         Float minLat = borderPointService.getMinimumLatitude(stateCodeId, subCodeId);
         Float maxLat = borderPointService.getMaximumLatitude(stateCodeId, subCodeId);
@@ -223,18 +223,18 @@ public class CustomFeatureAction extends ActionSupport implements ServletContext
                 maxLat,
                 minLng,
                 maxLng,
-                Arrays.asList(cmbFeatureTypes));
+                cmbFeatureTypes);
 
         return SUCCESS;
     }
 
     @Action(value = "getFeatureTypesJSON", results = {
-            @Result(name="success", type = "json")
+            @Result(name = "success", type = "json")
     })
     public String getFeatureTypes() throws Exception {
 
         // get the state code id and the sub code id (from the featureName select box)
-        Integer stateCodeId = Integer.parseInt(parameters.get("stateId")[0]);
+        Integer stateCodeId = Integer.parseInt(parameters.get("stateCodeId")[0]);
         Integer subCodeId = Integer.parseInt(parameters.get("subCodeId")[0]);
 
         Float minLat = borderPointService.getMinimumLatitude(stateCodeId, subCodeId);
@@ -242,7 +242,10 @@ public class CustomFeatureAction extends ActionSupport implements ServletContext
         Float minLng = borderPointService.getMinimumLongitude(stateCodeId, subCodeId);
         Float maxLng = borderPointService.getMaximumLongitude(stateCodeId, subCodeId);
 
-        cmbFeatureTypes = (String[]) customFeatureService.getCustomFeatureTypes(minLat, maxLat, minLng, maxLng).toArray();
+        List<String> featureTypes = customFeatureService.getCustomFeatureTypes(minLat, maxLat, minLng, maxLng);
+
+
+        //cmbFeatureTypes = customFeatureService.getCustomFeatureTypes(minLat, maxLat, minLng, maxLng);
 
         return SUCCESS;
     }
