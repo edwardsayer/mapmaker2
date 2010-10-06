@@ -87,9 +87,10 @@ public class BorderPointServiceImpl implements BorderPointService {
 
     public Float getMaximumLatitude(Integer stateCodeId, Integer subCodeId) {
 
-                StateCode stateCode = stateCodeService.getById(stateCodeId);
+        StateCode stateCode = stateCodeService.getById(stateCodeId);
         SubCode subCode = subCodeService.getById(subCodeId);
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+
+        return getMaximumLatitude(stateCode, subCode);
     }
 
     public Float getMinimumLongitude(StateCode stateCode, SubCode subCode) {
@@ -98,9 +99,10 @@ public class BorderPointServiceImpl implements BorderPointService {
 
     public Float getMinimumLongitude(Integer stateCodeId, Integer subCodeId) {
 
-                StateCode stateCode = stateCodeService.getById(stateCodeId);
+        StateCode stateCode = stateCodeService.getById(stateCodeId);
         SubCode subCode = subCodeService.getById(subCodeId);
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        
+        return getMinimumLongitude(stateCode, subCode);
     }
 
     public Float getMaximumLongitude(StateCode stateCode, SubCode subCode) {
@@ -109,8 +111,9 @@ public class BorderPointServiceImpl implements BorderPointService {
 
     public Float getMaximumLongitude(Integer stateCodeId, Integer subCodeId) {
 
-                StateCode stateCode = stateCodeService.getById(stateCodeId);
+        StateCode stateCode = stateCodeService.getById(stateCodeId);
         SubCode subCode = subCodeService.getById(subCodeId);
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+
+        return getMaximumLongitude(stateCode, subCode);
     }
 }
