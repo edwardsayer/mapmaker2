@@ -49,15 +49,24 @@ public class HibernateCustomFeatureDao extends HibernateGenericDao<CustomFeature
     @SuppressWarnings("unchecked")
     public List<CustomFeature> getCustomFeatures(float minLat, float maxLat, float minLng, float maxLng, List<String> typeList) {
 
-        String hql = "from CustomFeature cf where cf.latitude >= :minLat and cf.latitude <= :maxLat and " +
-                "cf.longtiude >= :minLng and cf.longitude <= :maxLng and cf.featureClass in (:featureClassList)";
+        String hql;
+        if (typeList != null) {
+            hql = "from CustomFeature cf where cf.latitude >= :minLat and cf.latitude <= :maxLat and " +
+                    "cf.longitude >= :minLng and cf.longitude <= :maxLng and cf.featureClass in (:featureClassList)";
+        } else {
+            hql = "from CustomFeature cf where cf.latitude >= :minLat and cf.latitude <= :maxLat and " +
+                    "cf.longitude >= :minLng and cf.longitude <= :maxLng";
+        }
 
         Query query = getSession().createQuery(hql);
         query.setFloat("minLat", minLat);
         query.setFloat("maxLat", maxLat);
         query.setFloat("minLng", minLng);
         query.setFloat("maxLng", maxLng);
-        query.setParameterList("featureClassList", typeList);
+
+        if (typeList != null) {
+            query.setParameterList("featureClassList", typeList);
+        }
 
         return (List<CustomFeature>) query.list();
 
