@@ -100,6 +100,15 @@
             });
         }
 
+        function reloadFeatureTypes() {
+            $.getJSON("/customFeature/getFeatureTypesJSON", {stateId: $("select#stateCodeId").val(), subCodeId: $("select#featureName").val(), ajax:'true'}, function(j) {
+                var featureTypes = j.cmbFeatureTypes;
+                for (var i=0; i<featureTypes.length; i++) {
+                    $("select#cmbFeatureTypes").append(new Option(featureTypes[i], featureTypes[i]));
+                }
+            });
+        }
+
         function drawMap2() {
 
             $.getJSON("/customMap/getCustomMapJson", {stateId: $("select#stateCodeId").val(), subCodeId: $("select#featureName").val(), ajax:'true'}, function(j) {
@@ -162,11 +171,17 @@
                     </select>
                 <p>
                     <label for="featureName">Feature Name</label>
-                    <select id="featureName" name="featureName" onchange="drawMap2();">
+                <%--<select id="featureName" name="featureName" onchange="drawMap2();">--%>
+                    <select id="featureName" name="featureName" onchange="reloadFeatureTypes();">
                         <option value="-1">Please Select</option>
                     </select>
                 </p>
-
+                <p>
+                    <label for="cmbFeatureTypes">Feature Types</label>
+                    <select id="cmbFeatureTypes" name="cmbFeatureTypes" size="8" multiple="multiple">
+                        <option value="-1">Please Select</option>    
+                    </select>
+                </p>
             </fieldset>
 
         </s:form>
