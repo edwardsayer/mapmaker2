@@ -67,7 +67,7 @@ public class HibernateCustomFeatureDao extends HibernateGenericDao<CustomFeature
     public List<String> getCustomFeatureTypes(float minLat, float maxLat, float minLng, float maxLng) {
 
         String hql = "select cf.featureClass from CustomFeature cf where cf.latitude >= :minLat and " +
-                "cf.latitude <= :maxLat and cf.longtiude >= :minLng and cf.longitude <= :maxLng";
+                "cf.latitude <= :maxLat and cf.longitude >= :minLng and cf.longitude <= :maxLng";
 
         Query query = getSession().createQuery(hql);
         query.setFloat("minLat", minLat);
