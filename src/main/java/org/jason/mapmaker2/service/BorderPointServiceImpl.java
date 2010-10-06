@@ -24,6 +24,20 @@ public class BorderPointServiceImpl implements BorderPointService {
         this.borderPointDao = borderPointDao;
     }
 
+    private StateCodeService stateCodeService;
+
+    @Autowired
+    public void setStateCodeService(StateCodeService stateCodeService) {
+        this.stateCodeService = stateCodeService;
+    }
+
+    private SubCodeService subCodeService;
+
+    @Autowired
+    public void setSubCodeService(SubCodeService subCodeService) {
+        this.subCodeService = subCodeService;
+    }
+
     public BorderPoint save(BorderPoint obj) {
         return borderPointDao.save(obj);
     }
@@ -59,15 +73,44 @@ public class BorderPointServiceImpl implements BorderPointService {
         return borderPointDao.getMinimumLatitude(stateCode, subCode);
     }
 
+    public Float getMinimumLatitude(Integer stateCodeId, Integer subCodeId) {
+
+        StateCode stateCode = stateCodeService.getById(stateCodeId);
+        SubCode subCode = subCodeService.getById(subCodeId);
+
+        return getMinimumLatitude(stateCode, subCode);
+    }
+
     public Float getMaximumLatitude(StateCode stateCode, SubCode subCode) {
         return borderPointDao.getMaximumLatitude(stateCode, subCode);
+    }
+
+    public Float getMaximumLatitude(Integer stateCodeId, Integer subCodeId) {
+
+                StateCode stateCode = stateCodeService.getById(stateCodeId);
+        SubCode subCode = subCodeService.getById(subCodeId);
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     public Float getMinimumLongitude(StateCode stateCode, SubCode subCode) {
         return borderPointDao.getMinimumLongitude(stateCode, subCode);
     }
 
+    public Float getMinimumLongitude(Integer stateCodeId, Integer subCodeId) {
+
+                StateCode stateCode = stateCodeService.getById(stateCodeId);
+        SubCode subCode = subCodeService.getById(subCodeId);
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
     public Float getMaximumLongitude(StateCode stateCode, SubCode subCode) {
         return borderPointDao.getMaximumLongitude(stateCode, subCode);
+    }
+
+    public Float getMaximumLongitude(Integer stateCodeId, Integer subCodeId) {
+
+                StateCode stateCode = stateCodeService.getById(stateCodeId);
+        SubCode subCode = subCodeService.getById(subCodeId);
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 }
