@@ -42,7 +42,7 @@ public class CustomMapServiceImpl implements CustomMapService {
         this.customFeatureService = customFeatureService;
     }
 
-    public CustomMap createMap(Integer stateId, Integer subCodeId) throws ServiceException{
+    public CustomMap createMap(Integer stateId, Integer subCodeId, List<String> featureTypes) throws ServiceException{
 
         if (stateId == null) {
             throw new ServiceException("Invalid State Code");
@@ -62,7 +62,7 @@ public class CustomMapServiceImpl implements CustomMapService {
         float minLng = borderPointService.getMinimumLongitude(stateCode, subCode);
         float maxLng = borderPointService.getMaximumLongitude(stateCode, subCode);
 
-        List<CustomFeature> customFeatures = customFeatureService.getCustomFeaturesWithBounds(minLat, maxLat, minLng, maxLng);
+        List<CustomFeature> customFeatures = customFeatureService.getCustomFeatures(minLat, maxLat, minLng, maxLng, featureTypes);
 
         CustomMap map = new CustomMap();
         map.setStateCode(stateCode);
