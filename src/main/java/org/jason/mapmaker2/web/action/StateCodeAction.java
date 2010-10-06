@@ -24,6 +24,7 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Collections;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -39,12 +40,14 @@ import java.util.zip.ZipFile;
 @SuppressWarnings("unused")
 public class StateCodeAction extends ActionSupport implements ServletContextAware {
 
+    // ServletContextAware interface
     private ServletContext servletContext;
 
     public void setServletContext(ServletContext servletContext) {
         this.servletContext = servletContext;
     }
 
+    // Service
     private StateCodeService stateCodeService;
 
     @Autowired
@@ -222,6 +225,15 @@ public class StateCodeAction extends ActionSupport implements ServletContextAwar
         return SUCCESS;
     }
 
+    @Action(value = "getStateCodes", results = {
+            @Result(name = "success", type = "json")
+    })
+    public String getStateCodes() throws Exception {
+        stateCodeList = stateCodeService.getAll();
+        Collections.sort(stateCodeList);
+
+        return SUCCESS;
+    }
 //    @Action(value = "getStateCodesJson", results = {
 //            @Result(name = "success", type = "json")
 //    })
