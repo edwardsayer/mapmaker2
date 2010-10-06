@@ -51,11 +51,20 @@ public class SubCodeAction extends ActionSupport implements ParameterAware {
     }
 
     // JSON returned data fields
+    private Integer stateCodeId;
     private List<SubCode> subCodeList;
     private List<String> distinctSubCodes;
 
     public List<SubCode> getSubCodeList() {
         return subCodeList;
+    }
+
+    public Integer getStateCodeId() {
+        return stateCodeId;
+    }
+
+    public void setStateCodeId(Integer stateCodeId) {
+        this.stateCodeId = stateCodeId;
     }
 
     public void setSubCodeList(List<SubCode> subCodeList) {
@@ -87,12 +96,12 @@ public class SubCodeAction extends ActionSupport implements ParameterAware {
     })
     public String getSubCodes() {
 
-        if (parameters.get("stateCodeId") != null) {
+        if (parameters.get("stateCodeId") == null) {
             addActionError("State Code Id is null");
             return INPUT;
         }
 
-        if (parameters.get("featureClass") != null) {
+        if (parameters.get("featureClass") == null) {
             addActionError("Feature class is null");
             return INPUT;
         }
@@ -111,7 +120,7 @@ public class SubCodeAction extends ActionSupport implements ParameterAware {
     })
     public String getSubCodeTypes() {
 
-        if (parameters.get("stateCodeId") != null) {
+        if (parameters.get("stateCodeId") == null) {
             addActionError("State Code Id is null");
             return INPUT;
         }
