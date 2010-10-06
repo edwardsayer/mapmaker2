@@ -15,7 +15,7 @@ public class TestCustomMapService extends TestCase {
     public void createMapShouldThrowAnExceptionWithAnInvalidStateCode() {
 
         try {
-            CustomMap customMap = customMapService.createMap(null, null);
+            CustomMap customMap = customMapService.createMap(null, null, null);
             fail("Invalid state code should throw a Service Exception");
         } catch (ServiceException e) {
         }
@@ -26,7 +26,7 @@ public class TestCustomMapService extends TestCase {
     public void createMapShouldThrowAnExceptionWithAnInvalidSubCode() {
 
         try {
-            CustomMap customMap = customMapService.createMap(null, null);
+            CustomMap customMap = customMapService.createMap(null, null, null);
             fail("Invalid subcode should throw a ServiceException");
         } catch (ServiceException e) {
         }
