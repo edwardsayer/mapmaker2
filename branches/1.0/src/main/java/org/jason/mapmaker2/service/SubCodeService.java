@@ -12,7 +12,11 @@ public interface SubCodeService extends BasicServiceOperations<SubCode>{
 
     List<SubCode> getByStateCode(StateCode stateCode);
 
+    List<SubCode> getByStateCodeAndFeatureType(Integer stateId, String featureClass);
+
     List<SubCode> getByStateCodeAndFeatureType(StateCode stateCode, String featureType);
+
+    List<String> getUniqueSubCodeTypesByStateCode(Integer stateCodeId);
 
     List<String> getUniqueSubCodeTypesByStateCode(StateCode stateCode);
 

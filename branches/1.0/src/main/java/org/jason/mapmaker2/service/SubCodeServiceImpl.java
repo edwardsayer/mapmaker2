@@ -14,6 +14,13 @@ import java.util.List;
 @Service("subCodeService")
 public class SubCodeServiceImpl implements SubCodeService {
 
+    private StateCodeService stateCodeService;
+
+    @Autowired
+    public void setStateCodeService(StateCodeService stateCodeService) {
+        this.stateCodeService = stateCodeService;
+    }
+
     private SubCodeDao subCodeDao;
 
     @Autowired
@@ -49,6 +56,12 @@ public class SubCodeServiceImpl implements SubCodeService {
         return subCodeDao.queryByExample(subCode);
     }
 
+    public List<SubCode> getByStateCodeAndFeatureType(Integer stateId, String featureClass) {
+        StateCode stateCode = stateCodeService.getByStateCode(stateId);
+
+        return getByStateCodeAndFeatureType(stateCode, featureClass);
+    }
+
     public List<SubCode> getByStateCodeAndFeatureType(StateCode stateCode, String featureType) {
 
         SubCode example = new SubCode();
@@ -56,6 +69,13 @@ public class SubCodeServiceImpl implements SubCodeService {
         example.setSubCodeType(featureType);
 
         return subCodeDao.queryByExample(example);
+    }
+
+    public List<String> getUniqueSubCodeTypesByStateCode(Integer stateCodeId) {
+
+        StateCode stateCode = stateCodeService.getById(stateCodeId);
+
+        return getUniqueSubCodeTypesByStateCode(stateCode);
     }
 
     public List<String> getUniqueSubCodeTypesByStateCode(StateCode stateCode) {
