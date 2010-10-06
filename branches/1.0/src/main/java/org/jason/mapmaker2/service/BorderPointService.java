@@ -16,11 +16,19 @@ public interface BorderPointService extends BasicServiceOperations<BorderPoint> 
 
     List<BorderPoint> getByStateCodeAndSubCode(StateCode stateCode, SubCode subCode);
 
+    Float getMinimumLatitude(Integer stateCodeId, Integer subCodeId);
+
     Float getMinimumLatitude(StateCode stateCode, SubCode subCode);
+
+    Float getMaximumLatitude(Integer stateCodeId, Integer subCodeId);
 
     Float getMaximumLatitude(StateCode stateCode, SubCode subCode);
 
+    Float getMinimumLongitude(Integer stateCodeId, Integer subCodeId);
+
     Float getMinimumLongitude(StateCode stateCode, SubCode subCode);
+
+    Float getMaximumLongitude(Integer stateCodeId, Integer subCodeId);
 
     Float getMaximumLongitude(StateCode stateCode, SubCode subCode);
 }
