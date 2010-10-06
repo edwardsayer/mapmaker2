@@ -9,6 +9,8 @@ import org.jason.mapmaker2.model.SubCode;
 import org.jason.mapmaker2.service.SubCodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -111,6 +113,11 @@ public class SubCodeAction extends ActionSupport implements ParameterAware {
         String featureClass = parameters.get("featureClass")[0];
 
         subCodeList = subCodeService.getByStateCodeAndFeatureType(stateId, featureClass);
+        Collections.sort(subCodeList, new Comparator<SubCode>() {
+            public int compare(SubCode o1, SubCode o2) {
+                return o1.getSubCodeDescription().compareTo(o2.getSubCodeDescription());
+            }
+        });
 
         return SUCCESS;
     }
