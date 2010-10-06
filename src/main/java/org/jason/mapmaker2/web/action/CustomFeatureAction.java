@@ -3,10 +3,12 @@ package org.jason.mapmaker2.web.action;
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.commons.io.FileUtils;
 import org.apache.struts2.convention.annotation.*;
+import org.apache.struts2.interceptor.ParameterAware;
 import org.apache.struts2.interceptor.validation.SkipValidation;
 import org.apache.struts2.util.ServletContextAware;
 import org.jason.mapmaker2.model.CustomFeature;
 import org.jason.mapmaker2.model.StateCode;
+import org.jason.mapmaker2.service.BorderPointService;
 import org.jason.mapmaker2.service.CustomFeatureService;
 import org.jason.mapmaker2.service.StateCodeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +18,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -33,12 +32,18 @@ import java.util.zip.ZipFile;
         @Result(name = "input", location = "/WEB-INF/content/admin/customFeature/create.jsp")
 })
 @SuppressWarnings("unused")
-public class CustomFeatureAction extends ActionSupport implements ServletContextAware {
+public class CustomFeatureAction extends ActionSupport implements ServletContextAware, ParameterAware {
 
     ServletContext servletContext;
 
     public void setServletContext(ServletContext servletContext) {
         this.servletContext = servletContext;
+    }
+
+    Map<String, String[]> parameters;
+
+    public void setParameters(Map<String, String[]> parameters) {
+        this.parameters = parameters;
     }
 
     private CustomFeatureService customFeatureService;
@@ -53,6 +58,13 @@ public class CustomFeatureAction extends ActionSupport implements ServletContext
     @Autowired
     public void setStateCodeService(StateCodeService stateCodeService) {
         this.stateCodeService = stateCodeService;
+    }
+
+    private BorderPointService borderPointService;
+
+    @Autowired
+    public void setBorderPointService(BorderPointService borderPointService) {
+        this.borderPointService = borderPointService;
     }
 
     private File fileUpload;
@@ -179,6 +191,58 @@ public class CustomFeatureAction extends ActionSupport implements ServletContext
             boolean deleteResult = f.delete();
         }
 
+
+        return SUCCESS;
+    }
+
+    private String[] cmbFeatureTypes;
+
+    public String[] getCmbFeatureTypes() {
+        return cmbFeatureTypes;
+    }
+
+    public void setCmbFeatureTypes(String[] cmbFeatureTypes) {
+        this.cmbFeatureTypes = cmbFeatureTypes;
+    }
+
+    @Action(value = "/getFeaturesJSON", results = {
+            @Result(name = "success", type = "json")
+    })
+    public String getFeatures() throws Exception {
+
+        // get the state code id and the sub code id (from the featureName select box)
+        Integer stateCodeId = Integer.parseInt(parameters.get("stateCodeId")[0]);
+        Integer subCodeId = Integer.parseInt(parameters.get("featureName")[0]);
+
+        Float minLat = borderPointService.getMinimumLatitude(stateCodeId, subCodeId);
+        Float maxLat = borderPointService.getMaximumLatitude(stateCodeId, subCodeId);
+        Float minLng = borderPointService.getMinimumLongitude(stateCodeId, subCodeId);
+        Float maxLng = borderPointService.getMaximumLongitude(stateCodeId, subCodeId);
+
+        List<CustomFeature> customFeatureList = customFeatureService.getCustomFeatures(minLat,
+                maxLat,
+                minLng,
+                maxLng,
+                Arrays.asList(cmbFeatureTypes));
+
+        return SUCCESS;
+    }
+
+    @Action(value = "getFeatureTypesJSON", results = {
+            @Result(name="success", type = "json")
+    })
+    public String getFeatureTypes() throws Exception {
+
+        // get the state code id and the sub code id (from the featureName select box)
+        Integer stateCodeId = Integer.parseInt(parameters.get("stateId")[0]);
+        Integer subCodeId = Integer.parseInt(parameters.get("subCodeId")[0]);
+
+        Float minLat = borderPointService.getMinimumLatitude(stateCodeId, subCodeId);
+        Float maxLat = borderPointService.getMaximumLatitude(stateCodeId, subCodeId);
+        Float minLng = borderPointService.getMinimumLongitude(stateCodeId, subCodeId);
+        Float maxLng = borderPointService.getMaximumLongitude(stateCodeId, subCodeId);
+
+        cmbFeatureTypes = (String[]) customFeatureService.getCustomFeatureTypes(minLat, maxLat, minLng, maxLng).toArray();
 
         return SUCCESS;
     }
