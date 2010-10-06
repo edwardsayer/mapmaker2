@@ -82,7 +82,7 @@
         });
 
         function reloadSubcode() {
-            $.getJSON("/getSubCodesJson", {id: $("select#stateCodeId").val(), ajax:'true'}, function(j) {
+            $.getJSON("/subCode/getSubCodeFeatureTypes", {stateCodeId: $("select#stateCodeId").val(), ajax:'true'}, function(j) {
                 var subCodeList = j.distinctSubCodes;
                 for (var i = 0; i < subCodeList.length; i++) {
                     $("select#subCodeFeatureType").append(new Option(subCodeList[i], subCodeList[i]));
@@ -92,7 +92,7 @@
 
         // descriptions need to come back with description and actual subcode id
         function reloadDescriptions() {
-            $.getJSON("/getSubCodeDescriptionsByFeatureTypeJson", {stateCodeId: $("select#stateCodeId").val() , featureName: $("select#subCodeFeatureType").val(), ajax:'true'}, function(j) {
+            $.getJSON("/subCode/getSubCodes", {stateCodeId: $("select#stateCodeId").val() , featureClass: $("select#subCodeFeatureType").val(), ajax:'true'}, function(j) {
                 var subcodes = j.subCodes;
                 for (var i = 0; i < subcodes.length; i++) {
                     $("select#featureName").append(new Option(subcodes[i].subCodeDescription, subcodes[i].id));
