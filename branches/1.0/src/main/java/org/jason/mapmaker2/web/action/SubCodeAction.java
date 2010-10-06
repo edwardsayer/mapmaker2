@@ -1,23 +1,28 @@
 package org.jason.mapmaker2.web.action;
 
 import com.opensymphony.xwork2.ActionSupport;
-import com.opensymphony.xwork2.Preparable;
-import com.opensymphony.xwork2.validator.annotations.RequiredFieldValidator;
-import com.opensymphony.xwork2.validator.annotations.RequiredStringValidator;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.struts2.convention.annotation.*;
-import org.apache.struts2.interceptor.validation.SkipValidation;
-import org.jason.mapmaker2.model.StateCode;
-import org.jason.mapmaker2.service.StateCodeService;
+import org.apache.struts2.interceptor.ParameterAware;
+import org.jason.mapmaker2.model.SubCode;
 import org.jason.mapmaker2.service.SubCodeService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * SubCodeAction.java
- *
+ * <p/>
  * All actions relating to SubCode, normal and JSON.
- * 
+ *
+ * This class has been extensively rewritten to minimimize unnecessary code and coupling. In general,
+ * Action classes should only be coupled to one equivalent Service.
+ *
+ * Since SubCodes are mostly created when a set of BorderPoints is imported, the basic Action methods
+ * are not implemented. Currently, only JSON response methods are implemented.
+ *
  * @author Jason Ferguson
  */
 @ParentPackage("json-default")
@@ -26,8 +31,18 @@ import java.util.List;
         @Result(name = "success", location = "/WEB-INF/content/admin/subCode/list.jsp"),
         @Result(name = "input", location = "/WEB-INF/content/admin/subCode/create.jsp")
 })
-public class SubCodeAction extends ActionSupport implements Preparable {
+public class SubCodeAction extends ActionSupport implements ParameterAware {
 
+    private static final Log log = LogFactory.getLog(SubCodeAction.class);
+
+    // ParameterAware Interface
+    private Map<String, String[]> parameters;
+
+    public void setParameters(Map<String, String[]> parameters) {
+        this.parameters = parameters;
+    }
+
+    // Service definition
     private SubCodeService subCodeService;
 
     @Autowired
@@ -35,92 +50,77 @@ public class SubCodeAction extends ActionSupport implements Preparable {
         this.subCodeService = subCodeService;
     }
 
-    private StateCodeService stateCodeService;
+    // JSON returned data fields
+    private List<SubCode> subCodeList;
+    private List<String> distinctSubCodes;
 
-    @Autowired
-    public void setStateCodeService(StateCodeService stateCodeService) {
-        this.stateCodeService = stateCodeService;
+    public List<SubCode> getSubCodeList() {
+        return subCodeList;
     }
 
-    private Integer stateCodeId;
-    private Integer subCode;
-    private String subCodeDescription;
-    private String subCodeType;
-
-    @RequiredFieldValidator(message = "You must select a state!")
-    public Integer getStateCodeId() {
-        return stateCodeId;
+    public void setSubCodeList(List<SubCode> subCodeList) {
+        this.subCodeList = subCodeList;
     }
 
-    public void setStateCodeId(Integer stateCodeId) {
-        this.stateCodeId = stateCodeId;
+    public List<String> getDistinctSubCodes() {
+        return distinctSubCodes;
     }
 
-    @RequiredFieldValidator(message = "You must enter a sub code!")
-    public Integer getSubCode() {
-        return subCode;
+    public void setDistinctSubCodes(List<String> distinctSubCodes) {
+        this.distinctSubCodes = distinctSubCodes;
     }
 
-    public void setSubCodeId(Integer subCode) {
-        this.subCode = subCode;
-    }
-
-    @RequiredStringValidator(message = "You must enter a description!")
-    public String getSubCodeDescription() {
-        return subCodeDescription;
-    }
-
-    public void setSubCodeDescription(String subCodeDescription) {
-        this.subCodeDescription = subCodeDescription;
-    }
-
-    @RequiredStringValidator(message = "You must enter a type (i.e. 'county')!")
-    public String getSubCodeType() {
-        return subCodeType;
-    }
-
-    public void setSubCodeType(String subCodeType) {
-        this.subCodeType = subCodeType;
-    }
-
-    private List<StateCode> stateCodeList;
-
-    public List<StateCode> getStateCodeList() {
-        return stateCodeList;
-    }
-
-    public void setStateCodeList(List<StateCode> stateCodeList) {
-        this.stateCodeList = stateCodeList;
-    }
-
-    public void prepare() throws Exception {
-        stateCodeList = stateCodeService.getAll();
-    }
-
-    @Action("")
-    @SkipValidation
     public String execute() throws Exception {
-
         return SUCCESS;
     }
 
-    @Action("showCreate")
-    @SkipValidation
     public String showCreate() throws Exception {
-
-        return INPUT;
+        throw new UnsupportedOperationException();
     }
 
-    @Action("create")
     public String create() throws Exception {
-        return SUCCESS;
+        throw new UnsupportedOperationException();
     }
 
-    @Action(value = "subCodeByStateJson", results = {
+    @Action(value = "getSubCodes", results = {
             @Result(name = "success", type = "json")
     })
-    public String getSubCodesByStateJson() throws Exception {
+    public String getSubCodes() {
 
+        if (parameters.get("stateCodeId") != null) {
+            addActionError("State Code Id is null");
+            return INPUT;
+        }
+
+        if (parameters.get("featureClass") != null) {
+            addActionError("Feature class is null");
+            return INPUT;
+        }
+
+        // this returns the unique id of the statecode object, not the FIPS code!
+        Integer stateId = Integer.parseInt(parameters.get("stateCodeId")[0]);
+        String featureClass = parameters.get("featureClass")[0];
+
+        subCodeList = subCodeService.getByStateCodeAndFeatureType(stateId, featureClass);
+
+        return SUCCESS;
+    }
+
+    @Action(value = "getSubCodeTypes", results = {
+            @Result(name = "success", type = "json")
+    })
+    public String getSubCodeTypes() {
+
+        if (parameters.get("stateCodeId") != null) {
+            addActionError("State Code Id is null");
+            return INPUT;
+        }
+
+        // this returns the unique id of the statecode object, not the FIPS code!
+        Integer stateId = Integer.parseInt(parameters.get("stateCodeId")[0]);
+
+        distinctSubCodes = subCodeService.getUniqueSubCodeTypesByStateCode(stateId);
+        
         return SUCCESS;
     }
 }
