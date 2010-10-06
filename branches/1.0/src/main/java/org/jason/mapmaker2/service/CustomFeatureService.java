@@ -12,4 +12,6 @@ public interface CustomFeatureService extends BasicServiceOperations<CustomFeatu
     void saveAll(List<CustomFeature> featureList);
 
     List<CustomFeature> getCustomFeatures(float minLat, float maxLat, float minLng, float maxLng, List<String> featureTypeList);
+
+    List<String> getCustomFeatureTypes(float minLat, float maxLat, float minLng, float maxLng);
 }
