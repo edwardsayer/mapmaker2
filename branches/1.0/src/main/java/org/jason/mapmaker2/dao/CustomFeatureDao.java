@@ -11,4 +11,5 @@ public interface CustomFeatureDao extends GenericDao<CustomFeature>{
 
     List<CustomFeature> getCustomFeatures(float minLat, float maxLat, float minLng, float maxLng, List<String> featureClassList);
 
+    List<String> getCustomFeatureTypes(float minLat, float maxLat, float minLng, float maxLng);
 }
