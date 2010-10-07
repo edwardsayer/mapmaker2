@@ -35,14 +35,14 @@ import java.util.zip.ZipFile;
 public class CustomFeatureAction extends ActionSupport implements ServletContextAware, ParameterAware {
 
     // ServletContextAware interface
-    ServletContext servletContext;
+    private ServletContext servletContext;
 
     public void setServletContext(ServletContext servletContext) {
         this.servletContext = servletContext;
     }
 
     // ParameterAware interface
-    Map<String, String[]> parameters;
+    private Map<String, String[]> parameters;
 
     public void setParameters(Map<String, String[]> parameters) {
         this.parameters = parameters;
