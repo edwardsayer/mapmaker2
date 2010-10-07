@@ -12,7 +12,9 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Jason Ferguson
@@ -50,6 +52,29 @@ public class HibernateBorderPointDao extends HibernateGenericDao<BorderPoint> im
         tx.commit();
 
         getSession().setCacheMode(CacheMode.NORMAL);
+    }
+
+    public Map<String, Float> getBoundingBox(StateCode stateCode, SubCode subCode) {
+
+        Map<String, Float> resultMap = new HashMap<String, Float>();
+
+        // I didn't want to do a "select new map()" here because I'd rather deal with the casting from Object to
+        // Float here instead of at the service (or higher) layer
+        String hql = "select min(bp.latitude), max(bp.latitude), min(bp.longitude), max(bp.longitude) from " +
+                "BorderPoint bp where bp.stateCode = :stateCode and bp.subCode = :subCode";
+        Query query = getSession().createQuery(hql);
+        query.setParameter("stateCode", stateCode);
+        query.setParameter("subCode", subCode);
+
+        Object[] result = (Object[]) query.uniqueResult();
+        for (Object o: result) {
+            resultMap.put("minLat", (Float) result[0]);
+            resultMap.put("maxLat", (Float) result[1]);
+            resultMap.put("minLng", (Float) result[2]);
+            resultMap.put("maxLng", (Float) result[3]);
+        }
+
+        return resultMap;
     }
 
     @SuppressWarnings("unchecked")
