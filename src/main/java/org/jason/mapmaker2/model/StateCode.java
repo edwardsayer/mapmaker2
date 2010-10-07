@@ -1,5 +1,6 @@
 package org.jason.mapmaker2.model;
 
+import org.apache.struts2.json.annotations.JSON;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -36,6 +37,7 @@ public class StateCode implements Serializable, Comparable<StateCode> {
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JSON(serialize = false)
     public int getId() {
         return id;
     }
@@ -72,6 +74,7 @@ public class StateCode implements Serializable, Comparable<StateCode> {
     }
 
     @Transient
+    @JSON(serialize = false)
     public String getLabel() {
         return stateName + " (" + stateCode + ")";    
     }
