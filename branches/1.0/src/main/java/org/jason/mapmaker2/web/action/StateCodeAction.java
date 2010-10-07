@@ -100,7 +100,7 @@ public class StateCodeAction extends ActionSupport implements ServletContextAwar
         this.stateCodeList = stateCodeList;
     }
 
-    List<StateCode> stateCodeList;
+    private List<StateCode> stateCodeList;
 
     @Action("")
     @SkipValidation
