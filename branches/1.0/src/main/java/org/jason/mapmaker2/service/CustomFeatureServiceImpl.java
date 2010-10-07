@@ -47,6 +47,10 @@ public class CustomFeatureServiceImpl implements CustomFeatureService {
         customFeatureDao.saveAll(featureList);
     }
 
+    public List<CustomFeature> getCustomFeatures(Map<String, Float> boundingBox, List<String> featureTypeList) {
+        return customFeatureDao.getCustomFeatures(boundingBox, featureTypeList);
+    }
+
     public List<CustomFeature> getCustomFeatures(float minLat, float maxLat, float minLng, float maxLng, List<String> featureTypeList) {
         return customFeatureDao.getCustomFeatures(minLat, maxLat, minLng, maxLng, featureTypeList);
     }

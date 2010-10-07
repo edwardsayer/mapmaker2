@@ -12,6 +12,8 @@ public interface CustomFeatureService extends BasicServiceOperations<CustomFeatu
 
     void saveAll(List<CustomFeature> featureList);
 
+    List<CustomFeature> getCustomFeatures(Map<String, Float> boundingBox, List<String> featureTypeList);
+
     List<CustomFeature> getCustomFeatures(float minLat, float maxLat, float minLng, float maxLng, List<String> featureTypeList);
 
     List<String> getCustomFeatureTypes(Map<String, Float> boundingBox) throws ServiceException;
