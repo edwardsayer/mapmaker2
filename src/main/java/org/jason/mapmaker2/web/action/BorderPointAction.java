@@ -32,6 +32,12 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 /**
+ * BorderPointAction.java
+ *
+ * Action class for dealing with BorderPoint objects
+ *
+ * Class implements the ServletContextAware interface so that it can obtain the location of the tmp directory
+ *
  * @author Jason Ferguson
  */
 @ParentPackage("struts-default")
@@ -43,21 +49,22 @@ import java.util.zip.ZipFile;
 @SuppressWarnings("unused")
 public class BorderPointAction extends ActionSupport implements ServletContextAware {
 
+    // Interface ServletContextAware
     ServletContext servletContext;
 
     public void setServletContext(ServletContext servletContext) {
         this.servletContext = servletContext;
     }
 
+    // Services
     private BorderPointService borderPointService;
+    private StateCodeService stateCodeService;
+    private SubCodeService subCodeService;
 
     @Autowired
     public void setBorderPointService(BorderPointService borderPointService) {
         this.borderPointService = borderPointService;
     }
-
-    private StateCodeService stateCodeService;
-    private SubCodeService subCodeService;
 
     @Autowired
     public void setStateCodeService(StateCodeService stateCodeService) {
