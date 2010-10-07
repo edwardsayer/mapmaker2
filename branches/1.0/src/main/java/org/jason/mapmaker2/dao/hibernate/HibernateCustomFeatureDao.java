@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Jason Ferguson
@@ -70,6 +71,14 @@ public class HibernateCustomFeatureDao extends HibernateGenericDao<CustomFeature
 
         return (List<CustomFeature>) query.list();
 
+    }
+
+    public List<String> getCustomFeatureTypes(Map<String, Float> boundingBox) {
+
+        return getCustomFeatureTypes(boundingBox.get("minLat"),
+                                     boundingBox.get("maxLat"),
+                                     boundingBox.get("minLng"),
+                                     boundingBox.get("maxLng"));
     }
 
     @SuppressWarnings("unchecked")
