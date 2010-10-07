@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Jason Ferguson
@@ -56,22 +57,15 @@ public class CustomMapServiceImpl implements CustomMapService {
         SubCode subCode = subCodeService.getById(subCodeId);
 
         List<BorderPoint> borderPoints = borderPointService.getByStateCodeAndSubCode(stateCode, subCode);
+        Map<String, Float> boundingBox = borderPointService.getBoundingBox(stateCode, subCode);
 
-        float minLat = borderPointService.getMinimumLatitude(stateCode, subCode);
-        float maxLat = borderPointService.getMaximumLatitude(stateCode, subCode);
-        float minLng = borderPointService.getMinimumLongitude(stateCode, subCode);
-        float maxLng = borderPointService.getMaximumLongitude(stateCode, subCode);
-
-        List<CustomFeature> customFeatures = customFeatureService.getCustomFeatures(minLat, maxLat, minLng, maxLng, featureTypes);
+        List<CustomFeature> customFeatures = customFeatureService.getCustomFeatures(boundingBox, featureTypes);
 
         CustomMap map = new CustomMap();
         map.setStateCode(stateCode);
         map.setSubCode(subCode);
+        map.setBoundingBox(boundingBox);
         map.setBorderPoints(borderPoints);
-        map.setMinLat(minLat);
-        map.setMaxLat(maxLat);
-        map.setMinLng(minLng);
-        map.setMaxLng(maxLng);
         map.setCustomFeatures(customFeatures);
         return map;
     }
