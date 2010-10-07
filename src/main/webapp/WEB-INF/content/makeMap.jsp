@@ -12,7 +12,9 @@
             font-size: 12px
         }
 
-        select { font-size: 12px}
+        select {
+            font-size: 12px
+        }
 
         #container {
             width: 90%;
@@ -103,48 +105,54 @@
         function reloadFeatureTypes() {
             $.getJSON("/customFeature/getFeatureTypesJSON", {stateCodeId: $("select#stateCodeId").val(), subCodeId: $("select#featureName").val(), ajax:'true'}, function(j) {
                 var featureTypes = j.cmbFeatureTypes;
-                for (var i=0; i<featureTypes.length; i++) {
+                for (var i = 0; i < featureTypes.length; i++) {
                     $("select#cmbFeatureTypes").append(new Option(featureTypes[i], featureTypes[i]));
                 }
             });
         }
 
+        function temp() {
+            alert($("select#cmbFeatureTypes").val());
+        }
         function drawMap2() {
 
-            $.getJSON("/customMap/getCustomMapJson", {stateId: $("select#stateCodeId").val(), subCodeId: $("select#featureName").val(), ajax:'true'}, function(j) {
-                // get the map
-                var mapData = j.map;
-                // figure out the center
-                var ctrLat = (mapData.minLat + mapData.maxLat) / 2;
-                var ctrLng = (mapData.minLng + mapData.maxLng) / 2;
+            $.getJSON("/customMap/getCustomMapJson", {stateId: $("select#stateCodeId").val(),
+                subCodeId: $("select#featureName").val(), featureClasses: $("select#cmbFeatureTypes").val(),
+                ajax:'true'},
+                    function(j) {
+                        // get the map
+                        var mapData = j.map;
+                        // figure out the center
+                        var ctrLat = (mapData.minLat + mapData.maxLat) / 2;
+                        var ctrLng = (mapData.minLng + mapData.maxLng) / 2;
 
-                //compute the polygon
-                var mapBorderPoints = mapData.borderPoints;
-                var borderPoints = new Array();
+                        //compute the polygon
+                        var mapBorderPoints = mapData.borderPoints;
+                        var borderPoints = new Array();
 
-                for (var i = 0; i < mapBorderPoints.length; i++) {
-                    var ll = new google.maps.LatLng(mapBorderPoints[i].latitude, mapBorderPoints[i].longitude);
-                    borderPoints.push(ll);
-                }
+                        for (var i = 0; i < mapBorderPoints.length; i++) {
+                            var ll = new google.maps.LatLng(mapBorderPoints[i].latitude, mapBorderPoints[i].longitude);
+                            borderPoints.push(ll);
+                        }
 
-                var borderPolyline = new google.maps.Polyline({
-                    path: borderPoints,
-                    strokeColor: "#FF0000",
-                    strokeOpacity: 0.8,
-                    strokeWeight: 2
-                });
+                        var borderPolyline = new google.maps.Polyline({
+                            path: borderPoints,
+                            strokeColor: "#FF0000",
+                            strokeOpacity: 0.8,
+                            strokeWeight: 2
+                        });
 
-                var latLng = new google.maps.LatLng(ctrLat, ctrLng);
-                var myOptions = {
-                    zoom: 8,
-                    center: latLng,
-                    mapTypeId: google.maps.MapTypeId.ROADMAP
-                };
+                        var latLng = new google.maps.LatLng(ctrLat, ctrLng);
+                        var myOptions = {
+                            zoom: 8,
+                            center: latLng,
+                            mapTypeId: google.maps.MapTypeId.ROADMAP
+                        };
 
-                var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+                        var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
 
-                borderPolyline.setMap(map);
-            });
+                        borderPolyline.setMap(map);
+                    });
         }
     </script>
 </head>
@@ -171,7 +179,7 @@
                     </select>
                 <p>
                     <label for="featureName">Feature Name</label>
-                <%--<select id="featureName" name="featureName" onchange="drawMap2();">--%>
+                        <%--<select id="featureName" name="featureName" onchange="drawMap2();">--%>
                     <select id="featureName" name="featureName" onchange="reloadFeatureTypes();">
                         <option value="-1">Please Select</option>
                     </select>
@@ -179,8 +187,11 @@
                 <p>
                     <label for="cmbFeatureTypes">Feature Types</label>
                     <select id="cmbFeatureTypes" name="cmbFeatureTypes" size="8" multiple="multiple">
-                        <option value="-1">Please Select</option>    
+                        <option value="-1">Please Select</option>
                     </select>
+                </p>
+                <p>
+                    <button name="UpdateMap" onclick="drawMap2(); return false;">Update Map</button>
                 </p>
             </fieldset>
 
