@@ -34,39 +34,41 @@ import java.util.zip.ZipFile;
 @SuppressWarnings("unused")
 public class CustomFeatureAction extends ActionSupport implements ServletContextAware, ParameterAware {
 
+    // ServletContextAware interface
     ServletContext servletContext;
 
     public void setServletContext(ServletContext servletContext) {
         this.servletContext = servletContext;
     }
 
+    // ParameterAware interface
     Map<String, String[]> parameters;
 
     public void setParameters(Map<String, String[]> parameters) {
         this.parameters = parameters;
     }
 
+    // Services
     private CustomFeatureService customFeatureService;
+    private StateCodeService stateCodeService;
+    private BorderPointService borderPointService;
 
     @Autowired
     public void setCustomFeatureService(CustomFeatureService customFeatureService) {
         this.customFeatureService = customFeatureService;
     }
 
-    private StateCodeService stateCodeService;
-
     @Autowired
     public void setStateCodeService(StateCodeService stateCodeService) {
         this.stateCodeService = stateCodeService;
     }
-
-    private BorderPointService borderPointService;
 
     @Autowired
     public void setBorderPointService(BorderPointService borderPointService) {
         this.borderPointService = borderPointService;
     }
 
+    // File Upload form fields
     private File fileUpload;
     private String fileUploadContentType;
     private String fileUploadFileName;
@@ -93,6 +95,17 @@ public class CustomFeatureAction extends ActionSupport implements ServletContext
 
     public void setFileUploadFileName(String fileUploadFileName) {
         this.fileUploadFileName = fileUploadFileName;
+    }
+
+    // JSON form fields
+    private List<String> cmbFeatureTypes;
+
+    public List<String> getCmbFeatureTypes() {
+        return cmbFeatureTypes;
+    }
+
+    public void setCmbFeatureTypes(List<String> cmbFeatureTypes) {
+        this.cmbFeatureTypes = cmbFeatureTypes;
     }
 
     @Action("")
@@ -195,15 +208,6 @@ public class CustomFeatureAction extends ActionSupport implements ServletContext
         return SUCCESS;
     }
 
-    private List<String> cmbFeatureTypes;
-
-    public List<String> getCmbFeatureTypes() {
-        return cmbFeatureTypes;
-    }
-
-    public void setCmbFeatureTypes(List<String> cmbFeatureTypes) {
-        this.cmbFeatureTypes = cmbFeatureTypes;
-    }
 
     @Action(value = "/getFeaturesJSON", results = {
             @Result(name = "success", type = "json")
@@ -237,12 +241,14 @@ public class CustomFeatureAction extends ActionSupport implements ServletContext
         Integer stateCodeId = Integer.parseInt(parameters.get("stateCodeId")[0]);
         Integer subCodeId = Integer.parseInt(parameters.get("subCodeId")[0]);
 
-        Float minLat = borderPointService.getMinimumLatitude(stateCodeId, subCodeId);
-        Float maxLat = borderPointService.getMaximumLatitude(stateCodeId, subCodeId);
-        Float minLng = borderPointService.getMinimumLongitude(stateCodeId, subCodeId);
-        Float maxLng = borderPointService.getMaximumLongitude(stateCodeId, subCodeId);
-
-        List<String> featureTypes = customFeatureService.getCustomFeatureTypes(minLat, maxLat, minLng, maxLng);
+        Map<String, Float> boundingBox = borderPointService.getBoundingBox(stateCodeId, subCodeId);
+        cmbFeatureTypes = customFeatureService.getCustomFeatureTypes(boundingBox);
+//        Float minLat = borderPointService.getMinimumLatitude(stateCodeId, subCodeId);
+//        Float maxLat = borderPointService.getMaximumLatitude(stateCodeId, subCodeId);
+//        Float minLng = borderPointService.getMinimumLongitude(stateCodeId, subCodeId);
+//        Float maxLng = borderPointService.getMaximumLongitude(stateCodeId, subCodeId);
+//
+//        List<String> featureTypes = customFeatureService.getCustomFeatureTypes(minLat, maxLat, minLng, maxLng);
 
 
         //cmbFeatureTypes = customFeatureService.getCustomFeatureTypes(minLat, maxLat, minLng, maxLng);
