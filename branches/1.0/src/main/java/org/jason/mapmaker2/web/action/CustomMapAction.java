@@ -22,6 +22,7 @@ import java.util.Map;
  */
 @ParentPackage("json-default")
 @Namespace("/customMap")
+@SuppressWarnings("unused")
 public class CustomMapAction extends ActionSupport implements ParameterAware {
 
     private Map<String, String[]> parameters;
@@ -142,7 +143,8 @@ public class CustomMapAction extends ActionSupport implements ParameterAware {
 
         stateId = Integer.parseInt(parameters.get("stateId")[0]);
         subCodeId = Integer.parseInt(parameters.get("subCodeId")[0]);
-        String[] features = parameters.get("cmbFeatureTypes");
+
+        String[] features = parameters.get("featureClasses")[0].split(",");
         
         // create the map with the borderpoints
         map = customMapService.createMap(stateId, subCodeId, Arrays.asList(features));
