@@ -30,7 +30,7 @@ public class HibernateGenericDao<T> extends HibernateDaoSupport implements Gener
 
     public T save(T obj) {
 
-        Integer id = (Integer) getHibernateTemplate().save(obj);
+        Integer id = (Integer) getSession().save(obj);
         return getById(id);
     }
 
@@ -50,7 +50,7 @@ public class HibernateGenericDao<T> extends HibernateDaoSupport implements Gener
 
     public T getById(int id) {
 
-        return getHibernateTemplate().get(type, id);
+        return (T) getSession().get(type, id);
     }
 
     @SuppressWarnings("unchecked")
