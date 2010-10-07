@@ -6,6 +6,7 @@ import org.jason.mapmaker2.model.SubCode;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Jason Ferguson
@@ -15,6 +16,10 @@ public interface BorderPointService extends BasicServiceOperations<BorderPoint> 
     void saveAll(Collection<BorderPoint> bpCollection);
 
     List<BorderPoint> getByStateCodeAndSubCode(StateCode stateCode, SubCode subCode);
+
+    Map<String, Float> getBoundingBox(Integer stateCodeId, Integer subCodeId);
+
+    Map<String, Float> getBoundingBox(StateCode stateCode, SubCode subCode);
 
     Float getMinimumLatitude(Integer stateCodeId, Integer subCodeId);
 

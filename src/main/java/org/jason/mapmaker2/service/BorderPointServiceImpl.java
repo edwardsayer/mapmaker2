@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Jason Ferguson
@@ -61,6 +62,19 @@ public class BorderPointServiceImpl implements BorderPointService {
     @Transactional
     public void saveAll(Collection<BorderPoint> bpCollection) {
         borderPointDao.saveAll(bpCollection);
+    }
+
+    public Map<String, Float> getBoundingBox(Integer stateCodeId, Integer subCodeId) {
+
+        StateCode stateCode = stateCodeService.getById(stateCodeId);
+        SubCode subCode = subCodeService.getById(subCodeId);
+
+        return getBoundingBox(stateCode, subCode);
+    }
+
+    public Map<String, Float> getBoundingBox(StateCode stateCode, SubCode subCode) {
+
+        return borderPointDao.getBoundingBox(stateCode, subCode);
     }
 
     public List<BorderPoint> getByStateCodeAndSubCode(StateCode stateCode, SubCode subCode) {
