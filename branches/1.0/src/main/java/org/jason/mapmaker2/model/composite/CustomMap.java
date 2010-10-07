@@ -7,51 +7,39 @@ import org.jason.mapmaker2.model.SubCode;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
+ * CustomMap.java
+ *
  * @author Jason Ferguson
  */
 public class CustomMap implements Serializable {
 
-    private Float minLat;
-    private Float maxLat;
-    private Float minLng;
-    private Float maxLng;
+    private Map<String, Float> boundingBox;
     private List<BorderPoint> borderPoints;
     private StateCode stateCode;
     private SubCode subCode;
     private List<CustomFeature> customFeatures;
 
-    public Float getMinLat() {
-        return minLat;
+    public CustomMap() {
+
     }
 
-    public void setMinLat(Float minLat) {
-        this.minLat = minLat;
+    public CustomMap(Float minLat, Float maxLat, Float minLng, Float maxLng) {
+
+        boundingBox.put("minLat", minLat);
+        boundingBox.put("maxLat", maxLat);
+        boundingBox.put("minLng", minLng);
+        boundingBox.put("maxLng", maxLng);
     }
 
-    public Float getMaxLat() {
-        return maxLat;
+    public Map<String, Float> getBoundingBox() {
+        return boundingBox;
     }
 
-    public void setMaxLat(Float maxLat) {
-        this.maxLat = maxLat;
-    }
-
-    public Float getMinLng() {
-        return minLng;
-    }
-
-    public void setMinLng(Float minLng) {
-        this.minLng = minLng;
-    }
-
-    public Float getMaxLng() {
-        return maxLng;
-    }
-
-    public void setMaxLng(Float maxLng) {
-        this.maxLng = maxLng;
+    public void setBoundingBox(Map<String, Float> boundingBox) {
+        this.boundingBox = boundingBox;
     }
 
     public List<BorderPoint> getBorderPoints() {
