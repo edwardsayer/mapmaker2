@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Jason Ferguson
@@ -48,6 +49,27 @@ public class CustomFeatureServiceImpl implements CustomFeatureService {
 
     public List<CustomFeature> getCustomFeatures(float minLat, float maxLat, float minLng, float maxLng, List<String> featureTypeList) {
         return customFeatureDao.getCustomFeatures(minLat, maxLat, minLng, maxLng, featureTypeList);
+    }
+
+    public List<String> getCustomFeatureTypes(Map<String, Float> boundingBox) throws ServiceException {
+
+        if (!boundingBox.containsKey("minLat")) {
+            throw new ServiceException("Bounding box doesn't contain minimum latitude!");
+        }
+
+        if (!boundingBox.containsKey("maxLat")) {
+            throw new ServiceException("Bounding box doesn't contain maximum latitude!");
+        }
+
+        if (!boundingBox.containsKey("minLng")) {
+            throw new ServiceException("Bounding box doesn't contain minimum longitude!");
+        }
+
+        if (!boundingBox.containsKey("maxLng")) {
+            throw new ServiceException("Bounding box doesn't contain maximum longitude!");
+        }
+
+        return customFeatureDao.getCustomFeatureTypes(boundingBox);
     }
 
     public List<String> getCustomFeatureTypes(float minLat, float maxLat, float minLng, float maxLng) {
