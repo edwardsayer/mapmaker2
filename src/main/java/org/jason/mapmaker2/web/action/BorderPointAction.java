@@ -50,7 +50,7 @@ import java.util.zip.ZipFile;
 public class BorderPointAction extends ActionSupport implements ServletContextAware {
 
     // Interface ServletContextAware
-    ServletContext servletContext;
+    private ServletContext servletContext;
 
     public void setServletContext(ServletContext servletContext) {
         this.servletContext = servletContext;
