@@ -8,6 +8,7 @@ import org.apache.struts2.interceptor.validation.SkipValidation;
 import org.apache.struts2.util.ServletContextAware;
 import org.jason.mapmaker2.model.CustomFeature;
 import org.jason.mapmaker2.model.StateCode;
+import org.jason.mapmaker2.model.util.Geonames;
 import org.jason.mapmaker2.service.BorderPointService;
 import org.jason.mapmaker2.service.CustomFeatureService;
 import org.jason.mapmaker2.service.StateCodeService;
@@ -178,23 +179,26 @@ public class CustomFeatureAction extends ActionSupport implements ServletContext
                 String[] lineArray = line.split("\\|");
 
                 CustomFeature feature = new CustomFeature();
-                feature.setFeatureId(Integer.parseInt(lineArray[0]));
-                if (lineArray[1].length() > 25) {
-                    feature.setFeatureName(lineArray[1].substring(0, 24));
-                } else {
-                    feature.setFeatureName(lineArray[1]);
-                }
-                feature.setFeatureClass(lineArray[2]);
+                feature.setFeatureId(Integer.parseInt(lineArray[Geonames.FEATUREID]));
 
-                Integer stateCodeId = Integer.parseInt(lineArray[4]);
+                // just in case a description field is too long, chop it down a bit
+                if (lineArray[1].length() > 100) {
+                    feature.setFeatureName(lineArray[Geonames.DESCRIPTION].substring(0, 99));
+                } else {
+                    feature.setFeatureName(lineArray[Geonames.DESCRIPTION]);
+                }
+                feature.setFeatureClass(lineArray[Geonames.FEATURECLASS]);
+
+                Integer stateCodeId = Integer.parseInt(lineArray[Geonames.STATEFIPS]);
                 StateCode stateCode = stateCodeService.getByStateCode(stateCodeId);
                 feature.setStateCode(stateCode);
 
-                feature.setLatitude(Float.parseFloat(lineArray[9]));
-                feature.setLongitude(Float.parseFloat(lineArray[10]));
+                feature.setLatitude(Float.parseFloat(lineArray[Geonames.LATITUDE]));
+                feature.setLongitude(Float.parseFloat(lineArray[Geonames.LONGITUDE]));
 
                 customFeatureList.add(feature);
             }
+            scanner.close();
 
             customFeatureService.saveAll(customFeatureList);
         }
