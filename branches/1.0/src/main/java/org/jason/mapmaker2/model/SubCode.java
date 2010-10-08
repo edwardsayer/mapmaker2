@@ -1,5 +1,8 @@
 package org.jason.mapmaker2.model;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -13,6 +16,7 @@ import java.io.Serializable;
 @Entity
 @Table(name="T_SUBCODE")
 @SuppressWarnings("unused")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class SubCode implements Serializable {
 
     private Integer id;
