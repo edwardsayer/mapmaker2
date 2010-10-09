@@ -4,10 +4,15 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
+ * CustomFeature.java
+ *
+ * Represents a feature to be displayed on a map
+ *
  * @author Jason Ferguson
  */
 @Entity
 @Table(name = "T_CUSTOMFEATURE")
+@SuppressWarnings("unused")
 public class CustomFeature implements Serializable {
 
     private Integer featureId;
@@ -19,7 +24,6 @@ public class CustomFeature implements Serializable {
 
     @Id
     @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.AUTO)
     public Integer getFeatureId() {
         return featureId;
     }
