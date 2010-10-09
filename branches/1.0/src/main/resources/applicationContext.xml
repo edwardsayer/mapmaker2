@@ -76,6 +76,7 @@
                 <value>org.jason.mapmaker2.model.CustomFeature</value>
                 <value>org.jason.mapmaker2.model.StateCode</value>
                 <value>org.jason.mapmaker2.model.SubCode</value>
+                <value>org.jason.mapmaker2.model.TLFeatureType</value>
             </list>
         </property>
         <property name="configurationClass" value="org.hibernate.cfg.AnnotationConfiguration"/>
