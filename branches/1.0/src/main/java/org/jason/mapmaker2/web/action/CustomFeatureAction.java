@@ -2,6 +2,7 @@ package org.jason.mapmaker2.web.action;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.convention.annotation.*;
 import org.apache.struts2.interceptor.ParameterAware;
 import org.apache.struts2.interceptor.validation.SkipValidation;
@@ -132,6 +133,7 @@ public class CustomFeatureAction extends ActionSupport implements ServletContext
         // upload zip file and make sure it's valid
         File tempZipFile = new File(tempFileDir, fileUploadFileName);
         FileUtils.copyFile(fileUpload, tempZipFile);
+        fileUpload.delete();
 
         // open the zip file and get the entries
         ZipFile zipFile = new ZipFile(tempZipFile, ZipFile.OPEN_READ);
@@ -172,13 +174,18 @@ public class CustomFeatureAction extends ActionSupport implements ServletContext
             List<CustomFeature> customFeatureList = new ArrayList<CustomFeature>();
 
             Scanner scanner = new Scanner(new File(tempFileDir, entryFileName));
-            scanner.useDelimiter(System.getProperty("line.separator"));
-            scanner.next(); // skip the first line, it's a header row
-            while (scanner.hasNext()) {
-                String line = scanner.next();
+
+            while (scanner.hasNextLine()) {
+
+                String line = scanner.nextLine();
                 String[] lineArray = line.split("\\|");
 
                 CustomFeature feature = new CustomFeature();
+
+                // workaround, one of the files seems to have bad characters in it
+                if (!StringUtils.isNumeric(lineArray[Geonames.FEATUREID])) {
+                    continue;
+                }
                 feature.setFeatureId(Integer.parseInt(lineArray[Geonames.FEATUREID]));
 
                 // just in case a description field is too long, chop it down a bit
@@ -196,11 +203,14 @@ public class CustomFeatureAction extends ActionSupport implements ServletContext
                 feature.setLatitude(Float.parseFloat(lineArray[Geonames.LATITUDE]));
                 feature.setLongitude(Float.parseFloat(lineArray[Geonames.LONGITUDE]));
 
+                //customFeatureService.save(feature);
                 customFeatureList.add(feature);
             }
             scanner.close();
 
+
             customFeatureService.saveAll(customFeatureList);
+            customFeatureList.clear();
         }
         zipFile.close();
 
