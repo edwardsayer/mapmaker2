@@ -28,6 +28,7 @@ public class HibernateGenericDao<T> extends HibernateDaoSupport implements Gener
         setHibernateTemplate(hibernateTemplate);
     }
 
+    //@Transactional
     public T save(T obj) {
 
         Integer id = (Integer) getSession().save(obj);
@@ -48,6 +49,7 @@ public class HibernateGenericDao<T> extends HibernateDaoSupport implements Gener
         return getHibernateTemplate().loadAll(type);
     }
 
+    @SuppressWarnings("unchecked")
     public T getById(int id) {
 
         return (T) getSession().get(type, id);
