@@ -14,6 +14,8 @@
 
 <p>To import a particular type of Shapefile, click on the link next to the state you wish to import it for.</p>
 
+<s:actionerror />
+
 <table border="1">
     <tr>
         <th>State Name</th>
