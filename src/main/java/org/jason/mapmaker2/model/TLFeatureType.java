@@ -88,4 +88,9 @@ public class TLFeatureType implements Serializable {
         return url + stateCode.getStateCode() + "_" + stateCode.getStateName().toUpperCase() + "/"
                 + prefix + "_" + year + "_" + stateCode.getStateCode() + "_" + postfix + ".zip";
     }
+
+    @Transient
+    public String getFilename() {
+        return prefix + "_" + year + "_" + stateCode.getStateCode() + "_" + postfix + ".zip";
+    }
 }
