@@ -33,6 +33,7 @@ import java.util.Map;
         @Result(name = "success", location = "/WEB-INF/content/admin/subCode/list.jsp"),
         @Result(name = "input", location = "/WEB-INF/content/admin/subCode/create.jsp")
 })
+@SuppressWarnings("unused")
 public class SubCodeAction extends ActionSupport implements ParameterAware {
 
     private static final Log log = LogFactory.getLog(SubCodeAction.class);
