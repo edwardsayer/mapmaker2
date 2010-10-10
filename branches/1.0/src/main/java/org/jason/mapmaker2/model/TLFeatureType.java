@@ -2,18 +2,19 @@ package org.jason.mapmaker2.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.text.NumberFormat;
 
 /**
  * TLFeatureType.java
- *
+ * <p/>
  * Represents the feature type of a TIGER shapefile set (i.e. County, Congressional District, etc)
- *
+ * <p/>
  * This class is intended to represent metadata about a shapefile.
- * 
+ *
  * @author Jason Ferguson
  */
 @Entity
-@Table(name="T_TLFEATURETYPE")
+@Table(name = "T_TLFEATURETYPE")
 @SuppressWarnings("unused")
 public class TLFeatureType implements Serializable {
 
@@ -27,7 +28,7 @@ public class TLFeatureType implements Serializable {
     private Boolean imported = false;
 
     @Id
-    @Column(name="ID")
+    @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.AUTO)
     public Integer getId() {
         return id;
@@ -37,7 +38,7 @@ public class TLFeatureType implements Serializable {
         this.id = id;
     }
 
-    @Column(name="YEAR")
+    @Column(name = "YEAR")
     public Integer getYear() {
         return year;
     }
@@ -47,7 +48,7 @@ public class TLFeatureType implements Serializable {
     }
 
     @ManyToOne
-    @JoinColumn(name="STATECODEID")
+    @JoinColumn(name = "STATECODEID")
     public StateCode getStateCode() {
         return stateCode;
     }
@@ -56,7 +57,7 @@ public class TLFeatureType implements Serializable {
         this.stateCode = stateCode;
     }
 
-    @Column(name="POSTFIX")
+    @Column(name = "POSTFIX")
     public String getPostfix() {
         return postfix;
     }
@@ -65,7 +66,7 @@ public class TLFeatureType implements Serializable {
         this.postfix = postfix;
     }
 
-    @Column(name="DESCRIPTION")
+    @Column(name = "DESCRIPTION")
     public String getDescription() {
         return description;
     }
@@ -74,7 +75,7 @@ public class TLFeatureType implements Serializable {
         this.description = description;
     }
 
-    @Column(name="IMPORTED")
+    @Column(name = "IMPORTED")
     public Boolean getImported() {
         return imported;
     }
@@ -84,13 +85,27 @@ public class TLFeatureType implements Serializable {
     }
 
     @Transient
+    public String getFormattedStateCode() {
+        NumberFormat formatter = NumberFormat.getInstance();
+        formatter.setMinimumIntegerDigits(2);
+
+        return formatter.format(stateCode.getStateCode());
+    }
+
+    @Transient
     public String getImportUrl() {
-        return url + stateCode.getStateCode() + "_" + stateCode.getStateName().toUpperCase() + "/"
-                + prefix + "_" + year + "_" + stateCode.getStateCode() + "_" + postfix + ".zip";
+        return url + getFormattedStateCode() + "_" + stateCode.getStateName().toUpperCase() + "/"
+                + prefix + "_" + year + "_" + getFormattedStateCode() + "_" + postfix + ".zip";
     }
 
     @Transient
     public String getFilename() {
-        return prefix + "_" + year + "_" + stateCode.getStateCode() + "_" + postfix + ".zip";
+        return prefix + "_" + year + "_" + getFormattedStateCode() + "_" + postfix + ".zip";
+    }
+
+    @Transient
+    public String getRawFilename() {
+        return prefix + "_" + year + "_" + getFormattedStateCode() + "_" + postfix;
+
     }
 }
