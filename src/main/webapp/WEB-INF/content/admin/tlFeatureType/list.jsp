@@ -30,19 +30,16 @@
             <s:iterator id="tlft" value="stateTLFeatureTypeList">
                 <td>
                 <s:if test="%{#tlft.imported==false}">
-                    <s:a href="%{#tlft.importUrl}">Import</s:a>
+                    <s:a namespace="/borderPoint" action="import">
+                        <s:param name="tlftId" value="%{#tlft.id}" />
+                        Import</s:a>
                 </s:if>
                 <s:else>
-                    <s:property value="description"/> </td>
+                    Imported</td>
                 </s:else>
             </s:iterator>
         </tr>
     </s:iterator>
-    <%--      <s:iterator id="tlft" value="%{tlFeatureTypeList}">
-        <tr>
-            <td><s:property value="stateCode.stateName" /></td>
-        </tr>
-    </s:iterator>--%>
 
 </table>
 <s:a id="tlFeatureTypeCreate" namespace="/tlFeatureType" action="showCreate">Create New Feature Type</s:a>
