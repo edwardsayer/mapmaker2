@@ -12,9 +12,14 @@ import org.jason.mapmaker2.service.StateCodeService;
 import org.jason.mapmaker2.service.TLFeatureTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
+ * TLFeatureTypeAction.java
+ *
+ * Represents a TIGER Line feature type
+ *
  * @author Jason Ferguson
  */
 @ParentPackage("struts-default")
@@ -23,6 +28,7 @@ import java.util.List;
         @Result(name = "success", location = "/WEB-INF/content/admin/tlFeatureType/list.jsp"),
         @Result(name = "input", location = "/WEB-INF/content/admin/tlFeatureType/create.jsp")
 })
+@SuppressWarnings("unused")
 public class TLFeatureTypeAction extends ActionSupport implements Preparable {
 
     private TLFeatureTypeService tlFeatureTypeService;
@@ -43,6 +49,7 @@ public class TLFeatureTypeAction extends ActionSupport implements Preparable {
     private String postfix;
     private String description;
     private List<StateCode> stateCodeList;
+    private List<TLFeatureType> tlFeatureTypeList;
 
     @RequiredFieldValidator(message = "You must set a year!")
     public Integer getYear() {
@@ -87,13 +94,24 @@ public class TLFeatureTypeAction extends ActionSupport implements Preparable {
         this.stateCodeList = stateCodeList;
     }
 
+    public List<TLFeatureType> getTlFeatureTypeList() {
+        return tlFeatureTypeList;
+    }
+
+    public void setTlFeatureTypeList(List<TLFeatureType> tlFeatureTypeList) {
+        this.tlFeatureTypeList = tlFeatureTypeList;
+    }
+
     public void prepare() throws Exception {
         stateCodeList = stateCodeService.getAll();
+        Collections.sort(stateCodeList);
+        tlFeatureTypeList = tlFeatureTypeService.getAll();
     }
 
     @SkipValidation
     @Action("")
     public String execute() throws Exception {
+
         return SUCCESS;
     }
 
@@ -106,6 +124,7 @@ public class TLFeatureTypeAction extends ActionSupport implements Preparable {
     @Action("create")
     public String create() throws Exception {
 
+        stateCodeList = stateCodeService.getAll();
         for (StateCode sc : stateCodeList) {
 
             TLFeatureType tl = new TLFeatureType();
