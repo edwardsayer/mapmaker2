@@ -6,6 +6,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * StateCode.java
@@ -23,6 +24,7 @@ public class StateCode implements Serializable, Comparable<StateCode> {
     private Integer stateCode;
     private String stateName;
     private String stateAbbr;
+    private List<TLFeatureType> stateTLFeatureTypeList;
 
     public StateCode() {
 
@@ -71,6 +73,15 @@ public class StateCode implements Serializable, Comparable<StateCode> {
 
     public void setStateAbbr(String stateAbbr) {
         this.stateAbbr = stateAbbr;
+    }
+
+    @OneToMany(mappedBy = "stateCode")
+    public List<TLFeatureType> getStateTLFeatureTypeList() {
+        return stateTLFeatureTypeList;
+    }
+
+    public void setStateTLFeatureTypeList(List<TLFeatureType> stateTLFeatureTypeList) {
+        this.stateTLFeatureTypeList = stateTLFeatureTypeList;
     }
 
     @Transient
