@@ -6,6 +6,7 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import org.apache.commons.io.FileUtils;
 import org.apache.struts2.convention.annotation.*;
+import org.apache.struts2.interceptor.ParameterAware;
 import org.apache.struts2.interceptor.validation.SkipValidation;
 import org.apache.struts2.util.ServletContextAware;
 import org.geotools.data.FeatureSource;
@@ -16,26 +17,31 @@ import org.geotools.feature.simple.SimpleFeatureImpl;
 import org.jason.mapmaker2.model.BorderPoint;
 import org.jason.mapmaker2.model.StateCode;
 import org.jason.mapmaker2.model.SubCode;
+import org.jason.mapmaker2.model.TLFeatureType;
 import org.jason.mapmaker2.service.BorderPointService;
 import org.jason.mapmaker2.service.StateCodeService;
 import org.jason.mapmaker2.service.SubCodeService;
+import org.jason.mapmaker2.service.TLFeatureTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StopWatch;
 
 import javax.servlet.ServletContext;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.util.*;
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 /**
  * BorderPointAction.java
- *
+ * <p/>
  * Action class for dealing with BorderPoint objects
- *
+ * <p/>
  * Class implements the ServletContextAware interface so that it can obtain the location of the tmp directory
  *
  * @author Jason Ferguson
@@ -47,7 +53,7 @@ import java.util.zip.ZipFile;
         @Result(name = "input", location = "/WEB-INF/content/admin/borderPoint/create2.jsp")
 })
 @SuppressWarnings("unused")
-public class BorderPointAction extends ActionSupport implements ServletContextAware {
+public class BorderPointAction extends ActionSupport implements ParameterAware, ServletContextAware {
 
     // Interface ServletContextAware
     private ServletContext servletContext;
@@ -56,10 +62,18 @@ public class BorderPointAction extends ActionSupport implements ServletContextAw
         this.servletContext = servletContext;
     }
 
+    // Interface ParameterAware
+    private Map<String, String[]> parameters;
+
+    public void setParameters(Map<String, String[]> parameters) {
+        this.parameters = parameters;
+    }
+
     // Services
     private BorderPointService borderPointService;
     private StateCodeService stateCodeService;
     private SubCodeService subCodeService;
+    private TLFeatureTypeService tlFeatureTypeService;
 
     @Autowired
     public void setBorderPointService(BorderPointService borderPointService) {
@@ -74,6 +88,11 @@ public class BorderPointAction extends ActionSupport implements ServletContextAw
     @Autowired
     public void setSubCodeService(SubCodeService subCodeService) {
         this.subCodeService = subCodeService;
+    }
+
+    @Autowired
+    public void setTlFeatureTypeService(TLFeatureTypeService tlFeatureTypeService) {
+        this.tlFeatureTypeService = tlFeatureTypeService;
     }
 
     private Integer stateId;
@@ -283,6 +302,48 @@ public class BorderPointAction extends ActionSupport implements ServletContextAw
 
         timer.stop();
         System.out.println("Executed import in " + timer.getTotalTimeSeconds() + " seconds");
+
+        return SUCCESS;
+    }
+
+    @Action("import")
+    public String importShapeFileToBorderPoints() throws Exception {
+
+        // get servlet temp directory
+        File tempFileDir = (File) servletContext.getAttribute("javax.servlet.context.tempdir");
+
+        if (parameters.get("tlftId")[0] == null) {
+            addActionError("Cannot get id for TIGER Line Feature Type to import!");
+            return SUCCESS;
+        }
+        Integer tlftId = Integer.parseInt(parameters.get("tlftId")[0]);
+        TLFeatureType tlft = tlFeatureTypeService.getById(tlftId);
+
+        URL url = null;
+        File outputFile = new File(tempFileDir,tlft.getFilename());
+        try {
+            url = new URL(tlft.getImportUrl());
+            URLConnection uc = url.openConnection();
+            uc.connect();
+            OutputStream os = new FileOutputStream(outputFile);
+            InputStream is = url.openStream();
+            byte[] bytes = new byte[2048];
+            int l;
+            while((l = is.read()) != -1) {
+                os.write(l);
+            }
+            is.close();
+            os.close();
+        } catch (MalformedURLException e) {
+            addActionError("Error with getting URL to import!");
+            return SUCCESS;
+        } catch (IOException e) {
+            addActionError("IOException!");
+        }
+
+        tlft.setImported(true);
+        tlFeatureTypeService.save(tlft);
+        //outputFile.delete();
 
         return SUCCESS;
     }
