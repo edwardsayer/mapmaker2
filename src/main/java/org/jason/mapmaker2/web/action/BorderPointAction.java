@@ -4,7 +4,11 @@ import com.opensymphony.xwork2.ActionSupport;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiPolygon;
+import org.apache.commons.compress.archivers.ArchiveInputStream;
+import org.apache.commons.compress.archivers.ArchiveStreamFactory;
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.struts2.convention.annotation.*;
 import org.apache.struts2.interceptor.ParameterAware;
 import org.apache.struts2.interceptor.validation.SkipValidation;
@@ -26,17 +30,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StopWatch;
 
 import javax.servlet.ServletContext;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
+import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 /**
  * BorderPointAction.java
@@ -185,54 +183,78 @@ public class BorderPointAction extends ActionSupport implements ParameterAware, 
         File tempZipFile = new File(tempFileDir, fileUploadFileName);
         FileUtils.copyFile(fileUpload, tempZipFile);
 
-        // open the zip file and get the entries
-        ZipFile zipFile = new ZipFile(tempZipFile, ZipFile.OPEN_READ);
-        Enumeration zipFileEntries = zipFile.entries();
+        String shpFileName = "";
 
-        String shpFilename = "";
-
-        // iterate through the entries in the zipfile
-        while (zipFileEntries.hasMoreElements()) {
-
-            // get an entry
-            ZipEntry entry = (ZipEntry) zipFileEntries.nextElement();
+        final InputStream inputStream = new FileInputStream(fileUpload);
+        ArchiveInputStream in = new ArchiveStreamFactory().createArchiveInputStream("zip", inputStream);
+        ZipArchiveEntry entry = (ZipArchiveEntry) in.getNextEntry();
+        while (entry != null) {
             String entryFileName = entry.getName();
 
-            // get the name of the actual shp file
+                        // get the name of the actual shp file
             if (entryFileName.indexOf(".shp") > -1) {
-                shpFilename = entryFileName;
+                shpFileName = entryFileName;
             }
-
-            // add the file to the list. It has to be a File so I can call File().delete()
-            File destFile = new File(tempFileDir, entryFileName);
-            filenames.add(destFile);
-
-            // make sure the entry isn't a directory
-            // TODO: process this recursively if it IS a directory
-            if (!entry.isDirectory()) {
-
-                // get the zipentry as a BIS
-                BufferedInputStream is = new BufferedInputStream(zipFile.getInputStream(entry));
-                int currentByte;
-                byte[] data = new byte[2048];
-
-                // create a FOS and BOS for transferring the input into an output file
-                FileOutputStream fos = new FileOutputStream(destFile);
-                BufferedOutputStream dest = new BufferedOutputStream(fos, 2048);
-
-                // read and write until last byte is encountered
-                while ((currentByte = is.read(data, 0, 2048)) != -1) {
-                    dest.write(data, 0, currentByte);
-                }
-                dest.flush();
-                dest.close();
-                is.close();
-            }
-
+            
+            File outputFile = new File(entryFileName);
+            filenames.add(outputFile);
+            
+            OutputStream outputStream = new FileOutputStream(outputFile);
+            IOUtils.copy(in, outputStream);
+            outputStream.close();
+            entry = (ZipArchiveEntry) in.getNextEntry();
         }
-        zipFile.close();
 
-        File shpFile = new File(tempFileDir, shpFilename);
+        in.close();
+        
+//        // open the zip file and get the entries
+//        ZipFile zipFile = new ZipFile(tempZipFile, ZipFile.OPEN_READ);
+//        Enumeration zipFileEntries = zipFile.entries();
+//
+//        String shpFilename = "";
+//
+//        // iterate through the entries in the zipfile
+//        while (zipFileEntries.hasMoreElements()) {
+//
+//            // get an entry
+//            ZipEntry entry = (ZipEntry) zipFileEntries.nextElement();
+//            String entryFileName = entry.getName();
+//
+//            // get the name of the actual shp file
+//            if (entryFileName.indexOf(".shp") > -1) {
+//                shpFilename = entryFileName;
+//            }
+//
+//            // add the file to the list. It has to be a File so I can call File().delete()
+//            File destFile = new File(tempFileDir, entryFileName);
+//            filenames.add(destFile);
+//
+//            // make sure the entry isn't a directory
+//            // TODO: process this recursively if it IS a directory
+//            if (!entry.isDirectory()) {
+//
+//                // get the zipentry as a BIS
+//                BufferedInputStream is = new BufferedInputStream(zipFile.getInputStream(entry));
+//                int currentByte;
+//                byte[] data = new byte[2048];
+//
+//                // create a FOS and BOS for transferring the input into an output file
+//                FileOutputStream fos = new FileOutputStream(destFile);
+//                BufferedOutputStream dest = new BufferedOutputStream(fos, 2048);
+//
+//                // read and write until last byte is encountered
+//                while ((currentByte = is.read(data, 0, 2048)) != -1) {
+//                    dest.write(data, 0, currentByte);
+//                }
+//                dest.flush();
+//                dest.close();
+//                is.close();
+//            }
+//
+//        }
+//        zipFile.close();
+
+        File shpFile = new File(tempFileDir, shpFileName);
 
         // Create a ShapefileDataStore from the shapefile. This would be much easier if I could just use some sort
         // of stream and not have to deal with temporary files
