@@ -26,10 +26,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StopWatch;
 
 import javax.servlet.ServletContext;
-import java.io.*;
-import java.net.MalformedURLException;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -51,6 +52,9 @@ import java.util.zip.ZipFile;
 @Results({
         @Result(name = "success", location = "/WEB-INF/content/admin/borderPoint/list.jsp"),
         @Result(name = "input", location = "/WEB-INF/content/admin/borderPoint/create2.jsp")
+})
+@InterceptorRefs({
+        @InterceptorRef("defaultStack")
 })
 @SuppressWarnings("unused")
 public class BorderPointAction extends ActionSupport implements ParameterAware, ServletContextAware {
@@ -164,7 +168,7 @@ public class BorderPointAction extends ActionSupport implements ParameterAware, 
     }
 
     @SuppressWarnings({"deprecation", "unchecked"})
-    @Action("create")
+    @Action(value="create", interceptorRefs = @InterceptorRef("execAndWait"))
     public String create() throws Exception {
 
         StopWatch timer = new StopWatch();
@@ -306,12 +310,13 @@ public class BorderPointAction extends ActionSupport implements ParameterAware, 
         return SUCCESS;
     }
 
-    @Action("import")
+    @Action(value="import", interceptorRefs = @InterceptorRef("execAndWait"))
     public String importShapeFileToBorderPoints() throws Exception {
 
         // get servlet temp directory
         File tempFileDir = (File) servletContext.getAttribute("javax.servlet.context.tempdir");
 
+        // get the TLFT based on the passed parameter
         if (parameters.get("tlftId")[0] == null) {
             addActionError("Cannot get id for TIGER Line Feature Type to import!");
             return SUCCESS;
@@ -319,27 +324,10 @@ public class BorderPointAction extends ActionSupport implements ParameterAware, 
         Integer tlftId = Integer.parseInt(parameters.get("tlftId")[0]);
         TLFeatureType tlft = tlFeatureTypeService.getById(tlftId);
 
-        URL url = null;
+        // get the import URL and copy it to a file in the servlet container tmp directory
+        URL url = new URL(tlft.getImportUrl());
         File outputFile = new File(tempFileDir,tlft.getFilename());
-        try {
-            url = new URL(tlft.getImportUrl());
-            URLConnection uc = url.openConnection();
-            uc.connect();
-            OutputStream os = new FileOutputStream(outputFile);
-            InputStream is = url.openStream();
-            byte[] bytes = new byte[2048];
-            int l;
-            while((l = is.read()) != -1) {
-                os.write(l);
-            }
-            is.close();
-            os.close();
-        } catch (MalformedURLException e) {
-            addActionError("Error with getting URL to import!");
-            return SUCCESS;
-        } catch (IOException e) {
-            addActionError("IOException!");
-        }
+        FileUtils.copyURLToFile(url, outputFile);
 
         tlft.setImported(true);
         tlFeatureTypeService.save(tlft);
