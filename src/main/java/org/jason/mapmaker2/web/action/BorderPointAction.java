@@ -8,6 +8,7 @@ import org.apache.commons.compress.archivers.ArchiveInputStream;
 import org.apache.commons.compress.archivers.ArchiveStreamFactory;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.struts2.convention.annotation.*;
 import org.apache.struts2.interceptor.ParameterAware;
@@ -185,18 +186,19 @@ public class BorderPointAction extends ActionSupport implements ParameterAware, 
 
         String shpFileName = "";
 
+        
         final InputStream inputStream = new FileInputStream(fileUpload);
         ArchiveInputStream in = new ArchiveStreamFactory().createArchiveInputStream("zip", inputStream);
         ZipArchiveEntry entry = (ZipArchiveEntry) in.getNextEntry();
         while (entry != null) {
             String entryFileName = entry.getName();
 
-                        // get the name of the actual shp file
-            if (entryFileName.indexOf(".shp") > -1) {
+            // get the name of the actual shp file
+            if (FilenameUtils.getExtension(entryFileName).equalsIgnoreCase("shp")) {
                 shpFileName = entryFileName;
             }
             
-            File outputFile = new File(entryFileName);
+            File outputFile = new File(tempFileDir, entryFileName);
             filenames.add(outputFile);
             
             OutputStream outputStream = new FileOutputStream(outputFile);
